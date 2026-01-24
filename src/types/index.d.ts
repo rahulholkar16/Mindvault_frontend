@@ -8,3 +8,9 @@ interface ButtonProp {
     disabled: boolean;
     children?: ReactNode;
 }
+
+interface Featurs {
+    title: string;
+    description: string;
+    children: ReactNode;
+}
