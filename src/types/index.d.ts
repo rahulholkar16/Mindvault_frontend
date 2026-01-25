@@ -36,3 +36,7 @@ interface SidebarProp {
     isOpen: boolean;
     onToggle: () => void
 }
+
+interface NotesListProp {
+    isOpen: boolean;
+}
