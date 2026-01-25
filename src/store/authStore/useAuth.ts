@@ -12,7 +12,6 @@ export const useAuth = create<AuthState>((set) => ({
     login: async (email, password) => {
         try {
             set({loading: true, error: null});
-
             const res = await axios.post("http://localhost:3000/api/v1/auth/login", 
                 {email, password},
                 {withCredentials: true}
@@ -23,11 +22,13 @@ export const useAuth = create<AuthState>((set) => ({
                 isAuthenticated: true,
                 loading: false,
             });
+            return true;
         } catch (error: any) {
             set({
                 error: error.response?.data?.message, 
                 loading: false
             })
+            return false;
         }
     },
 
