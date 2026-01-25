@@ -31,3 +31,8 @@ interface AuthState {
     logout: () => Promise<void>;
     register: (email: string, password: string, name: string) => Promise<boolean>;
 }
+
+interface SidebarProp {
+    isOpen: boolean;
+    onToggle: () => void
+}
