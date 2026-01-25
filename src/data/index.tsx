@@ -18,25 +18,25 @@ export const features = [
     }
 ];
 
-export const Sidebar = [
+export const sidebar = [
     {
         title: "Tweets",
-        icon: <Bird size={24} />,
+        icon: <Bird size={20} />,
     },
     {
         title: "Videos",
-        icon: <Youtube size={24} />,
+        icon: <Youtube size={20} />,
     },
     {
         title: "Documents",
-        icon: <BookText size={24} />,
+        icon: <BookText size={20} />,
     },
     {
         title: "Links",
-        icon: <Link size={24} />,
+        icon: <Link size={20} />,
     },
     {
         title: "Tags",
-        icon: <Hash size={24} />,
+        icon: <Hash size={20} />,
     },
 ];
