@@ -26,7 +26,8 @@ interface AuthState {
     loading: boolean;
     isAuthenticated: boolean;
     error: string | null;
-    
-    login: (email: string, password: string) => Promise<void>;
+    success: boolean;
+    login: (email: string, password: string) => Promise<boolean>;
     logout: () => Promise<void>;
+    register: (email: string, password: string, name: string) => Promise<boolean>;
 }
