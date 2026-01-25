@@ -40,3 +40,8 @@ interface SidebarProp {
 interface NotesListProp {
     isOpen: boolean;
 }
+
+interface CardProp {
+    Icon: ReactNode;
+    title: string;
+}
