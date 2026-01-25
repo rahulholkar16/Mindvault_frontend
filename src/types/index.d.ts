@@ -14,3 +14,19 @@ interface Featurs {
     description: string;
     children: ReactNode;
 }
+
+interface User {
+    _id: string;
+    name: string;
+    email: string;
+}
+
+interface AuthState {
+    user: User | null;
+    loading: boolean;
+    isAuthenticated: boolean;
+    error: string | null;
+    
+    login: (email: string, password: string) => Promise<void>;
+    logout: () => Promise<void>;
+}
