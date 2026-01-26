@@ -1,6 +1,6 @@
 import { Brain, ArrowLeft, Mail, Lock, AlertCircle } from "lucide-react";
 import { useState } from "react";
-import { useAuth } from "../store/authStore/useAuth";
+import { useAuth } from "../store/auth/useAuth";
 import { useNavigate } from "react-router";
 
 const Login = () => {
@@ -61,7 +61,7 @@ const Login = () => {
                         </div>
                     )}
 
-                    <form onSubmit={handelSubmit}  className="space-y-4">
+                    <form onSubmit={handelSubmit} className="space-y-4">
                         <div>
                             <label className="block text-sm font-medium text-slate-300 mb-2">
                                 Email
