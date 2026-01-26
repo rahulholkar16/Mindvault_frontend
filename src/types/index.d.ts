@@ -44,4 +44,5 @@ interface NotesListProp {
 interface CardProp {
     Icon: ReactNode;
     title: string;
+    url?: string;
 }
