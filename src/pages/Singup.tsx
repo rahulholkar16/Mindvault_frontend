@@ -6,34 +6,34 @@ import {
     AlertCircle,
     CheckCircle,
 } from "lucide-react";
-import { useAuth } from "../store/authStore/useAuth";
+import { useAuth } from "../store/auth/useAuth";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const Singup = () => {
     const { register, loading, error, success } = useAuth();
     const nevigate = useNavigate();
-        const [email, setEmail] = useState("");
-        const [password, setPassword] = useState("");
-        const [name, setName] = useState("");
-        const [localError, setLocalError] = useState<string | null>(null);
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+    const [localError, setLocalError] = useState<string | null>(null);
 
-        async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-            e.preventDefault();
-            if (!email || !password || !name) {
-                setLocalError("Please fill in all fields");
-                return;
-            }
-            if (password.length < 6) {
-                setLocalError("Password must be at least 6 characters");
-                return;
-            }
-            await register(email, password, name);
-            setEmail("");
-            setPassword("");
-            setName("");
-            nevigate("/login");
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault();
+        if (!email || !password || !name) {
+            setLocalError("Please fill in all fields");
+            return;
         }
+        if (password.length < 6) {
+            setLocalError("Password must be at least 6 characters");
+            return;
+        }
+        await register(email, password, name);
+        setEmail("");
+        setPassword("");
+        setName("");
+        nevigate("/login");
+    }
     return (
         <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-4">
             <div className="absolute inset-0 overflow-hidden">
@@ -77,11 +77,16 @@ const Singup = () => {
                     )}
 
                     {(error || localError) && !success && (
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6 flex gap-3">
-              <AlertCircle size={20} className="text-red-400 shrink-0 mt-0.5" />
-              <p className="text-red-300 text-sm">{error || localError}</p>
-            </div>
-          )}
+                        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6 flex gap-3">
+                            <AlertCircle
+                                size={20}
+                                className="text-red-400 shrink-0 mt-0.5"
+                            />
+                            <p className="text-red-300 text-sm">
+                                {error || localError}
+                            </p>
+                        </div>
+                    )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
                         <div>
@@ -138,9 +143,7 @@ const Singup = () => {
                                 <input
                                     type="text"
                                     value={name}
-                                    onChange={(e) =>
-                                        setName(e.target.value)
-                                    }
+                                    onChange={(e) => setName(e.target.value)}
                                     placeholder="Your Name"
                                     className="w-full pl-10 pr-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-white placeholder-slate-500"
                                     disabled={loading}
