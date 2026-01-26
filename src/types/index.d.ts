@@ -46,3 +46,21 @@ interface CardProp {
     title: string;
     url?: string;
 }
+
+interface Content {
+    "_id": string,
+        "title": string,
+            "url" ?: string,
+            "tags" ?: [],
+            "type" ?: "document" | "video" | "tweets" | "link",
+            "userId": string,
+                "isPublic" ?: boolean
+}
+
+interface ContentState {
+    content: Content | null;
+    loading: boolean;
+    error: string | null;
+
+    getContent: () => Promise<boolean>;
+}
