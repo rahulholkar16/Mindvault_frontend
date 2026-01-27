@@ -180,7 +180,13 @@ const handleTypeChange = (newType: NoteType) => {
                     </div>
                 </div>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center gap-4 py-6">
+                <Button
+                    text="Close"
+                    size="large"
+                    disabled={false}
+                    color="danger"
+                />
                 <Button
                     text="Upload"
                     size="large"
