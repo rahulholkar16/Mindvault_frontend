@@ -5,16 +5,11 @@ import Singup from "./pages/Singup";
 import Dashboard from "./pages/Dashboard";
 import { useEffect } from "react";
 import { useAuth } from "./store/auth/useAuth";
+import ProtectedRoute from "./routes/ProtectedRoute";
 
 const App = () => {
     const checkAuth = useAuth(state => state.checkAuth);
     useEffect(() => {
-        if (!window.twttr) {
-            const script = document.createElement("script");
-            script.src = "https://platform.twitter.com/widgets.js";
-            script.async = true;
-            document.body.appendChild(script);
-        }
         checkAuth();
     }, []);
 
@@ -23,7 +18,10 @@ const App = () => {
             <Route path="/" element={<Welcome />} />
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Singup />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            
+            <Route element={<ProtectedRoute />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+            </Route>
         </Routes>
     );
 };
