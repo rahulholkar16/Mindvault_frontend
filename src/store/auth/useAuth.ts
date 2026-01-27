@@ -70,6 +70,22 @@ export const useAuth = create<AuthState>()(
                     return false;
                 }
             },
+
+            checkAuth: async () => {
+                try {
+                    const res = await axios.get("http://localhost:3000/api/v1/auth/me", {withCredentials: true});
+                    set({
+                        user: res.data.user,
+                        isAuthenticated: true,
+                    })
+                } catch (error: any) {
+                    set({
+                        error: error.response?.data?.message,
+                        user: null,
+                        isAuthenticated: false,
+                    })
+                }
+            },
         }),
         {
             name: "auth-storage",
