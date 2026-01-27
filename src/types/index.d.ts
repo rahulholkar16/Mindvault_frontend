@@ -29,6 +29,7 @@ interface AuthState {
     success: boolean;
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => Promise<void>;
+    checkAuth: () => Promise<void>;
     register: (email: string, password: string, name: string) => Promise<boolean>;
 }
 
@@ -49,12 +50,12 @@ interface CardProp {
 
 interface Content {
     "_id": string,
-        "title": string,
-            "url" ?: string,
-            "tags" ?: [],
-            "type" ?: "document" | "video" | "tweets" | "link",
-            "userId": string,
-                "isPublic" ?: boolean
+    "title": string,
+    "url"?: string,
+    "tags"?: [],
+    "type"?: "document" | "video" | "tweets" | "link",
+    "userId": string,
+    "isPublic"?: boolean
 }
 
 interface ContentState {
