@@ -31,7 +31,7 @@ const Login = () => {
             </div>
 
             <div className="relative z-10 w-full max-w-md">
-                <button className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8">
+                <button onClick={() => nevigate(-1)} className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8">
                     <ArrowLeft size={20} />
                     Back
                 </button>
@@ -119,7 +119,7 @@ const Login = () => {
                         <p className="text-slate-400 text-sm">
                             Don't have an account?{" "}
                             <button
-                                // onClick={onSignUpClick}
+                                onClick={() => nevigate("/register")}
                                 className="text-blue-400 hover:text-blue-300 font-semibold transition-colors"
                             >
                                 Sign up

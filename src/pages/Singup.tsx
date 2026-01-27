@@ -42,7 +42,7 @@ const Singup = () => {
 
             <div className="relative z-10 w-full max-w-md">
                 <button
-                    //   onClick={onBackClick}
+                      onClick={() => nevigate(-1)}
                     className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8"
                 >
                     <ArrowLeft size={20} />
@@ -164,7 +164,7 @@ const Singup = () => {
                         <p className="text-slate-400 text-sm">
                             Already have an account?{" "}
                             <button
-                                // onClick={onSignInClick}
+                                onClick={() => nevigate("/login")}
                                 className="text-blue-400 hover:text-blue-300 font-semibold transition-colors"
                             >
                                 Sign in
