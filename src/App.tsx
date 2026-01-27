@@ -4,8 +4,10 @@ import Login from "./pages/Login";
 import Singup from "./pages/Singup";
 import Dashboard from "./pages/Dashboard";
 import { useEffect } from "react";
+import { useAuth } from "./store/auth/useAuth";
 
 const App = () => {
+    const checkAuth = useAuth(state => state.checkAuth);
     useEffect(() => {
         if (!window.twttr) {
             const script = document.createElement("script");
@@ -13,6 +15,7 @@ const App = () => {
             script.async = true;
             document.body.appendChild(script);
         }
+        checkAuth();
     }, []);
 
     return (
