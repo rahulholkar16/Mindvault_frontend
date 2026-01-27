@@ -4,7 +4,9 @@ import { useAuth } from "../store/auth/useAuth";
 import { useNavigate } from "react-router";
 
 const Login = () => {
-    const { login, loading, error } = useAuth();
+    const login = useAuth(state => state.login);
+    const loading= useAuth(state => state.loading);
+    const error = useAuth(state => state.error);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [localError, setLocalError] = useState<string | null>(null);
