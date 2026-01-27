@@ -1,8 +1,12 @@
 import { ArrowRight } from "lucide-react";
 import HeroImage from "../images/HeroImage.png";
 import Button from "./Button";
+import { useNavigate } from "react-router";
+import { useAuth } from "../store/auth/useAuth";
 
 const HeroSection = () => {
+    const nevigate = useNavigate();
+    const isAuthenticated = useAuth((state) => state.isAuthenticated);
   return (
       <div className="text-white w-full mx-auto px-6 py-10">
           <div className="flex w-full items-center justify-between px-4 gap-10">
@@ -22,9 +26,28 @@ const HeroSection = () => {
               <img src={HeroImage} />
           </div>
           <div className="flex gap-5 px-4 items-center">
-            
-          <Button text="Get Started Free" color="primary" size="large" disabled={false}><ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" /></Button>
-          <Button text="Singn In" color="secondary" size="large" disabled={false} />
+              <Button
+                  text={isAuthenticated ? "Get Started Free" : "Sing In"}
+                  color="primary"
+                  size="large"
+                  disabled={false}
+                  onClick={isAuthenticated ? (() => nevigate("/dashboard")) : (() => nevigate("/register"))}
+              >
+                  <ArrowRight
+                      size={20}
+                      className="group-hover:translate-x-1 transition-transform"
+                  />
+              </Button>
+
+              {!isAuthenticated && (
+                  <Button
+                      text="Login"
+                      color="secondary"
+                      size="large"
+                      disabled={false}
+                      onClick={() => nevigate("/register")}
+                  />
+              )}
           </div>
       </div>
   );
