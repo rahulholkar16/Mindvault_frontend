@@ -20,7 +20,7 @@ const Dashboard = () => {
             script.async = true;
             document.body.appendChild(script);
         }
-    }, []);
+    }, []);   
 
     return (
         <div className="flex h-screen bg-gray-900 w-full overflow-hidden">
@@ -55,7 +55,10 @@ const Dashboard = () => {
                 </div>
 
                 {addForm ? (
-                    <NoteEditor />
+                    <NoteEditor
+                        setAddForm={setAddForm}
+                        isSidebarOpen={isSidebarOpen}
+                    />
                 ) : loading ? (
                     <div className="flex items-center space-x-2">
                         <div className="animate-pulse rounded-full bg-gray-500 h-12 w-12" />
@@ -69,7 +72,23 @@ const Dashboard = () => {
                         </div>
                     </div>
                 ) : (
-                    <Card />
+                    <div
+                        className="grid gap-8 mt-12 
+                grid-cols-[repeat(auto-fill,minmax(280px,1fr))] 
+                justify-start"
+                    >
+                        {content?.length &&
+                            content.map((data, index) => (
+                                <Card
+                                    key={index}
+                                    title={data.title}
+                                    type={data?.type}
+                                    description={data.description}
+                                    url={data?.url}
+                                    date={data?.createdAt}
+                                />
+                            ))}
+                    </div>
                 )}
             </div>
         </div>
