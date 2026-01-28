@@ -25,11 +25,13 @@ interface AuthState {
     user: User | null;
     loading: boolean;
     isAuthenticated: boolean;
+    isRefreshing: boolean;
     error: string | null;
     success: boolean;
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => Promise<void>;
-    checkAuth: () => Promise<void>;
+    checkAuth: () => Promise<boolean>;
+    refreshAccessToken: () => Promise<boolean>;
     register: (email: string, password: string, name: string) => Promise<boolean>;
 }
 
@@ -43,9 +45,11 @@ interface NotesListProp {
 }
 
 interface CardProp {
-    Icon: ReactNode;
+    type: NoteType | undefined;
     title: string;
     url?: string;
+    description: string;
+    date: string;
 }
 
 interface Content {
@@ -53,15 +57,25 @@ interface Content {
     "title": string,
     "url"?: string,
     "tags"?: [],
-    "type"?: "document" | "video" | "tweets" | "link",
+    "type"?: NoteType | undefined,
+    "description": string,
     "userId": string,
-    "isPublic"?: boolean
+    "isPublic"?: boolean,
+    "createdAt": string
 }
 
 interface ContentState {
-    content: Content | null;
+    content: Content[] | null;
     loading: boolean;
     error: string | null;
 
-    getContent: () => Promise<boolean>;
+    getContent: () => Proise<boolean>;
+    createContent: (title: string, url?: string, description?: string, type: NoteType) => Promise<boolean>;
 }
+
+interface NotesEditorProp {
+    isSidebarOpen: boolean;
+    setAddForm: Dispatch<SetStateAction<boolean>>;
+}
+
+export type NoteType = 'document' | 'tweet' | 'video' | 'url';
