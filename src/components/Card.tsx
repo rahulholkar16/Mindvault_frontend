@@ -1,64 +1,82 @@
-import { Share, Trash } from "lucide-react";
+import { Bird, BookText, Share, Trash, Youtube, Link } from "lucide-react";
 import type { CardProp } from "../types";
 import { TweetEmbed } from "./TweetEmbed";
 
 const Card: React.FC<CardProp> = ({
-    Icon,
-    title = "Testing Purpose",
-    url = "https://x.com/aafaq_vaani/status/2015763050176053598?s=20",
+    type,
+    description,
+    title,
+    url,
+    date
 }) => {
-    
+     function formatDate(){
+        console.log(date);
+        
+        const newDate = new Date(date);
+        const formatted = newDate.toLocaleDateString("en-GB").replaceAll("/", "-");
+        console.log(formatted);
+        
+        return formatted;
+    }
 
     return (
-        <div className="bg-gray-800 text-white rounded-lg shadow-lg outline-gray-200 p-4 max-w-75">
-            <div className="flex justify-between items-center">
-                <div className="flex items-center gap-4">
-                    {Icon}
-                    <p className="font-medium text-lg">{title}</p>
+        <div className="bg-gray-800 text-white rounded-lg shadow-lg outline-gray-200 p-4 max-w-75 min-h-[330px] min-w-[270px]">
+            <div className="w-full h-full flex flex-col justify-between">
+                <div className="flex justify-between items-center w-full">
+                    <div className="flex items-center gap-4">
+                        {type === "document" && <BookText size={20} />}
+                        {type === "video" && <Youtube size={20} />}
+                        {type === "tweet" && <Bird size={20} />}
+                        {type === "url" && <Link size={20} />}
+                        <p className="font-medium text-lg">{title}</p>
+                    </div>
+                    <div className="flex items-center gap-4">
+                        <Share />
+                        <Trash />
+                    </div>
                 </div>
-                <div className="flex items-center gap-4">
-                    <Share />
-                    <Trash />
-                </div>
-            </div>
+                {/* For Document */}
+                {type === "document" && (
+                    <div className="mt-4">
+                        <h2 className="font-bold text-2xl m-2">{title}</h2>
+                        <p className="m-2 text-white line-clamp-6">
+                            {description}
+                        </p>
+                    </div>
+                )}
 
-            {/* For Document
-          <div className="mt-4">
-              <h2 className="font-bold text-2xl m-2">Document Project</h2>
-              <p className="m-2 text-">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                  Cumque blanditiis neque quas debitis reprehenderit optio ipsam
-                  ratione mollitia laborum dignissimos!
-              </p>
-          </div> */}
+                {/* For Videos */}
+                {type === "video" && (
+                    <div className="my-4 rounded-lg">
+                        <iframe
+                            sandbox="allow-scripts allow-same-origin allow-presentation"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            className="rounded-lg w-full"
+                            loading="lazy"
+                            src={url}
+                            allowFullScreen
+                        />
+                        <p className="mt-2 line-clamp-3">
+                            Lorem ipsum dolor sit amet consectetur adipisicing
+                            elit. Labore, mollitia.
+                        </p>
+                    </div>
+                )}
 
-            {/* For Videos */}
-            {/* <div className="my-4 rounded-lg">
-                <iframe
-                    sandbox="allow-scripts allow-same-origin allow-presentation"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    className="rounded-lg w-full"
-                    loading="lazy"
-                    src="https://www.youtube.com/embed/y7S2oSjJ8PA?si=XvFwHJ90iastRZQB"
-                    allowFullScreen
-                />
-                <p className="mt-2">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Labore, mollitia.
-                </p>
-            </div> */}
+                {/* For tweet */}
+                {type === "tweet" && (
+                    <TweetEmbed url={url} description={description} />
+                )}
 
-            {/* For tweet */}
-            <TweetEmbed url={url} />
-
-            {/* tags */}
-            <span className="rounded-full mt-4 shadow-lg bg-slate-400 px-2 py-1 font-semibold text-center text-blue-600 text-sm">
+                {/* tags */}
+                {/* <span className="rounded-full mt-4 shadow-lg bg-slate-400 px-2 py-1 font-semibold text-center text-blue-600 text-sm">
                 #Product
-            </span>
+            </span> */}
 
-            {/* time */}
-            <div className="mt-6 px-2 font-semibold text-gray-400 text-sm">
-                Added on 26-01-2026
+                {/* time */}
+                <div className="mt-6 px-2 font-semibold text-gray-400 text-sm">
+                    Added on {formatDate()}
+                </div>
             </div>
         </div>
     );
