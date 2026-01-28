@@ -9,9 +9,21 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 
 const App = () => {
     const checkAuth = useAuth(state => state.checkAuth);
+    const refreshAccessToken = useAuth((state) => state.refreshAccessToken);
     useEffect(() => {
-        checkAuth();
-    }, []);
+        const initAuth = async () => {
+            const ok = await checkAuth();
+
+            if (!ok) {
+                const refreshed = await refreshAccessToken();
+                if (refreshed) {
+                    await checkAuth(); // 👈 THIS IS MISSING
+                }
+            }
+        };
+
+        initAuth();
+    }, [checkAuth, refreshAccessToken]);
 
     return (
         <Routes>
