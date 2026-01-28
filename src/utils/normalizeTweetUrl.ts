@@ -1,6 +1,7 @@
-export function normalizeTweetUrl(url: string) {
+export function normalizeTweetUrl(url: string | undefined) {
+    if (!url) return null;
     try {
-        const u = new URL(url.trim());
+        const u = new URL(url?.trim());
 
         // convert x.com → twitter.com
         if (u.hostname === "x.com") {
