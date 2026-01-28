@@ -13,7 +13,7 @@ const Button: React.FC<ButtonProp> = ({
         <button
             onClick={onClick}
             disabled={disabled}
-            className={`px-6 py-2 rounded-lg flex items-center font-semibold justify-center gap-3 transition-all duration-300
+            className={`px-6 py-2 rounded-lg flex items-center font-semibold justify-center gap-3 transition-all duration-300 hover:scale-105 active:scale-95
         ${size === "small" ? "text-sm px-2 py-1" : ""}
         ${size === "large" ? "text-lg px-4 py-2" : ""}
         ${color === "primary" ? "bg-linear-to-r from-blue-500 to-purple-600 text-white hover:shadow-lg hover:shadow-blue-500/50" : ""}
