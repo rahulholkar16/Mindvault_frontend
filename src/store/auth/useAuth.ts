@@ -9,6 +9,7 @@ export const useAuth = create<AuthState>()(
             user: null,
             loading: false,
             error: null,
+            isRefreshing: false,
             isAuthenticated: false,
             success: false,
 
@@ -73,17 +74,35 @@ export const useAuth = create<AuthState>()(
 
             checkAuth: async () => {
                 try {
+                    console.log("Hello");
                     const res = await axios.get("http://localhost:3000/api/v1/auth/me", {withCredentials: true});
                     set({
                         user: res.data.user,
                         isAuthenticated: true,
                     })
+                    return true;
                 } catch (error: any) {
                     set({
-                        error: error.response?.data?.message,
                         user: null,
                         isAuthenticated: false,
                     })
+                    return false;
+                }
+            },
+
+            refreshAccessToken: async () => {
+                try {
+                    set({ isRefreshing: true })
+                    await axios.get("http://localhost:3000/api/v1/auth/refresh-token", { withCredentials: true });
+                    set({ isRefreshing: false })
+                    return true
+                } catch {
+                    set({
+                        isRefreshing: false,
+                        user: null,
+                        isAuthenticated: false,
+                    })
+                    return false
                 }
             },
         }),
@@ -91,7 +110,7 @@ export const useAuth = create<AuthState>()(
             name: "auth-storage",
             partialize: (s) => ({
                 user: s.user,
-                isAuthenticated: s.isAuthenticated,
+                isAuthenticated: s.isAuthenticated
             }),
         },
     ),
