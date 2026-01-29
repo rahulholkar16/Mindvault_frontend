@@ -1,117 +1,96 @@
 import { create } from "zustand";
-import type { AuthState } from "../../types";
-import axios from "axios";
 import { persist } from "zustand/middleware";
+import { api } from "../../lib/api.js";
+import type { AuthState } from "../../types";
 
 export const useAuth = create<AuthState>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             user: null,
-            loading: false,
+            status: "idle",
             error: null,
             isRefreshing: false,
-            isAuthenticated: false,
-            success: false,
 
+            // ================= INIT =================
+            initAuth: async () => {
+                if (get().status !== "idle") return;
+
+                set({ status: "loading" });
+                try {
+                    const res = await api.get("/auth/me");
+                    set({ user: res.data.user, status: "authenticated" });
+                    return true;
+
+                } catch {
+                    set({ user: null, status: "unauthenticated" });
+                    return false;
+                }
+            },
+
+            // ================= LOGIN =================
             login: async (email, password) => {
-                try {
-                    set({ loading: true, error: null });
-                    const res = await axios.post(
-                        "http://localhost:3000/api/v1/auth/login",
-                        { email, password },
-                        { withCredentials: true },
-                    );
+                set({ status: "loading", error: null });
 
-                    set({
-                        user: res.data,
-                        isAuthenticated: true,
-                        loading: false,
-                    });
+                try {
+                    const res = await api.post("/auth/login", { email, password });
+                    set({ user: res.data.user, status: "authenticated" });
+
+                    // prefetch dashboard
+                    import("../../pages/Dashboard");
                     return true;
-                } catch (error: any) {
+                } catch (err: any) {
                     set({
-                        error: error.response?.data?.message,
-                        loading: false,
+                        error: err.response?.data?.message || "Login failed",
+                        status: "unauthenticated",
                     });
                     return false;
                 }
             },
 
+            // ================= LOGOUT =================
             logout: async () => {
-                await axios.delete("http://localhost:3000/api/v1/auth/logout", {
-                    withCredentials: true,
-                });
-                set({
-                    user: null,
-                    isAuthenticated: false,
-                });
+                await api.delete("/auth/logout");
+                set({ user: null, status: "unauthenticated" });
             },
 
+            // ================= REGISTER =================
             register: async (email, password, name) => {
+                set({ status: "loading", error: null });
                 try {
-                    set({
-                        loading: true,
-                        error: null,
-                    });
-                    await axios.post(
-                        "http://localhost:3000/api/v1/auth/register",
-                        { name, email, password },
-                        { withCredentials: true },
-                    );
-                    set({
-                        loading: false,
-                        success: true,
-                    });
+                    await api.post("/auth/register", { name, email, password });
+                    set({ status: "idle" });
                     return true;
-                } catch (error: any) {
+                } catch (err: any) {
                     set({
-                        error: error.response?.data?.message,
-                        loading: false,
+                        error: err.response?.data?.message || "Register failed",
+                        status: "idle",
                     });
                     return false;
                 }
             },
 
-            checkAuth: async () => {
-                try {
-                    console.log("Hello");
-                    const res = await axios.get("http://localhost:3000/api/v1/auth/me", {withCredentials: true});
-                    set({
-                        user: res.data.user,
-                        isAuthenticated: true,
-                    })
-                    return true;
-                } catch (error: any) {
-                    set({
-                        user: null,
-                        isAuthenticated: false,
-                    })
-                    return false;
-                }
-            },
+            // ================= REFRESH =================
+            refresh: async () => {
+                if (get().isRefreshing) return false;
 
-            refreshAccessToken: async () => {
+                set({ isRefreshing: true });
                 try {
-                    set({ isRefreshing: true })
-                    await axios.get("http://localhost:3000/api/v1/auth/refresh-token", { withCredentials: true });
-                    set({ isRefreshing: false })
-                    return true
+                    await api.get("/auth/refresh-token");
+                    set({ isRefreshing: false });
+                    return true;
                 } catch {
                     set({
                         isRefreshing: false,
                         user: null,
-                        isAuthenticated: false,
-                    })
-                    return false
+                        status: "unauthenticated",
+                    });
+                    return false;
                 }
             },
         }),
         {
             name: "auth-storage",
-            partialize: (s) => ({
-                user: s.user,
-                isAuthenticated: s.isAuthenticated
-            }),
-        },
-    ),
+            partialize: (s) => ({ user: s.user }),
+        }
+    )
 );
