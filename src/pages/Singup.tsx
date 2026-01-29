@@ -11,7 +11,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router";
 
 const Singup = () => {
-    const { register, loading, error, success } = useAuth();
+    const { register, status, error } = useAuth();
+    const loading = status === "loading";
     const nevigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -28,11 +29,13 @@ const Singup = () => {
             setLocalError("Password must be at least 6 characters");
             return;
         }
-        await register(email, password, name);
-        setEmail("");
-        setPassword("");
-        setName("");
-        nevigate("/login");
+        const success = await register(email, password, name);
+        if (success) { 
+            setEmail("");
+            setPassword("");
+            setName("");
+            nevigate("/login");
+        }
     }
     return (
         <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-4">
@@ -64,7 +67,7 @@ const Singup = () => {
                         Join us to start building your second brain
                     </p>
 
-                    {success && (
+                    {status === "idel" && (
                         <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 mb-6 flex gap-3">
                             <CheckCircle
                                 size={20}
@@ -76,7 +79,7 @@ const Singup = () => {
                         </div>
                     )}
 
-                    {(error || localError) && !success && (
+                    {(error || localError) && (
                         <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6 flex gap-3">
                             <AlertCircle
                                 size={20}
