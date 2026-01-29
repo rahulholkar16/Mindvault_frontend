@@ -4,14 +4,14 @@ import { useAuth } from "../store/auth/useAuth";
 import { useNavigate } from "react-router";
 
 const Login = () => {
-    const login = useAuth(state => state.login);
-    const loading= useAuth(state => state.loading);
-    const error = useAuth(state => state.error);
+    const login = useAuth((s) => s.login);
+    const status = useAuth((s) => s.status);
+    const error = useAuth((s) => s.error);
+    const loading = status === "loading";
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [localError, setLocalError] = useState<string | null>(null);
     const nevigate = useNavigate();
-
     async function handelSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         if (!email || !password) {
@@ -31,7 +31,10 @@ const Login = () => {
             </div>
 
             <div className="relative z-10 w-full max-w-md">
-                <button onClick={() => nevigate(-1)} className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8">
+                <button
+                    onClick={() => nevigate(-1)}
+                    className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8"
+                >
                     <ArrowLeft size={20} />
                     Back
                 </button>
@@ -111,7 +114,9 @@ const Login = () => {
                             disabled={loading}
                             className="w-full px-4 py-2.5 bg-linear-to-r from-blue-500 to-purple-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {loading ? "Signing in..." : "Sign In"}
+                            {loading
+                                ? "Signing in..."
+                                : "Sign In"}
                         </button>
                     </form>
 
