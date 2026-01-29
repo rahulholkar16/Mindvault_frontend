@@ -23,15 +23,13 @@ interface User {
 
 interface AuthState {
     user: User | null;
-    loading: boolean;
-    isAuthenticated: boolean;
+    status: idle | loading | authenticated | unauthenticated;
     isRefreshing: boolean;
     error: string | null;
-    success: boolean;
+    initAuth: () => Promise<boolean>;
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => Promise<void>;
-    checkAuth: () => Promise<boolean>;
-    refreshAccessToken: () => Promise<boolean>;
+    refresh: () => Promise<boolean>;
     register: (email: string, password: string, name: string) => Promise<boolean>;
 }
 
@@ -66,11 +64,12 @@ interface Content {
 
 interface ContentState {
     content: Content[] | null;
-    loading: boolean;
+    status: idle | loading | success | error;
     error: string | null;
 
-    getContent: () => Proise<boolean>;
-    createContent: (title: string, url?: string, description?: string, type: NoteType) => Promise<boolean>;
+    fetchAll: () => Proise<boolean>;
+    fetchByType: (type: string) => Promise<void>;
+    create: (title: string, url?: string, description?: string, type: NoteType) => Promise<boolean>;
 }
 
 interface NotesEditorProp {
