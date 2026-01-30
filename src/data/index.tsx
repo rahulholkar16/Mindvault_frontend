@@ -1,4 +1,4 @@
-import {Zap, Shield, Share2, Bird, Youtube, BookText, Link, Hash, GalleryHorizontalEnd } from 'lucide-react'
+import {Zap, Shield, Share2, Bird, Youtube, BookText, Link, Hash, GalleryHorizontalEnd, User2 } from 'lucide-react'
 
 export const features = [
     {
@@ -22,7 +22,7 @@ export const sidebar = [
     {
         title: "All Post",
         icon: <GalleryHorizontalEnd />,
-        type: "all"
+        type: "all",
     },
     {
         title: "Tweets",
@@ -49,4 +49,28 @@ export const sidebar = [
         icon: <Hash size={20} />,
         type: "tag",
     },
+    {
+        title: "Profile",
+        icon: <User2 size={20} />,
+        type: "profile",
+    },
+];
+
+export const profileBar = [
+    {
+        type: "All",
+        icon: <GalleryHorizontalEnd />
+    },
+    {
+        type: "tweet",
+        icon: <Bird />
+    },
+    {
+        type: "video",
+        icon: <Youtube />
+    },
+    {
+        type: "document",
+        icon: <BookText />
+    }
 ];
