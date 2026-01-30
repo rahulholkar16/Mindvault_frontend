@@ -1,26 +1,28 @@
-import { memo, useCallback } from "react";
 import { Brain, Menu, X, LogOut } from "lucide-react";
 import type { SidebarProp } from "../types";
 import { sidebar } from "../data";
 import { useAuth } from "../store/auth/useAuth";
 import { useContent } from "../store/content/useContent";
 
-const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle }) => {
+const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle, onProfileOpen }) => {
     const logout = useAuth((s) => s.logout);
 
     const fetchAll = useContent((s) => s.fetchAll);
     const fetchByType = useContent((s) => s.fetchByType);
 
-    const dataFetch = useCallback(
-        async (type: string) => {
-            if (type === "tag" || type === "all") {
-                await fetchAll();
-                return;
-            }
-            await fetchByType(type);
-        },
-        [fetchAll, fetchByType],
-    );
+    const dataFetch = async (type: string) => {
+        if (type === "profile") {
+        onProfileOpen(true);
+        return;
+        }
+        onProfileOpen(false);
+        if (type === "tag" || type === "all") {
+            
+            await fetchAll();
+            return;
+        }
+        await fetchByType(type);
+    };
 
     return (
         <>
@@ -36,7 +38,7 @@ const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle }) => {
                     isOpen ? "translate-x-0 w-[55%]" : "w-16 lg:translate-x-0 "
                 }`}
             >
-                <div className="flex flex-col gap-4 flex-1 w-full">
+                <div className="flex flex-col gap-2 flex-1 w-full">
                     <div className="p-3 w-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
                         <Brain size={24} className="text-white" />
                     </div>
@@ -46,8 +48,8 @@ const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle }) => {
                             key={item.type} // ✅ stable key, no css change
                             onClick={() => dataFetch(item.type)}
                             className={`p-3 mt-2 transition-transform hover:scale-105 active:scale-95 focus:shadow-lg focus:border focus:rounded-lg text-white
-                ${item?.type === "all" ? "focus:focus:shadow-lg focus:border focus:rounded-lg" : ""}
-                ${isOpen ? "" : "overflow-hidden"}`}
+                                        ${item?.type === "all" ? "focus:focus:shadow-lg focus:border focus:rounded-lg" : ""}
+                                        ${isOpen ? "" : "overflow-hidden"}`}
                             title={item.title}
                         >
                             <div className="flex items-center gap-3">
@@ -70,4 +72,4 @@ const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle }) => {
     );
 };
 
-export default memo(Sidebar);
+export default Sidebar;
