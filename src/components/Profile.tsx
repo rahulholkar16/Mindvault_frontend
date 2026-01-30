@@ -1,0 +1,115 @@
+import { Suspense } from "react";
+import CardSkeleton from "./skeleton/CardSkeleton";
+import Card from "./Card";
+import { profileBar } from "../data";
+import profileImg from "../images/profile.png";
+import Button from "./Button";
+import { useContent } from "../store/content/useContent";
+
+const Profile = () => {
+    const active = useContent((s) => s.activeProfileTab);
+    const setActive = useContent((s) => s.setActiveProfileTab);
+    const fetchAll = useContent(s => s.fetchMyContent);
+    const fetchByType = useContent(s => s.fetchMySpecificContent);
+    const content = useContent(s => s.myContent);
+
+    
+
+    async function onHandel(type: string) {
+        setActive(type);
+        if (type === "All") fetchAll();
+        else fetchByType(type);
+    }
+
+    return (
+        <div className="mt-6 flex flex-col items-center">
+            <div className="flex flex-col gap-5">
+                <div className="flex items-center gap-20 h-full mb-15">
+                    <div className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300">
+                        <img src={profileImg} />
+                    </div>
+
+                    <div className="flex flex-col items-start gap-5">
+                        <div className="flex gap-5">
+                            <p className="text-2xl">Rahul Pal</p>
+                            <div className="flex gap-2">
+                                <Button
+                                    text="Edit Profile"
+                                    color="secondary"
+                                    disabled={false}
+                                    size="small"
+                                />
+                                <Button
+                                    text="View Archive"
+                                    color="secondary"
+                                    disabled={false}
+                                    size="small"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex items-center gap-10">
+                            <div className="flex gap-1">
+                                <span className="text-lg">0</span>
+                                <p className="text-slate-700 font-medium text-lg">
+                                    post
+                                </p>
+                            </div>
+
+                            <div className="flex gap-1">
+                                <span className="text-lg">255</span>
+                                <p className="text-slate-700 font-medium text-lg">
+                                    follower
+                                </p>
+                            </div>
+
+                            <div className="flex gap-1">
+                                <span className="text-lg">120</span>
+                                <p className="text-slate-700 font-medium text-lg">
+                                    following
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* profile bar */}
+                <div className="flex items-center justify-between mt-10 border-b border-gray-600">
+                    {profileBar.map((item) => (
+                        <div key={item.type} className="mx-5 cursor-pointer">
+                            <button
+                                onClick={() => onHandel(item?.type)}
+                                className={`
+                                    p-2 rounded
+                                    ${
+                                        active === item.type
+                                            ? "bg-gray-600 border border-white"
+                                            : ""
+                                    }
+                                `}
+                            >
+                                {item.icon}
+                            </button>
+                        </div>
+                    ))}
+                </div>
+
+                <div className="flex gap-8 flex-col items-center">
+                    {content?.map((item) => (
+                        <Suspense key={item._id} fallback={<CardSkeleton />}>
+                            <Card
+                                title={item.title}
+                                type={item.type}
+                                description={item.description}
+                                url={item.url}
+                                date={item.createdAt}
+                            />
+                        </Suspense>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default Profile;
