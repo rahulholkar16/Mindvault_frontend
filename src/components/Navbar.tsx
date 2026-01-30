@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 
 const Navbar = () => {
     const nevigate = useNavigate();
-    const isAuthenticated = useAuth((state) => state.isAuthenticated);
+    const isAuthenticated = useAuth((state) => state.status);
     const logout = useAuth((state) => state.logout);
     return (
         <div className="bg-gray-900 text-white sticky top-0">
@@ -15,10 +15,11 @@ const Navbar = () => {
                     </div>
                     <span className="text-xl font-bold">Second Brain</span>
                 </div>
-                {isAuthenticated ? (
-                    <button 
+                {isAuthenticated === "authenticated" ? (
+                    <button
                         onClick={() => logout()}
-                        className="group flex items-center justify-start w-9 h-9 bg-blue-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-200 shadow-lg hover:w-32 hover:rounded-lg active:translate-x-1 active:translate-y-1">
+                        className="group flex items-center justify-start w-9 h-9 bg-blue-600 rounded-full cursor-pointer relative overflow-hidden transition-all duration-200 shadow-lg hover:w-32 hover:rounded-lg active:translate-x-1 active:translate-y-1"
+                    >
                         <div className="flex items-center justify-center w-full transition-all duration-300 group-hover:justify-start group-hover:px-3">
                             <svg
                                 className="w-4 h-4"
