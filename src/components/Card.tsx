@@ -10,12 +10,9 @@ const Card: React.FC<CardProp> = ({
     date
 }) => {
      function formatDate(){
-        console.log(date);
-        
         const newDate = new Date(date);
         const formatted = newDate.toLocaleDateString("en-GB").replaceAll("/", "-");
         console.log(formatted);
-        
         return formatted;
     }
 
@@ -31,8 +28,12 @@ const Card: React.FC<CardProp> = ({
                         <p className="font-medium text-lg">{title}</p>
                     </div>
                     <div className="flex items-center gap-4">
-                        <Share />
-                        <Trash />
+                        <button className="cursor-pointer hover:text-blue-600 active:scale-110">
+                            <Share />
+                        </button>
+                        <button className="cursor-pointer hover:text-red-400 active:scale-110">
+                            <Trash />
+                        </button>
                     </div>
                 </div>
                 {/* For Document */}
@@ -56,10 +57,7 @@ const Card: React.FC<CardProp> = ({
                             src={url}
                             allowFullScreen
                         />
-                        <p className="mt-2 line-clamp-3">
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Labore, mollitia.
-                        </p>
+                        <p className="mt-2 line-clamp-3">{description}</p>
                     </div>
                 )}
 
