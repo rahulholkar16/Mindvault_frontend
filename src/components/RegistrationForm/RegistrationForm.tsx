@@ -4,15 +4,13 @@ import {
     Mail,
     Lock,
     AlertCircle,
-    CheckCircle,
 } from "lucide-react";
-import { useAuth } from "../../store/auth/useAuth.js";
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { useSingupStore } from "../../store/singupData/useSingupData.js";
 
 const RegistrationForm = () => {
-    const { register, status, error } = useAuth();
-    const loading = status === "loading";
+    const setData = useSingupStore(s => s.setData);
     const nevigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -21,22 +19,16 @@ const RegistrationForm = () => {
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
-        nevigate("change-pic");
         if (!email || !password || !name) {
             setLocalError("Please fill in all fields");
             return;
         }
-        if (password.length < 6) {
-            setLocalError("Password must be at least 6 characters");
+        if (password.length < 8) {
+            setLocalError("Password must be at least 8 characters");
             return;
         }
-        const success = await register(email, password, name);
-        if (success) {
-            setEmail("");
-            setPassword("");
-            setName("");
-            nevigate("change-pic");
-        }
+        setData({ name, email, password });
+        nevigate("change-pic");
     }
 
     return (
@@ -69,7 +61,7 @@ const RegistrationForm = () => {
                         Join us to start building your second brain
                     </p>
 
-                    {status === "idel" && (
+                    {/* {status === "idel" && (
                         <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 mb-6 flex gap-3">
                             <CheckCircle
                                 size={20}
@@ -79,16 +71,16 @@ const RegistrationForm = () => {
                                 Account created! Redirecting to sign in...
                             </p>
                         </div>
-                    )}
+                    )} */}
 
-                    {(error || localError) && (
+                    {localError && (
                         <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6 flex gap-3">
                             <AlertCircle
                                 size={20}
                                 className="text-red-400 shrink-0 mt-0.5"
                             />
                             <p className="text-red-300 text-sm">
-                                {error || localError}
+                                {localError}
                             </p>
                         </div>
                     )}
@@ -109,7 +101,6 @@ const RegistrationForm = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                     placeholder="you@example.com"
                                     className="w-full pl-10 pr-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-white placeholder-slate-500"
-                                    disabled={loading}
                                 />
                             </div>
                         </div>
@@ -131,7 +122,6 @@ const RegistrationForm = () => {
                                     }
                                     placeholder="••••••••"
                                     className="w-full pl-10 pr-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-white placeholder-slate-500"
-                                    disabled={loading}
                                 />
                             </div>
                         </div>
@@ -151,17 +141,15 @@ const RegistrationForm = () => {
                                     onChange={(e) => setName(e.target.value)}
                                     placeholder="Your Name"
                                     className="w-full pl-10 pr-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-white placeholder-slate-500"
-                                    disabled={loading}
                                 />
                             </div>
                         </div>
 
                         <button
                             type="submit"
-                            disabled={loading}
                             className="w-full px-4 py-2.5 bg-linear-to-r from-blue-500 to-purple-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-6"
                         >
-                            {loading ? "Creating account..." : "Create Account"}
+                            Next
                         </button>
                     </form>
 
