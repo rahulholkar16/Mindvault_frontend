@@ -10,17 +10,22 @@ export const useAuth = create<AuthState>()(
             status: "idle",
             error: null,
             isRefreshing: false,
+            signupData: {
+                name: "",
+                email: "",
+                password: "",
+                avatar: "",
+            },
 
             // ================= INIT =================
             initAuth: async () => {
-                if (get().status !== "idle") return;
+                if (get().status !== "idle") return false;
 
                 set({ status: "loading" });
                 try {
                     const res = await api.get("/auth/me");
                     set({ user: res.data.user, status: "authenticated" });
                     return true;
-
                 } catch {
                     set({ user: null, status: "unauthenticated" });
                     return false;
@@ -34,7 +39,6 @@ export const useAuth = create<AuthState>()(
                 try {
                     const res = await api.post("/auth/login", { email, password });
                     set({ user: res.data.user, status: "authenticated" });
-
                     // prefetch dashboard
                     import("../../pages/Dashboard");
                     return true;
@@ -87,6 +91,24 @@ export const useAuth = create<AuthState>()(
                     return false;
                 }
             },
+
+            setData: (data) =>
+                set({
+                    signupData: {
+                        ...get().signupData,
+                        ...data,
+                    },
+                }),
+
+            resetData: () =>
+                set({
+                    signupData: {
+                        name: "",
+                        email: "",
+                        password: "",
+                        avatar: "",
+                    },
+                }),
         }),
         {
             name: "auth-storage",
