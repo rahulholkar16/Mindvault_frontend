@@ -10,14 +10,7 @@ export const useAuth = create<AuthState>()(
             status: "idle",
             error: null,
             isRefreshing: false,
-            signupData: {
-                name: "",
-                email: "",
-                password: "",
-                avatar: "",
-            },
 
-            // ================= INIT =================
             initAuth: async () => {
                 if (get().status !== "idle") return false;
 
@@ -32,7 +25,6 @@ export const useAuth = create<AuthState>()(
                 }
             },
 
-            // ================= LOGIN =================
             login: async (email, password) => {
                 set({ status: "loading", error: null });
 
@@ -51,17 +43,24 @@ export const useAuth = create<AuthState>()(
                 }
             },
 
-            // ================= LOGOUT =================
             logout: async () => {
                 await api.delete("/auth/logout");
                 set({ user: null, status: "unauthenticated" });
             },
 
-            // ================= REGISTER =================
-            register: async (email, password, name) => {
+            register: async ({email, password, name, avatar}) => {
                 set({ status: "loading", error: null });
                 try {
-                    await api.post("/auth/register", { name, email, password });
+                    const formData = new FormData();
+                    formData.append("avatar", avatar!);
+                    formData.append("name", name);
+                    formData.append("email", email);
+                    formData.append("password", password);
+                    await api.post("/auth/register", formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data"
+                        }
+                    });
                     set({ status: "idle" });
                     return true;
                 } catch (err: any) {
@@ -73,7 +72,6 @@ export const useAuth = create<AuthState>()(
                 }
             },
 
-            // ================= REFRESH =================
             refresh: async () => {
                 if (get().isRefreshing) return false;
 
@@ -91,24 +89,6 @@ export const useAuth = create<AuthState>()(
                     return false;
                 }
             },
-
-            setData: (data) =>
-                set({
-                    signupData: {
-                        ...get().signupData,
-                        ...data,
-                    },
-                }),
-
-            resetData: () =>
-                set({
-                    signupData: {
-                        name: "",
-                        email: "",
-                        password: "",
-                        avatar: "",
-                    },
-                }),
         }),
         {
             name: "auth-storage",
