@@ -32,14 +32,14 @@ interface AuthState {
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => Promise<void>;
     refresh: () => Promise<boolean>;
-    register: (email: string, password: string, name: string) => Promise<boolean>;
+    register: (data: SignupData) => Promise<boolean>;
 }
 
 interface SignupData {
     name: string;
     email: string;
     password: string;
-    avatar: string;
+    avatar: File | string;
 }
 
 interface SignupDataStore extends SignupData {
