@@ -1,25 +1,74 @@
 import { useRef, useState } from "react";
 import { profilePicture } from "../../data";
 import NoProfile from "../../images/noProfile.png";
-import { ArrowLeft, Plus } from "lucide-react";
+import { AlertCircle, ArrowLeft, CheckCircle, Plus } from "lucide-react";
 import Button from "../Button";
 import { useNavigate } from "react-router";
+import { useAuth } from "../../store/auth/useAuth";
+import { useSingupStore } from "../../store/singupData/useSingupData";
 
 const ProfileSelector = () => {
-    const [image, setImage] = useState(NoProfile);
+    const [image, setImage] = useState<File | string>("");
+    const [imageUrl, setImageUrl] = useState<string>(NoProfile);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const nevigate = useNavigate();
-
+    const { setData, resetData } = useSingupStore();
+    const { name, email, password } = useSingupStore();
+    const { register, status, error } = useAuth();
+    
     const handleButtonClick = () => {
         fileInputRef?.current?.click();
-    }
+    };
 
-    const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImageChange = async (
+        event: React.ChangeEvent<HTMLInputElement>,
+    ) => {
         const file = event.target.files?.[0];
         if (!file) return;
         const url = URL.createObjectURL(file);
-        setImage(url);
+        setImageUrl(url);
     };
+
+    const submitData = async () => {
+        setData({ avatar: image });
+        const success = await register({
+            name,
+            email,
+            password,
+            avatar: image,
+        });
+        if (success) {
+            resetData();
+            setImage("");
+            nevigate("/login");
+        }
+    };
+
+    if (error) {
+        return (
+            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6 flex gap-3">
+                <AlertCircle
+                    size={20}
+                    className="text-red-400 shrink-0 mt-0.5"
+                />
+                <p className="text-red-300 text-sm">{error}</p>
+            </div>
+        );
+    }
+
+    if (status === "idle") {
+        return (
+            <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 mb-6 flex gap-3">
+                <CheckCircle
+                    size={20}
+                    className="text-green-400 shrink-0 mt-0.5"
+                />
+                <p className="text-green-300 text-sm">
+                    Account created! Redirecting to sign in...
+                </p>
+            </div>
+        );
+    }
 
     return (
         <>
@@ -38,7 +87,7 @@ const ProfileSelector = () => {
                         </h1>
                         <div className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1">
                             <img
-                                src={image}
+                                src={imageUrl}
                                 className="rounded-full h-full w-full"
                                 loading="lazy"
                                 decoding="async"
@@ -61,6 +110,7 @@ const ProfileSelector = () => {
                             </button>
                         </div>
                         <Button
+                            onClick={submitData}
                             text="Done"
                             size="small"
                             color="success"
@@ -71,12 +121,12 @@ const ProfileSelector = () => {
                     <div className="h-full border-r border-gray-400 w-0"></div>
 
                     <div className="flex flex-col p-4">
-                        <h1 className="text-2xl font-bold">Defult Profile</h1>
+                        <h1 className="text-2xl font-bold">Defult Avatar</h1>
                         <div className="flex flex-wrap gap-8 mt-6 overflow-auto no-scrollbar items-center justify-center">
                             {profilePicture.map((pic) => (
                                 <div
                                     key={pic.id}
-                                    onClick={() => setImage(pic.dp)}
+                                    onClick={() => setImageUrl(pic.dp)}
                                     className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1 active:scale-90 transition-transform duration-300"
                                 >
                                     <img
