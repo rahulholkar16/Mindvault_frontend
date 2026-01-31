@@ -1,4 +1,12 @@
 import {Zap, Shield, Share2, Bird, Youtube, BookText, Link, Hash, GalleryHorizontalEnd, User2 } from 'lucide-react'
+import DP1 from "../images/dp1.png";
+import DP2 from "../images/dp2.png";
+import DP3 from "../images/dp3.png";
+import DP4 from "../images/dp4.png";
+import DP5 from "../images/dp5.png";
+import DP6 from "../images/dp6.png";
+import DP7 from "../images/dp7.png";
+import DP8 from "../images/dp8.png";
 
 export const features = [
     {
@@ -73,4 +81,15 @@ export const profileBar = [
         type: "document",
         icon: <BookText />
     }
+];
+
+export const profilePicture = [
+    { dp: DP1, id: "3y8g6i0" },
+    { dp: DP2, id: "3y8fj86" },
+    { dp: DP3, id: "3y8f86" },
+    { dp: DP4, id: "4y8fj86" },
+    { dp: DP5, id: "3y9fj86" },
+    { dp: DP6, id: "6y8fj86" },
+    { dp: DP7, id: "8y7fj86" },
+    { dp: DP8, id: "8y3fj96" },
 ];
