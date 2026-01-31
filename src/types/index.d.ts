@@ -21,23 +21,12 @@ interface User {
     email: string;
 }
 
-interface SignupData {
-    name: string;
-    email: string;
-    password: string;
-    avatar: string;
-}
 
 interface AuthState {
     user: User | null;
     status: "idle" | "loading" | "authenticated" | "unauthenticated";
     isRefreshing: boolean;
     error: string | null;
-
-    signupData: SignupData;
-
-    setData: (data: Partial<SignupData>) => void;
-    resetData: () => void;
 
     initAuth: () => Promise<boolean>;
     login: (email: string, password: string) => Promise<boolean>;
@@ -46,6 +35,17 @@ interface AuthState {
     register: (email: string, password: string, name: string) => Promise<boolean>;
 }
 
+interface SignupData {
+    name: string;
+    email: string;
+    password: string;
+    avatar: string;
+}
+
+interface SignupDataStore extends SignupData {
+    setData: (data: Partial<SignupData>) => void;
+    resetData: () => void;
+}
 
 interface SidebarProp {
     isOpen: boolean;
