@@ -24,7 +24,7 @@ interface User {
 
 interface AuthState {
     user: User | null;
-    status: "idle" | "loading" | "authenticated" | "unauthenticated";
+    status: "idle" | "loading" | "authenticated" | "unauthenticated" | "success" | "unsuccess";
     isRefreshing: boolean;
     error: string | null;
 
@@ -32,14 +32,14 @@ interface AuthState {
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => Promise<void>;
     refresh: () => Promise<boolean>;
-    register: (data: SignupData) => Promise<boolean>;
+    register: (data: FormData) => Promise<boolean>;
 }
 
 interface SignupData {
     name: string;
     email: string;
     password: string;
-    avatar: File | string;
+    avatar: File | null;
 }
 
 interface SignupDataStore extends SignupData {
