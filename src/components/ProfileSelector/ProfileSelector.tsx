@@ -27,7 +27,6 @@ const ProfileSelector = () => {
         if (!file) return;
         const url = URL.createObjectURL(file);
         setImageUrl(url);
-        console.log("Profile FILE: ", file);
         setImage(file);
     };
 
@@ -40,7 +39,6 @@ const ProfileSelector = () => {
         formData.append("name", name);
         formData.append("email", email);
         formData.append("password", password);
-        console.log(formData.get("avatar"));
         const success = await register(formData);
         if (success) {
             resetData();
@@ -52,9 +50,7 @@ const ProfileSelector = () => {
     const urlToFile = async (url: string) => {
         const response = await fetch(url);
         const blob = await response.blob();
-
         const fileName = url.split("/").pop() || "avatar.png";
-
         return new File([blob], fileName, { type: blob.type });
     };
 
