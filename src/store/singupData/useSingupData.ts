@@ -5,13 +5,13 @@ export const useSingupStore = create<SignupDataStore>((set) => ({
     name: "",
     password: "",
     email: "",
-    avatar: "",
+    avatar: null,
 
     setData: (data) => set(data),
     resetData: () => set({
         name: "",
         email: "",
         password: "",
-        avatar: ""
+        avatar: null
     })
 }));
