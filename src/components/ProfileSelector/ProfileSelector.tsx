@@ -8,14 +8,14 @@ import { useAuth } from "../../store/auth/useAuth";
 import { useSingupStore } from "../../store/singupData/useSingupData";
 
 const ProfileSelector = () => {
-    const [image, setImage] = useState<File | string>("");
+    const [image, setImage] = useState<File | null>(null);
     const [imageUrl, setImageUrl] = useState<string>(NoProfile);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const nevigate = useNavigate();
     const { setData, resetData } = useSingupStore();
     const { name, email, password } = useSingupStore();
     const { register, status, error } = useAuth();
-    
+
     const handleButtonClick = () => {
         fileInputRef?.current?.click();
     };
@@ -27,21 +27,35 @@ const ProfileSelector = () => {
         if (!file) return;
         const url = URL.createObjectURL(file);
         setImageUrl(url);
+        console.log("Profile FILE: ", file);
+        setImage(file);
     };
 
     const submitData = async () => {
         setData({ avatar: image });
-        const success = await register({
-            name,
-            email,
-            password,
-            avatar: image,
-        });
+        const formData = new FormData();
+        if (image) {
+            formData.append("avatar", image);
+        }
+        formData.append("name", name);
+        formData.append("email", email);
+        formData.append("password", password);
+        console.log(formData.get("avatar"));
+        const success = await register(formData);
         if (success) {
             resetData();
-            setImage("");
+            setImage(null);
             nevigate("/login");
         }
+    };
+
+    const urlToFile = async (url: string) => {
+        const response = await fetch(url);
+        const blob = await response.blob();
+
+        const fileName = url.split("/").pop() || "avatar.png";
+
+        return new File([blob], fileName, { type: blob.type });
     };
 
     if (error) {
@@ -126,7 +140,11 @@ const ProfileSelector = () => {
                             {profilePicture.map((pic) => (
                                 <div
                                     key={pic.id}
-                                    onClick={() => setImageUrl(pic.dp)}
+                                    onClick={async () => {
+                                        const file = await urlToFile(pic.dp);
+                                        setImage(file);
+                                        setImageUrl(pic.dp);
+                                    }}
                                     className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1 active:scale-90 transition-transform duration-300"
                                 >
                                     <img
