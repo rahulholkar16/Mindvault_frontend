@@ -48,25 +48,21 @@ export const useAuth = create<AuthState>()(
                 set({ user: null, status: "unauthenticated" });
             },
 
-            register: async ({email, password, name, avatar}) => {
+            register: async (data) => {
                 set({ status: "loading", error: null });
                 try {
-                    const formData = new FormData();
-                    formData.append("avatar", avatar!);
-                    formData.append("name", name);
-                    formData.append("email", email);
-                    formData.append("password", password);
-                    await api.post("/auth/register", formData, {
+        
+                    await api.post("/auth/register", data, {
                         headers: {
                             "Content-Type": "multipart/form-data"
                         }
                     });
-                    set({ status: "idle" });
+                    set({ status: "success" });
                     return true;
                 } catch (err: any) {
                     set({
                         error: err.response?.data?.message || "Register failed",
-                        status: "idle",
+                        status: "unsuccess",
                     });
                     return false;
                 }
