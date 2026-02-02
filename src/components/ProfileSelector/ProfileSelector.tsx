@@ -1,12 +1,12 @@
-import { useRef, useState } from "react";
+import { memo, useRef, useState } from "react";
 import { profilePicture } from "../../data";
 import NoProfile from "../../images/noProfile.png";
-import { AlertCircle, ArrowLeft, CheckCircle, Plus } from "lucide-react";
+import { ArrowLeft, CheckCircle, Plus } from "lucide-react";
 import Button from "../Button";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../store/auth/useAuth";
 import { useSingupStore } from "../../store/singupData/useSingupData";
-import ErrorCard from "../ErrorCard/ErrorCard";
+import ErrorOverlay from "../ErrorOverlay/ErrorOverlay";
 
 const ProfileSelector = () => {
     const [image, setImage] = useState<File | null>(null);
@@ -15,7 +15,8 @@ const ProfileSelector = () => {
     const nevigate = useNavigate();
     const { setData, resetData } = useSingupStore();
     const { name, email, password } = useSingupStore();
-    const { register, status, error } = useAuth();
+    const register = useAuth((s) => s.register);
+    const status = useAuth((s) => s.status);
 
     const handleButtonClick = () => {
         fileInputRef?.current?.click();
@@ -32,6 +33,9 @@ const ProfileSelector = () => {
     };
 
     const submitData = async () => {
+        useAuth.setState({
+            error: null,
+        });
         setData({ avatar: image });
         const formData = new FormData();
         if (image) {
@@ -55,18 +59,6 @@ const ProfileSelector = () => {
         return new File([blob], fileName, { type: blob.type });
     };
 
-    const renderError = () => {
-        if (typeof error === "object" && error?.errors?.fieldErrors) {
-            return Object.values(error.errors.fieldErrors).map((errArr) =>
-                errArr.map((value, index) => <ErrorCard key={index} error={value}/>)
-            );
-        }
-
-        if(typeof error === 'string') {
-            return <ErrorCard error={error} />;
-        }
-    }
-
 
     if (status === "idle") {
         return (
@@ -83,100 +75,89 @@ const ProfileSelector = () => {
     }
 
     return (
-        <>
-            <div className="relative w-full min-h-screen">
-                {/* Error */}
-                <div className="absolute right-0 top-0 p-2 z-10">
-                    {error && (
-                        <div className="flex flex-col gap-2 items-center justify-center">
-                            {renderError()}
-                        </div>
-                    )}
-                </div>
-                <div className="min-h-screen mx-auto flex flex-col items-center justify-center w-fit">
-                    {/* Back button */}
-                    <div className="flex w-full">
-                        <button
-                            onClick={() => nevigate(-1)}
-                            className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8"
-                        >
-                            <ArrowLeft size={20} />
-                            Back
-                        </button>
-                    </div>
+        <div className="relative w-full min-h-screen max-w-screen overflow-hidden">
+            {/* Error */}
+            <ErrorOverlay />
 
-                    <div className="w-160 h-100 shadow-lg flex bg-slate-600/50 rounded-xl backdrop-blur">
-                        <div className="flex flex-col gap-6 p-4 min-w-90 justify-center items-center">
-                            <h1 className="text-2xl font-bold">
-                                Set Profile Pictue
-                            </h1>
-                            <div className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1">
-                                <img
-                                    src={imageUrl}
-                                    className="rounded-full h-full w-full"
-                                    loading="lazy"
-                                    decoding="async"
-                                />
-                            </div>
-                            <div className="px-4 py-3 rounded-lg shadow-lg overflow-hidden bg-gray-600 active:bg-gray-500 active:scale-80 transition-all duration-300">
-                                <input
-                                    className="outline-none hidden"
-                                    type="file"
-                                    ref={fileInputRef}
-                                    accept="image/*"
-                                    title="Choose file"
-                                    onChange={handleImageChange}
-                                />
-                                <button onClick={handleButtonClick}>
-                                    <div className="flex items-center gap-2 justify-center">
-                                        <Plus />
-                                        Upload Image
-                                    </div>
-                                </button>
-                            </div>
-                            <Button
-                                onClick={submitData}
-                                text="Done"
-                                size="small"
-                                color="success"
-                                disabled={false}
+            <div className="min-h-screen mx-auto flex flex-col items-center justify-center w-fit">
+                {/* Back button */}
+                <div className="flex w-full">
+                    <button
+                        onClick={() => nevigate(-1)}
+                        className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8"
+                    >
+                        <ArrowLeft size={20} />
+                        Back
+                    </button>
+                </div>
+
+                <div className="w-160 h-100 shadow-lg flex bg-slate-600/50 rounded-xl backdrop-blur">
+                    <div className="flex flex-col gap-6 p-4 min-w-90 justify-center items-center">
+                        <h1 className="text-2xl font-bold">
+                            Set Profile Pictue
+                        </h1>
+                        <div className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1">
+                            <img
+                                src={imageUrl}
+                                className="rounded-full h-full w-full"
+                                loading="lazy"
+                                decoding="async"
                             />
                         </div>
+                        <div className="px-4 py-3 rounded-lg shadow-lg overflow-hidden bg-gray-600 active:bg-gray-500 active:scale-80 transition-all duration-300">
+                            <input
+                                className="outline-none hidden"
+                                type="file"
+                                ref={fileInputRef}
+                                accept="image/*"
+                                title="Choose file"
+                                onChange={handleImageChange}
+                            />
+                            <button onClick={handleButtonClick}>
+                                <div className="flex items-center gap-2 justify-center">
+                                    <Plus />
+                                    Upload Image
+                                </div>
+                            </button>
+                        </div>
+                        <Button
+                            onClick={submitData}
+                            text="Done"
+                            size="small"
+                            color="success"
+                            disabled={false}
+                        />
+                    </div>
 
-                        <div className="h-full border-r border-gray-400 w-0"></div>
+                    <div className="h-full border-r border-gray-400 w-0"></div>
 
-                        <div className="flex flex-col p-4">
-                            <h1 className="text-2xl font-bold">
-                                Defult Avatar
-                            </h1>
-                            <div className="flex flex-wrap gap-8 mt-6 overflow-auto no-scrollbar items-center justify-center">
-                                {profilePicture.map((pic) => (
-                                    <div
-                                        key={pic.id}
-                                        onClick={async () => {
-                                            const file = await urlToFile(
-                                                pic.dp,
-                                            );
-                                            setImage(file);
-                                            setImageUrl(pic.dp);
-                                        }}
-                                        className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1 active:scale-90 transition-transform duration-300"
-                                    >
-                                        <img
-                                            src={pic?.dp}
-                                            className="rounded-full h-full w-full"
-                                            loading="lazy"
-                                            decoding="async"
-                                        />
-                                    </div>
-                                ))}
-                            </div>
+                    <div className="flex flex-col p-4">
+                        <h1 className="text-2xl font-bold">Defult Avatar</h1>
+                        <div className="flex flex-wrap gap-8 mt-6 overflow-auto no-scrollbar items-center justify-center">
+                            {profilePicture.map((pic) => (
+                                <div
+                                    key={pic.id}
+                                    onClick={async () => {
+                                        const file = await urlToFile(pic.dp);
+                                        setImage(file);
+                                        setImageUrl(pic.dp);
+                                    }}
+                                    className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1 active:scale-90 transition-transform duration-300"
+                                >
+                                    <img
+                                        src={pic?.dp}
+                                        className="rounded-full h-full w-full"
+                                        loading="lazy"
+                                        decoding="async"
+                                    />
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 
-export default ProfileSelector;
+export default memo(ProfileSelector);
