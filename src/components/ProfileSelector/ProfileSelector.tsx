@@ -6,6 +6,7 @@ import Button from "../Button";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../store/auth/useAuth";
 import { useSingupStore } from "../../store/singupData/useSingupData";
+import ErrorCard from "../ErrorCard/ErrorCard";
 
 const ProfileSelector = () => {
     const [image, setImage] = useState<File | null>(null);
@@ -54,17 +55,18 @@ const ProfileSelector = () => {
         return new File([blob], fileName, { type: blob.type });
     };
 
-    if (error) {
-        return (
-            <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6 flex gap-3">
-                <AlertCircle
-                    size={20}
-                    className="text-red-400 shrink-0 mt-0.5"
-                />
-                <p className="text-red-300 text-sm">{error}</p>
-            </div>
-        );
+    const renderError = () => {
+        if (typeof error === "object" && error?.errors?.fieldErrors) {
+            return Object.values(error.errors.fieldErrors).map((errArr) =>
+                errArr.map((value, index) => <ErrorCard key={index} error={value}/>)
+            );
+        }
+
+        if(typeof error === 'string') {
+            return <ErrorCard error={error} />;
+        }
     }
+
 
     if (status === "idle") {
         return (
@@ -83,6 +85,10 @@ const ProfileSelector = () => {
     return (
         <>
             <div>
+                {/* Error */}
+                <div className="absolute right-0 top-0 p-2">
+                    {error && renderError()}
+                </div>
                 <button
                     onClick={() => nevigate(-1)}
                     className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8"
