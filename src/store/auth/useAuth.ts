@@ -4,7 +4,7 @@ import { api } from "../../lib/api.js";
 import type { AuthState } from "../../types";
 
 export const useAuth = create<AuthState>()(
-    persist(
+    // persist(
         (set, get) => ({
             user: null,
             status: "idle",
@@ -17,7 +17,7 @@ export const useAuth = create<AuthState>()(
                 set({ status: "loading" });
                 try {
                     const res = await api.get("/auth/me");
-                    set({ user: res.data.user, status: "authenticated" });
+                    set({ user: res.data.data, status: "authenticated" });
                     return true;
                 } catch {
                     set({ user: null, status: "unauthenticated" });
@@ -30,7 +30,7 @@ export const useAuth = create<AuthState>()(
 
                 try {
                     const res = await api.post("/auth/login", { email, password });
-                    set({ user: res.data.user, status: "authenticated" });
+                    set({ user: res.data.data, status: "authenticated" });
                     // prefetch dashboard
                     import("../../pages/Dashboard");
                     return true;
@@ -74,7 +74,7 @@ export const useAuth = create<AuthState>()(
                 set({ isRefreshing: true });
                 try {
                     await api.get("/auth/refresh-token");
-                    set({ isRefreshing: false });
+                    set({ isRefreshing: false, status: "idle" });
                     return true;
                 } catch {
                     set({
@@ -86,9 +86,8 @@ export const useAuth = create<AuthState>()(
                 }
             },
         }),
-        {
-            name: "auth-storage",
-            partialize: (s) => ({ user: s.user }),
-        }
-    )
+    //     {
+    //         name: "auth-storage",
+    //     }
+    // )
 );
