@@ -1,6 +1,6 @@
 import { useEffect } from "react";
-import { useAuth } from "../../store/auth/useAuth";
-import ErrorCard from "../ErrorCard/ErrorCard";
+import { useAuth } from "../../../store/auth/useAuth";
+import ErrorCard from "../ErrorCard";
 
 const ErrorOverlay = () => {
     const error = useAuth((s) => s.error);
@@ -34,7 +34,7 @@ const ErrorOverlay = () => {
             </div>
         );
     }
-    
+
     if (typeof error === "string")
         return (
             <div className={containerClass}>

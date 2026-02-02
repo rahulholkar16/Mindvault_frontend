@@ -1,9 +1,9 @@
 const ErrorCard = ({ error }: { error: string }) => {
     return (
-        <div className="flex flex-col gap-2 w-60 sm:w-72 text-[10px] sm:text-xs z-50">
-            <div className="error-alert cursor-default flex items-center justify-between w-full h-12 sm:h-14 rounded-lg bg-[#232531] px-[10px]">
-                <div className="flex gap-2">
-                    <div className="text-[#d65563] bg-white/5 backdrop-blur-xl p-1 rounded-lg">
+        <div className="flex flex-col gap-2 w-60 sm:w-72 text-[10px] sm:text-xs z-50 transition-all duration-500">
+            <div className="error-alert cursor-default flex items-center justify-between w-full h-fit rounded-lg bg-[#232531] px-[10px] py-2">
+                <div className="flex gap-2 items-center">
+                    <div className="text-[#d65563] bg-white/5 backdrop-blur-xl p-1 rounded-lg h-8">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"

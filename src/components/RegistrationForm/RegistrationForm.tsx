@@ -35,11 +35,7 @@ const RegistrationForm = () => {
 
     return (
         <>
-            <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute top-0 right-1/4 w-96 h-96 bg-purple-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20" />
-            </div>
-
-            <div className="relative z-10 w-full max-w-md">
+            <div className="min-w-md p-4">
                 <button
                     onClick={() => nevigate(-1)}
                     className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8"

@@ -6,7 +6,7 @@ import Button from "../Button";
 import { useNavigate } from "react-router";
 import { useAuth } from "../../store/auth/useAuth";
 import { useSingupStore } from "../../store/singupData/useSingupData";
-import ErrorOverlay from "../ErrorOverlay/ErrorOverlay";
+import ErrorOverlay from "../ErrorCard/ErrorOverlay/ErrorOverlay";
 
 const ProfileSelector = () => {
     const [image, setImage] = useState<File | null>(null);
@@ -59,7 +59,6 @@ const ProfileSelector = () => {
         return new File([blob], fileName, { type: blob.type });
     };
 
-
     if (status === "idle") {
         return (
             <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 mb-6 flex gap-3">
@@ -75,7 +74,7 @@ const ProfileSelector = () => {
     }
 
     return (
-        <div className="relative w-full min-h-screen max-w-screen overflow-hidden">
+        <div className="relative min-h-screen">
             {/* Error */}
             <ErrorOverlay />
 
