@@ -59,7 +59,7 @@ const ProfileSelector = () => {
         return new File([blob], fileName, { type: blob.type });
     };
 
-    if (status === "idle") {
+    if (status === "success") {
         return (
             <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 mb-6 flex gap-3">
                 <CheckCircle
