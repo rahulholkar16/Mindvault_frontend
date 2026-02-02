@@ -1,7 +1,8 @@
-import { Brain, ArrowLeft, Mail, Lock, AlertCircle } from "lucide-react";
+import { Brain, ArrowLeft, Mail, Lock } from "lucide-react";
 import { useState } from "react";
 import { useAuth } from "../store/auth/useAuth";
 import { useNavigate } from "react-router";
+import ErrorOverlay from "../components/ErrorCard/ErrorOverlay/ErrorOverlay";
 
 const Login = () => {
     const login = useAuth((s) => s.login);
@@ -25,12 +26,13 @@ const Login = () => {
     }
 
     return (
-        <div className="min-h-screen bg-gray-900 text-white flex items-center justify-center p-4">
+        <div className="relative min-h-screen bg-gray-900 text-white flex items-center justify-center p-4">
+            {(error || localError) && <ErrorOverlay />}
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20" />
             </div>
 
-            <div className="relative z-10 w-full max-w-md">
+            <div className="z-10 w-full max-w-md">
                 <button
                     onClick={() => nevigate(-1)}
                     className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8"
@@ -53,18 +55,6 @@ const Login = () => {
                     <p className="text-slate-400 text-center mb-8">
                         Sign in to your account to continue
                     </p>
-
-                    {(error || localError) && (
-                        <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6 flex gap-3">
-                            <AlertCircle
-                                size={20}
-                                className="text-red-400 shrink-0 mt-0.5"
-                            />
-                            <p className="text-red-300 text-sm">
-                                {error || localError}
-                            </p>
-                        </div>
-                    )}
 
                     <form onSubmit={handelSubmit} className="space-y-4">
                         <div>
@@ -114,9 +104,7 @@ const Login = () => {
                             disabled={loading}
                             className="w-full px-4 py-2.5 bg-linear-to-r from-blue-500 to-purple-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
                         >
-                            {loading
-                                ? "Signing in..."
-                                : "Sign In"}
+                            {loading ? "Signing in..." : "Sign In"}
                         </button>
                     </form>
 
