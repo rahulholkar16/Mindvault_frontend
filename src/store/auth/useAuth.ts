@@ -49,7 +49,7 @@ export const useAuth = create<AuthState>()(
             },
 
             register: async (data) => {
-                set({ status: "loading", error: null });
+                set({ error: null });
                 try {
         
                     await api.post("/auth/register", data, {
@@ -57,7 +57,7 @@ export const useAuth = create<AuthState>()(
                             "Content-Type": "multipart/form-data"
                         }
                     });
-                    set({ status: "success" });
+                    set({ status: "success", error: null });
                     return true;
                 } catch (err: any) {
                     set({
