@@ -61,7 +61,7 @@ export const useAuth = create<AuthState>()(
                     return true;
                 } catch (err: any) {
                     set({
-                        error: err.response?.data?.message || "Register failed",
+                        error: err.response?.data?.message || err.response?.data || "Register failed",
                         status: "unsuccess",
                     });
                     return false;
