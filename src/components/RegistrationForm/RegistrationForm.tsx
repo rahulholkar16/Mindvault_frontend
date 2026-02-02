@@ -8,6 +8,7 @@ import {
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import { useSingupStore } from "../../store/singupData/useSingupData.js";
+import { useAuth } from "../../store/auth/useAuth.js";
 
 const RegistrationForm = () => {
     const setData = useSingupStore(s => s.setData);
@@ -19,6 +20,7 @@ const RegistrationForm = () => {
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        useAuth.setState({ error: null });
         if (!email || !password || !name) {
             setLocalError("Please fill in all fields");
             return;
