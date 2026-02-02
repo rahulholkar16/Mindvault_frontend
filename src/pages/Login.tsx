@@ -7,16 +7,19 @@ import ErrorOverlay from "../components/ErrorCard/ErrorOverlay/ErrorOverlay";
 const Login = () => {
     const login = useAuth((s) => s.login);
     const status = useAuth((s) => s.status);
-    const error = useAuth((s) => s.error);
     const loading = status === "loading";
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [localError, setLocalError] = useState<string | null>(null);
     const nevigate = useNavigate();
     async function handelSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        useAuth.setState({
+            error: null
+        });
         if (!email || !password) {
-            setLocalError("Please fill in all fields");
+            useAuth.setState({
+                error: "All fields are reqired!"
+            })
             return;
         }
         const success = await login(email, password);
@@ -27,7 +30,7 @@ const Login = () => {
 
     return (
         <div className="relative min-h-screen bg-gray-900 text-white flex items-center justify-center p-4">
-            {(error || localError) && <ErrorOverlay />}
+            <ErrorOverlay />
             <div className="absolute inset-0 overflow-hidden">
                 <div className="absolute top-0 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20" />
             </div>
