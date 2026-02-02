@@ -26,7 +26,15 @@ interface AuthState {
     user: User | null;
     status: "idle" | "loading" | "authenticated" | "unauthenticated" | "success" | "unsuccess";
     isRefreshing: boolean;
-    error: string | null;
+    error: string | null | {
+        errors: {
+            fieldErrors: {
+                name?: Array<string>;
+                password?: Array<string>;
+                email?: Array<string>;
+            }
+        }
+    };
 
     initAuth: () => Promise<boolean>;
     login: (email: string, password: string) => Promise<boolean>;
