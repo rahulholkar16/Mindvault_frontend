@@ -30,7 +30,8 @@ export const useAuth = create<AuthState>()(
 
                 try {
                     const res = await api.post("/auth/login", { email, password });
-                    set({ user: res.data.data, status: "authenticated" });
+                    set({ user: res.data.data.user, status: "authenticated" });
+                    
                     // prefetch dashboard
                     import("../../pages/Dashboard");
                     return true;
