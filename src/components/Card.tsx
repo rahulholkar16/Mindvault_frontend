@@ -8,9 +8,10 @@ const Card: React.FC<CardProp> = ({
     title,
     url,
     date,
-    onDel
+    onDel,
+    isOpen
 }) => {
-     function formatDate(){
+    function formatDate(){
         const newDate = new Date(date);
         const formatted = newDate.toLocaleDateString("en-GB").replaceAll("/", "-");
         console.log(formatted);
@@ -32,9 +33,14 @@ const Card: React.FC<CardProp> = ({
                         <button className="cursor-pointer hover:text-blue-600 active:scale-110">
                             <Share />
                         </button>
-                        <button onClick={onDel} className="cursor-pointer hover:text-red-400 active:scale-110">
-                            <Trash />
-                        </button>
+                        {isOpen && (
+                            <button
+                                onClick={onDel}
+                                className="cursor-pointer hover:text-red-400 active:scale-110"
+                            >
+                                <Trash />
+                            </button>
+                        )}
                     </div>
                 </div>
                 {/* For Document */}
