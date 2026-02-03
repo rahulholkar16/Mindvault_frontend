@@ -5,11 +5,17 @@ import { useContent } from "../../store/content/useContent";
 
 const ContentOverlay = () => {
     const myContent = useContent((s) => s.myContent);
-    // const fetchMyContent = useContent((s) => s.fetchMyContent);
+    const deleteCon = useContent((s) => s.delete);
+    const fetchMyContent = useContent((s) => s.fetchMyContent);
 
     // useEffect(() => {
     //     fetchMyContent();
     // }, []);
+
+    async function deleteContent (_id: string) {
+        await deleteCon(_id);
+        await fetchMyContent();
+    }
 
     if (myContent?.length == 0) {
         return (
@@ -27,6 +33,7 @@ const ContentOverlay = () => {
                         description={item.description}
                         url={item.url}
                         date={item.createdAt}
+                        onDel={() => deleteContent(item._id)}
                     />
                 </Suspense>
             ))}
