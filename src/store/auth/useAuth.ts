@@ -4,7 +4,7 @@ import { api } from "../../lib/api.js";
 import type { AuthState } from "../../types";
 
 export const useAuth = create<AuthState>()(
-    // persist(
+    persist(
         (set, get) => ({
             user: null,
             status: "idle",
@@ -12,8 +12,6 @@ export const useAuth = create<AuthState>()(
             isRefreshing: false,
 
             initAuth: async () => {
-                if (get().status !== "idle") return false;
-
                 set({ status: "loading" });
                 try {
                     const res = await api.get("/auth/me");
@@ -87,8 +85,8 @@ export const useAuth = create<AuthState>()(
                 }
             },
         }),
-    //     {
-    //         name: "auth-storage",
-    //     }
-    // )
+        {
+            name: "auth-storage",
+        }
+    )
 );
