@@ -8,15 +8,15 @@ const AuthGate = ({ children }: { children: ReactNode }) => {
     const refresh = useAuth(s => s.refresh);
 
     useEffect(() => {
-    const boot = async () => {
-      const ok = await initAuth();
-      if (!ok) {
-        await refresh();
-        await initAuth();
-      }
-    };
-    boot();
-  }, []);
+      const boot = async () => {
+        const ok = await initAuth();
+        if (!ok) {
+          await refresh();
+          await initAuth();
+        }
+      };
+      boot();
+    }, []);
 
     if (status === "idle" || status === "loading") {
         return <FullScreenLoader/>;
