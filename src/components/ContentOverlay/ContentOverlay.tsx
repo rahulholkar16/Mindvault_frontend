@@ -3,7 +3,7 @@ import Card from "../Card";
 import CardSkeleton from "../skeleton/CardSkeleton";
 import { useContent } from "../../store/content/useContent";
 
-const ContentOverlay = () => {
+const ContentOverlay = ({ profileOpen }: { profileOpen: boolean }) => {
     const myContent = useContent((s) => s.myContent);
     const deleteCon = useContent((s) => s.delete);
     const fetchMyContent = useContent((s) => s.fetchMyContent);
@@ -12,17 +12,19 @@ const ContentOverlay = () => {
     //     fetchMyContent();
     // }, []);
 
-    async function deleteContent (_id: string) {
+    async function deleteContent(_id: string) {
         await deleteCon(_id);
         await fetchMyContent();
     }
 
     if (myContent?.length == 0) {
         return (
-            <div className="flex w-full items-center justify-center text-gray-700">No Content</div>
+            <div className="flex w-full items-center justify-center text-gray-700">
+                No Content
+            </div>
         );
     }
-    
+
     return (
         <div className="flex gap-8 flex-col items-center">
             {myContent?.map((item) => (
@@ -34,6 +36,7 @@ const ContentOverlay = () => {
                         url={item.url}
                         date={item.createdAt}
                         onDel={() => deleteContent(item._id)}
+                        isOpen={profileOpen}
                     />
                 </Suspense>
             ))}
