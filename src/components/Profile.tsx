@@ -1,37 +1,40 @@
-import { Suspense } from "react";
-import CardSkeleton from "./skeleton/CardSkeleton";
-import Card from "./Card";
 import { profileBar } from "../data";
-import profileImg from "../images/profile.png";
 import Button from "./Button";
 import { useContent } from "../store/content/useContent";
+import { useAuth } from "../store/auth/useAuth";
+import NoProfile from "../images/noProfile.png";
+import ContentOverlay from "./ContentOverlay/ContentOverlay";
 
 const Profile = () => {
     const active = useContent((s) => s.activeProfileTab);
     const setActive = useContent((s) => s.setActiveProfileTab);
     const fetchAll = useContent(s => s.fetchMyContent);
     const fetchByType = useContent(s => s.fetchMySpecificContent);
-    const content = useContent(s => s.myContent);
-
-    
 
     async function onHandel(type: string) {
         setActive(type);
         if (type === "All") fetchAll();
         else fetchByType(type);
     }
-
+    
     return (
         <div className="mt-6 flex flex-col items-center">
             <div className="flex flex-col gap-5">
                 <div className="flex items-center gap-20 h-full mb-15">
-                    <div className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300">
-                        <img src={profileImg} />
+                    <div className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1">
+                        <img
+                            src={useAuth.getState().user?.avatar || NoProfile}
+                            className="rounded-full h-full w-full"
+                            loading="lazy"
+                            decoding="async"
+                        />
                     </div>
 
                     <div className="flex flex-col items-start gap-5">
                         <div className="flex gap-5">
-                            <p className="text-2xl">Rahul Pal</p>
+                            <p className="text-2xl">
+                                {useAuth.getState().user?.name}
+                            </p>
                             <div className="flex gap-2">
                                 <Button
                                     text="Edit Profile"
@@ -94,19 +97,7 @@ const Profile = () => {
                     ))}
                 </div>
 
-                <div className="flex gap-8 flex-col items-center">
-                    {content?.map((item) => (
-                        <Suspense key={item._id} fallback={<CardSkeleton />}>
-                            <Card
-                                title={item.title}
-                                type={item.type}
-                                description={item.description}
-                                url={item.url}
-                                date={item.createdAt}
-                            />
-                        </Suspense>
-                    ))}
-                </div>
+                <ContentOverlay />
             </div>
         </div>
     );
