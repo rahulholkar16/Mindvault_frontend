@@ -7,7 +7,8 @@ const Card: React.FC<CardProp> = ({
     description,
     title,
     url,
-    date
+    date,
+    onDel
 }) => {
      function formatDate(){
         const newDate = new Date(date);
@@ -31,7 +32,7 @@ const Card: React.FC<CardProp> = ({
                         <button className="cursor-pointer hover:text-blue-600 active:scale-110">
                             <Share />
                         </button>
-                        <button className="cursor-pointer hover:text-red-400 active:scale-110">
+                        <button onClick={onDel} className="cursor-pointer hover:text-red-400 active:scale-110">
                             <Trash />
                         </button>
                     </div>
