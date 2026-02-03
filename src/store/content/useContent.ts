@@ -44,6 +44,8 @@ export const useContent = create<ContentState>((set, get) => ({
         try {
             const res = await api.get("/auth/me/content");
             set({ myContent: res.data.data, status: "success" });
+            console.log(res.data.data);
+            
             return true;
         } catch (err: any) {
             set({
@@ -90,4 +92,16 @@ export const useContent = create<ContentState>((set, get) => ({
             return false;
         }
     },
+
+    delete: async (contentId) => {
+        try {
+            const res = await api.delete(`/auth/content/${contentId}`);
+            set({ status: "success", activeProfileTab: "All" })
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message,
+                status: "error"
+            })
+        }
+    }
 }));
