@@ -52,6 +52,7 @@ interface SignupData {
     email: string;
     password: string;
     avatar: File | null;
+    isPublic: boolean;
 }
 
 interface SignupDataStore extends SignupData {
