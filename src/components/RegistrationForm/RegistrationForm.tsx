@@ -4,6 +4,7 @@ import {
     Mail,
     Lock,
     AlertCircle,
+    UserLock,
 } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -16,6 +17,7 @@ const RegistrationForm = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [name, setName] = useState("");
+    const [accType, setAccType] = useState(false);
     const [localError, setLocalError] = useState<string | null>(null);
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -29,7 +31,7 @@ const RegistrationForm = () => {
             setLocalError("Password must be at least 8 characters");
             return;
         }
-        setData({ name, email, password });
+        setData({ name, email, password, isPublic: accType });
         nevigate("change-pic");
     }
 
@@ -59,27 +61,13 @@ const RegistrationForm = () => {
                         Join us to start building your second brain
                     </p>
 
-                    {/* {status === "idel" && (
-                        <div className="bg-green-500/10 border border-green-500/20 rounded-lg p-4 mb-6 flex gap-3">
-                            <CheckCircle
-                                size={20}
-                                className="text-green-400 shrink-0 mt-0.5"
-                            />
-                            <p className="text-green-300 text-sm">
-                                Account created! Redirecting to sign in...
-                            </p>
-                        </div>
-                    )} */}
-
                     {localError && (
                         <div className="bg-red-500/10 border border-red-500/20 rounded-lg p-4 mb-6 flex gap-3">
                             <AlertCircle
                                 size={20}
                                 className="text-red-400 shrink-0 mt-0.5"
                             />
-                            <p className="text-red-300 text-sm">
-                                {localError}
-                            </p>
+                            <p className="text-red-300 text-sm">{localError}</p>
                         </div>
                     )}
 
@@ -140,6 +128,42 @@ const RegistrationForm = () => {
                                     placeholder="Your Name"
                                     className="w-full pl-10 pr-4 py-2.5 bg-slate-700/50 border border-slate-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-white placeholder-slate-500"
                                 />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label className="block text-sm font-medium text-slate-300 mb-2">
+                                Public Account
+                            </label>
+
+                            <div className="relative">
+                                <UserLock
+                                    size={18}
+                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500"
+                                />
+
+                                <div className="flex gap-6 ml-10">
+                                    {" "}
+                                    {/* little spacing fix */}
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="publicAccount"
+                                            checked={accType === true}
+                                            onChange={() => setAccType(true)}
+                                        />
+                                        Yes
+                                    </label>
+                                    <label className="flex items-center gap-2 cursor-pointer">
+                                        <input
+                                            type="radio"
+                                            name="publicAccount"
+                                            checked={accType === false}
+                                            onChange={() => setAccType(false)}
+                                        />
+                                        No
+                                    </label>
+                                </div>
                             </div>
                         </div>
 
