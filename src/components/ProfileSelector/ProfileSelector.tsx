@@ -14,7 +14,7 @@ const ProfileSelector = () => {
     const fileInputRef = useRef<HTMLInputElement>(null);
     const nevigate = useNavigate();
     const { setData, resetData } = useSingupStore();
-    const { name, email, password } = useSingupStore();
+    const { name, email, password, isPublic } = useSingupStore();
     const register = useAuth((s) => s.register);
     const status = useAuth((s) => s.status);
 
@@ -44,6 +44,7 @@ const ProfileSelector = () => {
         formData.append("name", name);
         formData.append("email", email);
         formData.append("password", password);
+        formData.append("isPublic", String(isPublic));
         const success = await register(formData);
         if (success) {
             resetData();
