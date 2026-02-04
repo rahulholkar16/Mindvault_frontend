@@ -1,8 +1,12 @@
 import { Route, Routes } from "react-router";
 import { lazy } from "react";
 import ProtectedRoute from "./ProtectedRoute";
-const ProfileSelector = lazy(() => import("../components/ProfileSelector/ProfileSelector"));
-const RegistrationForm = lazy(() => import("../components/RegistrationForm/RegistrationForm"));
+const ProfileSelector = lazy(
+    () => import("../components/ProfileSelector/ProfileSelector"),
+);
+const RegistrationForm = lazy(
+    () => import("../components/RegistrationForm/RegistrationForm"),
+);
 
 const Welcome = lazy(() => import("../pages/Welcome"));
 const Login = lazy(() => import("../pages/Login"));
@@ -14,9 +18,9 @@ const AppRoutes = () => {
         <Routes>
             <Route path="/" element={<Welcome />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Signup />} >
+            <Route path="/register" element={<Signup />}>
                 <Route index element={<RegistrationForm />} />
-                <Route path="change-pic" element={<ProfileSelector />}/>
+                <Route path="change-pic" element={<ProfileSelector />} />
             </Route>
 
             <Route element={<ProtectedRoute />}>

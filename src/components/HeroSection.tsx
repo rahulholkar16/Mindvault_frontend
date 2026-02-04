@@ -6,7 +6,7 @@ import { useAuth } from "../store/auth/useAuth";
 
 const HeroSection = () => {
     const nevigate = useNavigate();
-    const isAuthenticated = useAuth((state) => state.status);
+    const isAuthenticated = useAuth((state) => state.isAuthenticated);
     return (
         <div className="text-white w-full mx-auto px-6 py-10">
             <div className="flex w-full items-center justify-between px-4 gap-10">
@@ -28,7 +28,7 @@ const HeroSection = () => {
             <div className="flex gap-5 px-4 items-center">
                 <Button
                     text={
-                        isAuthenticated === "authenticated"
+                        isAuthenticated
                             ? "Get Started Free"
                             : "Sing In"
                     }
@@ -36,7 +36,7 @@ const HeroSection = () => {
                     size="large"
                     disabled={false}
                     onClick={
-                        isAuthenticated === "authenticated"
+                        isAuthenticated
                             ? () => nevigate("/dashboard")
                             : () => nevigate("/register")
                     }
@@ -47,7 +47,7 @@ const HeroSection = () => {
                     />
                 </Button>
 
-                {isAuthenticated === "unauthenticated" && (
+                {!isAuthenticated && (
                     <Button
                         text="Login"
                         color="secondary"

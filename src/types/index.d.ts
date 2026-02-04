@@ -19,12 +19,14 @@ interface User {
     _id: string;
     name: string;
     email: string;
+    avatar: string;
 }
 
 
 interface AuthState {
     user: User | null;
-    status: "idle" | "loading" | "authenticated" | "unauthenticated" | "success" | "unsuccess";
+    status: "idle" | "loading" | "success" | "error";
+    isAuthenticated: boolean;
     isRefreshing: boolean;
     error: string | null | {
         errors: {
@@ -35,12 +37,14 @@ interface AuthState {
             }
         }
     };
+    shareLink: string
 
     initAuth: () => Promise<boolean>;
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => Promise<void>;
     refresh: () => Promise<boolean>;
     register: (data: FormData) => Promise<boolean>;
+    onShare: () => Promise<boolean>;
 }
 
 interface SignupData {
@@ -71,6 +75,8 @@ interface CardProp {
     url?: string;
     description: string;
     date: string;
+    onDel?: () => Promise<void>;
+    isOpen: boolean;
 }
 
 interface Content {
@@ -97,6 +103,7 @@ interface ContentState {
     fetchAll: () => Proise<boolean>;
     fetchByType: (type: string) => Promise<void>;
     create: (title: string, url?: string, description?: string, type: NoteType) => Promise<boolean>;
+    delete: (contentId: string) => Promise<void>;
 }
 
 interface NotesEditorProp {

@@ -14,12 +14,12 @@ const Login = () => {
     async function handelSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
         useAuth.setState({
-            error: null
+            error: null,
         });
         if (!email || !password) {
             useAuth.setState({
-                error: "All fields are reqired!"
-            })
+                error: "All fields are reqired!",
+            });
             return;
         }
         const success = await login(email, password);

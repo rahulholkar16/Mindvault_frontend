@@ -2,9 +2,9 @@ import { Navigate, Outlet } from "react-router";
 import { useAuth } from "../store/auth/useAuth";
 
 const ProtectedRoute = () => {
-    const status = useAuth((s) => s.status);
+    const isAuthenticated = useAuth((s) => s.isAuthenticated);
 
-    if (status !== "authenticated") {
+    if (!isAuthenticated) {
         return <Navigate to="/login" replace />;
     }
 

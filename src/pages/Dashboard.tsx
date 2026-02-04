@@ -1,93 +1,78 @@
-import Sidebar from "../components/Sidebar";
-// import NoteEditor from "../components/NoteEditor";
-import { useEffect, useState } from "react";
-import Button from "../components/Button";
-import { Plus, Share } from "lucide-react";
-import Card from "../components/Card";
+import { useEffect, useState, lazy, Suspense, useCallback } from "react";
 import { useContent } from '../store/content/useContent.ts';
-import NoteEditor from "../components/NoteEditor.tsx";
+import SidebarSkeleton from "../components/skeleton/SidebarSkeleton.tsx";
+import EditorSkeleton from "../components/skeleton/EditorSkeleton.tsx";
+import DashboardSkeleton from "../components/skeleton/DashboardSkeleton.tsx";
+import CardSkeleton from "../components/skeleton/CardSkeleton.tsx";
+import Profile from "../components/Profile.tsx";
+import ErrorOverlay from "../components/ErrorCard/ErrorOverlay/ErrorOverlay.tsx";
+import DashboardNavbar from "../components/DashboardNavbar/DashboardButton.tsx";
+const Sidebar = lazy(() => import("../components/Sidebar"));
+const Card = lazy(() => import("../components/Card"));
+const NoteEditor = lazy(() => import("../components/NoteEditor"));
 
 const Dashboard = () => {
-    const { content, loading } = useContent();
+    const { content, status, fetchAll } = useContent();
     const [addForm, setAddForm] = useState(false);
-    const getContent = useContent(state => state.getContent);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [profileOpen, setProfileOpen] = useState(false);
+
+
     useEffect(() => {
-        getContent();
-        if (!window.twttr) {
-            const script = document.createElement("script");
-            script.src = "https://platform.twitter.com/widgets.js";
-            script.async = true;
-            document.body.appendChild(script);
-        }
+        fetchAll();
+    }, []);
+
+    useEffect(() => {
+        if (window.twttr) return;
+        const s = document.createElement("script");
+        s.src = "https://platform.twitter.com/widgets.js";
+        s.async = true;
+        document.body.appendChild(s);
     }, []);   
 
+    const toggleSidebar = useCallback(() => setIsSidebarOpen((s) => !s), []);
+    
     return (
         <div className="flex h-screen bg-gray-900 w-full overflow-hidden">
-            <Sidebar
-                isOpen={isSidebarOpen}
-                onToggle={() => setIsSidebarOpen(!isSidebarOpen)}
-                // onCreateNote={createNote}
-            />
-
+            <ErrorOverlay />
+            <Suspense fallback={<SidebarSkeleton />}>
+                <Sidebar
+                    isOpen={isSidebarOpen}
+                    onToggle={toggleSidebar}
+                    onProfileOpen={(state) => setProfileOpen(state)}
+                />
+            </Suspense>
             <div className="text-white p-6 py-5 w-full overflow-y-auto">
-                <div className="min-h-10 mb-4 max-h-12 flex justify-between items-center">
-                    <h2 className="text-3xl font-bold">All Notes</h2>
-                    <div className="flex gap-6 items-center">
-                        <Button
-                            text="Share Brain"
-                            color="secondary"
-                            size="large"
-                            disabled={false}
-                        >
-                            <Share size={20} />
-                        </Button>
-                        <Button
-                            text="Add Content"
-                            color="primary"
-                            size="large"
-                            disabled={false}
-                            onClick={() => setAddForm(true)}
-                        >
-                            <Plus size={20} />
-                        </Button>
-                    </div>
-                </div>
+                <DashboardNavbar setAddForm={() => setAddForm(true)} />
 
                 {addForm ? (
-                    <NoteEditor
-                        setAddForm={setAddForm}
-                        isSidebarOpen={isSidebarOpen}
-                    />
-                ) : loading ? (
-                    <div className="flex items-center space-x-2">
-                        <div className="animate-pulse rounded-full bg-gray-500 h-12 w-12" />
-                        <div className="space-y-2">
-                            <div className="animate-pulse rounded-md bg-gray-500 h-4 w-[200px]">
-                                {" "}
-                            </div>
-                            <div className="animate-pulse rounded-md bg-gray-500 h-4 w-[170px]">
-                                {" "}
-                            </div>
-                        </div>
-                    </div>
+                    <Suspense fallback={<EditorSkeleton />}>
+                        <NoteEditor
+                            setAddForm={setAddForm}
+                            isSidebarOpen={isSidebarOpen}
+                        />
+                    </Suspense>
+                ) : status === "loading" ? (
+                    <DashboardSkeleton />
+                ) : profileOpen ? (
+                    <Profile profileOpen={profileOpen} />
                 ) : (
-                    <div
-                        className="grid gap-8 mt-12 
-                grid-cols-[repeat(auto-fill,minmax(280px,1fr))] 
-                justify-start"
-                    >
-                        {content?.length &&
-                            content.map((data, index) => (
+                    <div className="grid gap-8 grid-cols-[repeat(auto-fill,minmax(280px,1fr))]">
+                        {content?.map((item) => (
+                            <Suspense
+                                key={item._id}
+                                fallback={<CardSkeleton />}
+                            >
                                 <Card
-                                    key={index}
-                                    title={data.title}
-                                    type={data?.type}
-                                    description={data.description}
-                                    url={data?.url}
-                                    date={data?.createdAt}
+                                    title={item.title}
+                                    type={item.type}
+                                    description={item.description}
+                                    url={item.url}
+                                    date={item.createdAt}
+                                    isOpen={profileOpen}
                                 />
-                            ))}
+                            </Suspense>
+                        ))}
                     </div>
                 )}
             </div>
