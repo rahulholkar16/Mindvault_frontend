@@ -1,31 +1,36 @@
 import { Share, Plus } from "lucide-react";
-import { useAuth } from "../../store/auth/useAuth";
+import { useCallback } from "react";
 import Button from "../Button";
+import { useFeature } from "../../store/feature/useFeature";
 
-const DashboardNavbar = ({ setAddForm }: { setAddForm: () => void}) => {
-    const ShareBrain = useAuth((s) => s.onShare);
-    const onBrainShare = async () => {
-        await ShareBrain();
-    };
+const DashboardNavbar = ({ setAddForm }: { setAddForm: () => void }) => {
+    const onShare = useFeature((s) => s.onShare);
+    const onBrainShare = useCallback(async () => {
+        const link = await onShare();
+        console.log(link);
+    }, [onShare]);
+
     return (
         <div className="min-h-10 mb-4 max-h-12 flex justify-between items-center">
             <h2 className="text-3xl font-bold">All Notes</h2>
+
             <div className="flex gap-6 items-center">
                 <Button
-                    text={"Share Brain"}
+                    text="Share Brain"
                     color="secondary"
                     size="large"
-                    disabled={false}
                     onClick={onBrainShare}
+                    disabled={false}
                 >
                     <Share size={20} />
                 </Button>
+
                 <Button
                     text="Add Content"
                     color="primary"
                     size="large"
+                    onClick={setAddForm}
                     disabled={false}
-                    onClick={() => setAddForm()}
                 >
                     <Plus size={20} />
                 </Button>
