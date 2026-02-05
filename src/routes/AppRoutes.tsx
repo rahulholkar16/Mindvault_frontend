@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router";
 import { lazy } from "react";
 import ProtectedRoute from "./ProtectedRoute";
+import ShareProfile from "../pages/ShareProfile";
 const ProfileSelector = lazy(
     () => import("../components/ProfileSelector/ProfileSelector"),
 );
@@ -25,6 +26,7 @@ const AppRoutes = () => {
 
             <Route element={<ProtectedRoute />}>
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/user/:token" element={<ShareProfile />} />
             </Route>
         </Routes>
     );
