@@ -50,7 +50,7 @@ const Dashboard = () => {
                 />
             </Suspense>
 
-            <div className="text-white p-6 py-5 w-full overflow-y-auto">
+            <div className="text-white p-6 py-5 w-full overflow-y-auto relative">
                 <DashboardNavbar setAddForm={openAddForm} />
 
                 {addForm ? (
