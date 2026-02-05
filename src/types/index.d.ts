@@ -37,14 +37,19 @@ interface AuthState {
             }
         }
     };
-    shareLink: string
 
     initAuth: () => Promise<boolean>;
     login: (email: string, password: string) => Promise<boolean>;
     logout: () => Promise<void>;
     refresh: () => Promise<boolean>;
     register: (data: FormData) => Promise<boolean>;
-    onShare: () => Promise<boolean>;
+    
+}
+
+interface FeatureState {
+    error: string | null;
+    status: "idle" | "loading" | "success" | "error";
+    onShare: () => Promise<boolean | string>;
 }
 
 interface SignupData {
