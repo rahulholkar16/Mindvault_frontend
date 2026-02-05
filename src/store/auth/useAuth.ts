@@ -11,7 +11,6 @@ export const useAuth = create<AuthState>()(
             isAuthenticated: false,
             error: null,
             isRefreshing: false,
-            shareLink: "",
 
             initAuth: async () => {
                 set({ status: "loading" });
@@ -88,21 +87,6 @@ export const useAuth = create<AuthState>()(
                         isRefreshing: false,
                         user: null,
                         status: "error",
-                    });
-                    return false;
-                }
-            },
-
-            onShare: async () => {
-                set({ status: "loading", error: null });
-                try {
-                    const res = await api.get("/auth/share-link");
-                    set({ status: "success", shareLink: res.data?.shareLink});
-                    return true;
-                } catch (error: any) {
-                    set({
-                        error: error.response?.data?.message,
-                        status: "error"
                     });
                     return false;
                 }
