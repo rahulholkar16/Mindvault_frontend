@@ -25,7 +25,9 @@ interface User {
 
 interface AuthState {
     user: User | null;
-    status: "idle" | "loading" | "success" | "error";
+    // status: "idle" | "loading" | "success" | "error";
+    isBooting: boolean,
+    isLoading: boolean,
     isAuthenticated: boolean;
     isRefreshing: boolean;
     error: string | null | {
