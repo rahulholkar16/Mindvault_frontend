@@ -23,24 +23,41 @@ const ErrorOverlay = () => {
     animate-slideIn
   `;
 
-    if (typeof error === "object" && error?.errors?.fieldErrors) {
+    // 👉 CASE 1 — your validation / Zod style errors
+    if (
+        typeof error === "object" &&
+        error !== null &&
+        "errors" in error &&
+        error.errors?.fieldErrors
+    ) {
+        const fieldErrors = error.errors.fieldErrors;
+
+        const messages = Object.values(fieldErrors).flat().filter(Boolean); // remove undefined/null
+
         return (
             <div className={containerClass}>
-                {Object.values(error.errors.fieldErrors)
-                    .flat()
-                    .map((value, index) => (
-                        <ErrorCard key={`${value}-${index}`} error={value} />
-                    ))}
+                {messages.map((msg, i) => (
+                    <ErrorCard key={`${msg}-${i}`} error={msg} />
+                ))}
             </div>
         );
     }
 
-    if (typeof error === "string")
+    // 👉 CASE 2 — normal string error
+    if (typeof error === "string") {
         return (
             <div className={containerClass}>
                 <ErrorCard error={error} />
             </div>
         );
+    }
+
+    // 👉 CASE 3 — SAFETY FALLBACK (prevents your crash)
+    return (
+        <div className={containerClass}>
+            <ErrorCard error="Something went wrong" />
+        </div>
+    );
 };
 
 export default ErrorOverlay;
