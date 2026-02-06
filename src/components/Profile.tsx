@@ -5,11 +5,13 @@ import { useAuth } from "../store/auth/useAuth";
 import NoProfile from "../images/noProfile.png";
 import ContentOverlay from "./ContentOverlay/ContentOverlay";
 
-const Profile = ({ profileOpen }: { profileOpen: boolean }) => {
+const Profile = () => {
     const active = useContent((s) => s.activeProfileTab);
     const setActive = useContent((s) => s.setActiveProfileTab);
     const fetchAll = useContent((s) => s.fetchMyContent);
     const fetchByType = useContent((s) => s.fetchMySpecificContent);
+    const myContent = useContent((s) => s.myContent);
+    const deleteCon = useContent((s) => s.delete);
 
     async function onHandel(type: string) {
         setActive(type);
@@ -96,8 +98,7 @@ const Profile = ({ profileOpen }: { profileOpen: boolean }) => {
                         </div>
                     ))}
                 </div>
-
-                <ContentOverlay profileOpen={profileOpen} />
+                <ContentOverlay content={myContent} onDelete={deleteCon}/>
             </div>
         </div>
     );
