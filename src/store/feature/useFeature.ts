@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import type { FeatureState } from "../../types";
 import { api } from "../../lib/api";
+import { useAuth } from "../auth/useAuth";
 
 export const useFeature = create<FeatureState>((set) => ({
     status: "idle",
@@ -37,5 +38,39 @@ export const useFeature = create<FeatureState>((set) => ({
                 status: "error"
             });
         }
-    }
+    },
+
+    changeName: async (name) => {
+        set({ status: "loading" });
+        try {
+            const res = await api.post("/auth/change-name", { name });
+            useAuth.setState({
+                user: res.data.data
+            });
+            console.log(res.data.data);
+            
+            set({ status: "success" });
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message,
+                status: "error"
+            });
+        }
+    },
+
+    changeEmail: async (email) => {
+        set({ status: "loading" });
+        try {
+            const res = await api.post("/auth/change-email", { email });
+            useAuth.setState({
+                user: res.data.data
+            });
+            set({ status: "success" });
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message,
+                status: "error"
+            });
+        }
+    },
 }))
