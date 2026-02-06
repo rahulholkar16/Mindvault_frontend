@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link2 } from "lucide-react";
-import type {  NoteType } from "../types/index";
+import type { NoteType } from "../types/index";
 import Button from "./Button";
 import { useContent } from "../store/content/useContent";
 import { useNavigate } from "react-router";
@@ -34,13 +34,19 @@ const NoteEditor = () => {
             }
         }
 
-        const success = await createContent(title, url, description, type, isPublic);
+        const success = await createContent(
+            title,
+            url,
+            description,
+            type,
+            isPublic,
+        );
 
         if (success) {
             setTitle("");
             setDescription("");
             setUrl("");
-            nevigate("/dashboard/profile")
+            nevigate("/dashboard/profile");
         }
     }
 
@@ -60,11 +66,23 @@ const NoteEditor = () => {
     // }
 
     return (
-        <div
-            className={`flex-1 flex flex-col overflow-y-auto ml-0`}
-        >
+        <div className={`flex-1 flex flex-col overflow-y-auto ml-0`}>
             <div className="flex-1 overflow-y-auto">
                 <div className="max-w-4xl mx-auto p-8">
+                    <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-2 mb-6 flex item-center gap-4">
+                        {isPublic ? "Public Post" : "Private Post"}:
+                        <label className="relative inline-block h-7 w-[48px] cursor-pointer rounded-full bg-gray-900 transition [-webkit-tap-highlight-color:_transparent] has-[:checked]:bg-[#03c513]">
+                            <input
+                                type="checkbox"
+                                id="AcceptConditions"
+                                className="peer sr-only"
+                                checked={isPublic}
+                                onChange={() => setIsPublic(!isPublic)}
+                            />
+                            <span className="absolute inset-y-0 start-0 m-1 size-5 rounded-full bg-gray-300 ring-[5px] ring-inset ring-white transition-all peer-checked:start-7 bg-gray-900 peer-checked:w-2 peer-checked:bg-white peer-checked:ring-transparent"></span>
+                        </label>
+                    </div>
+
                     <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-8 mb-6">
                         <input
                             type="text"
@@ -156,8 +174,8 @@ const NoteEditor = () => {
                                     {type === "tweet"
                                         ? "Tweet URL"
                                         : type === "video"
-                                        ? "Video URL"
-                                        : "Link URL"}
+                                          ? "Video URL"
+                                          : "Link URL"}
                                 </label>
                                 <input
                                     type="url"
