@@ -93,3 +93,10 @@ export const profilePicture = [
     { dp: DP7, id: "8y7fj86" },
     { dp: DP8, id: "8y3fj96" },
 ];
+
+export const EditProfileTab = [
+    {title: "View public profile", onClick: "/dashboard/profile"},
+    {title: "Profile", onClick: "/edit-profile"},
+    {title: "Photo", onClick: "edit-photo"},
+    {title: "Privacy & Security", onClick: "edit-privacy-security"},
+]
