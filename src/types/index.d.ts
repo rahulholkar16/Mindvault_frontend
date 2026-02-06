@@ -68,7 +68,6 @@ interface SignupDataStore extends SignupData {
 interface SidebarProp {
     isOpen: boolean;
     onToggle: () => void
-    onProfileOpen: (state: boolean) => void
 }
 
 interface NotesListProp {
@@ -81,8 +80,7 @@ interface CardProp {
     url?: string;
     description: string;
     date: string;
-    onDel?: () => Promise<void>;
-    isOpen: boolean;
+    onDel?: () => void;
 }
 
 interface Content {
@@ -108,13 +106,14 @@ interface ContentState {
     fetchMySpecificContent: (type: string) => Promise<boolean>;
     fetchAll: () => Proise<boolean>;
     fetchByType: (type: string) => Promise<void>;
-    create: (title: string, url?: string, description?: string, type: NoteType) => Promise<boolean>;
+    create: (title: string, url?: string, description?: string, type: NoteType, isPublic: boolean) => Promise<boolean>;
     delete: (contentId: string) => Promise<void>;
 }
 
-interface NotesEditorProp {
-    isSidebarOpen: boolean;
-    setAddForm: Dispatch<SetStateAction<boolean>>;
+interface ContentOverlayProp { 
+    profileOpen?: boolean; 
+    content: Content[] | null;
+    onDelete?: (contentId: string) => Promise<void>;
 }
 
 export type NoteType = 'document' | 'tweet' | 'video' | 'url';
