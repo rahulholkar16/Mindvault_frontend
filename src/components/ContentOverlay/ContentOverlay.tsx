@@ -1,23 +1,14 @@
 import { Suspense } from "react";
 import Card from "../Card";
 import CardSkeleton from "../skeleton/CardSkeleton";
-import { useContent } from "../../store/content/useContent";
+import type { ContentOverlayProp } from "../../types";
 
-const ContentOverlay = ({ profileOpen }: { profileOpen: boolean }) => {
-    const myContent = useContent((s) => s.myContent);
-    const deleteCon = useContent((s) => s.delete);
-    const fetchMyContent = useContent((s) => s.fetchMyContent);
+const ContentOverlay: React.FC<ContentOverlayProp> = ({
+    content,
+    onDelete,
+}) => {
 
-    // useEffect(() => {
-    //     fetchMyContent();
-    // }, []);
-
-    async function deleteContent(_id: string) {
-        await deleteCon(_id);
-        await fetchMyContent();
-    }
-
-    if (myContent?.length == 0) {
+    if (content?.length == 0) {
         return (
             <div className="flex w-full items-center justify-center text-gray-700">
                 No Content
@@ -26,8 +17,8 @@ const ContentOverlay = ({ profileOpen }: { profileOpen: boolean }) => {
     }
 
     return (
-        <div className="flex gap-8 flex-col items-center">
-            {myContent?.map((item) => (
+        <div className="grid gap-8 grid-cols-[repeat(auto-fill,minmax(280px,1fr))] justify-items-center">
+            {content?.map((item) => (
                 <Suspense key={item._id} fallback={<CardSkeleton />}>
                     <Card
                         title={item.title}
@@ -35,8 +26,10 @@ const ContentOverlay = ({ profileOpen }: { profileOpen: boolean }) => {
                         description={item.description}
                         url={item.url}
                         date={item.createdAt}
-                        onDel={() => deleteContent(item._id)}
-                        isOpen={profileOpen}
+                        onDel={() => {
+                            if(!onDelete) return;
+                            onDelete(item._id);
+                        }}
                     />
                 </Suspense>
             ))}
