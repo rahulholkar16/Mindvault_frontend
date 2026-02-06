@@ -63,7 +63,7 @@ const DashboardNavbar = () => {
                             </label>
 
                             <div className="flex items-center gap-3">
-                                <input
+                                { shareLink === "false" ?  <><input
                                     type="text"
                                     readOnly
                                     value={shareLink}
@@ -77,7 +77,7 @@ const DashboardNavbar = () => {
                                     }
                                 >
                                     Copy
-                                </button>
+                                </button></> : "Your Profile is Private."}   
                             </div>
                         </div>
                     </div>
