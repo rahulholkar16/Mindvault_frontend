@@ -3,25 +3,26 @@ import type { SidebarProp } from "../types";
 import { sidebar } from "../data";
 import { useAuth } from "../store/auth/useAuth";
 import { useContent } from "../store/content/useContent";
+import { useNavigate } from "react-router";
 
-const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle, onProfileOpen }) => {
+const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle }) => {
     const logout = useAuth((s) => s.logout);
-
+    const nevigate = useNavigate();
     const fetchAll = useContent((s) => s.fetchAll);
     const fetchByType = useContent((s) => s.fetchByType);
 
     const dataFetch = async (type: string) => {
         if (type === "profile") {
-        onProfileOpen(true);
-        return;
+            nevigate("profile");
+            return;
         }
-        onProfileOpen(false);
         if (type === "tag" || type === "all") {
-            
             await fetchAll();
+            nevigate("/dashboard")
             return;
         }
         await fetchByType(type);
+        nevigate(`/dashboard/${type}`);
     };
 
     return (
