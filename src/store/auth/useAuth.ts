@@ -7,90 +7,148 @@ export const useAuth = create<AuthState>()(
     persist(
         (set, get) => ({
             user: null,
-            status: "idle",
             isAuthenticated: false,
+            isBooting: true,  
+            isLoading: false,
             error: null,
             isRefreshing: false,
 
             initAuth: async () => {
-                set({ status: "loading" });
+                set({ isBooting: true });
+
                 try {
                     const res = await api.get("/auth/me");
-                    set({ user: res.data.data, status: "success", isAuthenticated: true });
+                    set({
+                        user: res.data.data,
+                        isAuthenticated: true,
+                        isBooting: false,
+                    });
                     return true;
                 } catch {
-                    set({ user: null, status: "error", isAuthenticated: false });
+                    set({
+                        user: null,
+                        isAuthenticated: false,
+                        isBooting: false,
+                    });
                     return false;
                 }
             },
 
             login: async (email, password) => {
-                set({ status: "loading", error: null });
+                set({ isLoading: true, error: null });
 
                 try {
                     const res = await api.post("/auth/login", { email, password });
-                    set({ user: res.data.data.user, status: "success", isAuthenticated: true });
-                    // prefetch dashboard
+
+                    set({
+                        user: res.data.data.user,
+                        isAuthenticated: true,
+                        isLoading: false,
+                    });
+
+                    // smart prefetch
                     import("../../pages/Dashboard");
+                    import("../content/useContent"); // pre-warm content store
+
                     return true;
                 } catch (err: any) {
                     set({
                         error: err.response?.data?.message || "Login failed",
-                        status: "error",
-                        isAuthenticated: false
+                        isLoading: false,
+                        isAuthenticated: false,
                     });
                     return false;
                 }
             },
 
+
             logout: async () => {
+                set({ isLoading: true, error: null });
+
                 try {
                     await api.delete("/auth/logout");
-                    set({ user: null, status: "success", isAuthenticated: false });
-                } catch (error: any) {
+
                     set({
-                        error: error.response?.data?.message,
-                        status: "error"
-                    })
+                        user: null,
+                        isAuthenticated: false,
+                        isLoading: false,
+                        error: null,
+                    });
+                } catch (err: any) {
+                    const apiError = err.response?.data;
+
+                    set({
+                        isLoading: false,
+                        error:
+                            typeof apiError === "string"
+                                ? apiError
+                                : apiError?.message || "Logout failed",
+                    });
                 }
             },
 
+
             register: async (data) => {
-                set({ error: null, status: "loading" });
+                set({ isLoading: true, error: null });
+
                 try {
-        
                     await api.post("/auth/register", data, {
                         headers: {
-                            "Content-Type": "multipart/form-data"
-                        }
+                            "Content-Type": "multipart/form-data",
+                        },
                     });
-                    set({ status: "success", error: null });
+
+                    set({
+                        isLoading: false,
+                        error: null,
+                    });
+
                     return true;
                 } catch (err: any) {
+                    const apiError = err.response?.data;
+
                     set({
-                        error: err.response?.data?.message || err.response?.data || "Register failed",
-                        status: "error",
+                        isLoading: false,
+                        error:
+                            typeof apiError === "string"
+                                ? apiError
+                                : apiError?.errors || apiError?.message || "Register failed",
                     });
+
                     return false;
                 }
             },
 
             refresh: async () => {
                 if (get().isRefreshing) return false;
+
                 set({ isRefreshing: true });
+
                 try {
                     await api.get("/auth/refresh-token");
-                    set({ isRefreshing: false, status: "idle", });
+
+                    // directly call /me here (single round-trip overall)
+                    const me = await api.get("/auth/me");
+
+                    set({
+                        user: me.data.data,
+                        isAuthenticated: true,
+                        isRefreshing: false,
+                        isBooting: false,
+                    });
+
                     return true;
                 } catch {
                     set({
                         isRefreshing: false,
                         user: null,
-                        status: "error",
+                        isAuthenticated: false,
+                        isBooting: false,
                     });
                     return false;
                 }
             },
+
         }),
         {
             name: "auth-storage",
