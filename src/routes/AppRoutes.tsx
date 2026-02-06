@@ -1,16 +1,12 @@
 import { Route, Routes } from "react-router";
 import { lazy } from "react";
 import ProtectedRoute from "./ProtectedRoute";
-import Profile from "../components/Profile";
-import NoteEditor from "../components/NoteEditor";
+const Profile = lazy(() => import("../components/Profile"));
+const NoteEditor = lazy(() => import("../components/NoteEditor"));
 // import ShareProfileCom from "../components/ShareProfileCom/ShareProfile";
-import DashboardContent from "../components/DashboardContent/DashboardContent";
-const ProfileSelector = lazy(
-    () => import("../components/ProfileSelector/ProfileSelector"),
-);
-const RegistrationForm = lazy(
-    () => import("../components/RegistrationForm/RegistrationForm"),
-);
+const DashboardContent = lazy(() => import("../components/DashboardContent/DashboardContent"));
+const ProfileSelector = lazy(() => import("../components/ProfileSelector/ProfileSelector"));
+const RegistrationForm = lazy(() => import("../components/RegistrationForm/RegistrationForm"));
 const Welcome = lazy(() => import("../pages/Welcome"));
 const Login = lazy(() => import("../pages/Login"));
 const Signup = lazy(() => import("../pages/Singup"));
