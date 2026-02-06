@@ -9,7 +9,6 @@ const Card: React.FC<CardProp> = ({
     url,
     date,
     onDel,
-    isOpen
 }) => {
     function formatDate(){
         const newDate = new Date(date);
@@ -33,7 +32,7 @@ const Card: React.FC<CardProp> = ({
                         <button className="cursor-pointer hover:text-blue-600 active:scale-110">
                             <Share />
                         </button>
-                        {isOpen && (
+                        {onDel && (
                             <button
                                 onClick={onDel}
                                 className="cursor-pointer hover:text-red-400 active:scale-110"
