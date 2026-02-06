@@ -50,8 +50,13 @@ interface AuthState {
 
 interface FeatureState {
     error: string | null;
+    brainContent: Content[] | null,
+    brainUser: User | null,
     status: "idle" | "loading" | "success" | "error";
     onShare: () => Promise<boolean | string>;
+    getShare: (token: string) => Promise<void>;
+    changeName: (name: string) => Promise<void>;
+    changeEmail: (email: string) => Promise<void>;
 }
 
 interface SignupData {
