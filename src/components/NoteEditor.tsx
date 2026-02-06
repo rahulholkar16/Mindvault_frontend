@@ -1,19 +1,19 @@
 import { useState } from "react";
 import { Link2 } from "lucide-react";
-import type { NotesEditorProp, NoteType } from "../types/index";
+import type {  NoteType } from "../types/index";
 import Button from "./Button";
 import { useContent } from "../store/content/useContent";
+import { useNavigate } from "react-router";
 
-const NoteEditor: React.FC<NotesEditorProp> = ({
-    isSidebarOpen,
-    setAddForm,
-}) => {
+const NoteEditor = () => {
     const [type, setType] = useState<NoteType>("document");
     const [title, setTitle] = useState("");
     const [url, setUrl] = useState("");
     const [description, setDescription] = useState("");
+    const [isPublic, setIsPublic] = useState(true);
+    const nevigate = useNavigate();
     // const [tags, setTags] = useState<Array<string>>([]);
-    const createContent = useContent((state) => state.createContent);
+    const createContent = useContent((state) => state.create);
     // const [newTag, setNewTag] = useState("");
     // const [localError, setLocalError] = useState<string | null>(null);
 
@@ -34,14 +34,13 @@ const NoteEditor: React.FC<NotesEditorProp> = ({
             }
         }
 
-        const success = await createContent(title, url, description, type);
+        const success = await createContent(title, url, description, type, isPublic);
 
         if (success) {
             setTitle("");
-            // setTags([]);
             setDescription("");
             setUrl("");
-            setAddForm(false);
+            nevigate("/dashboard/profile")
         }
     }
 
@@ -62,7 +61,7 @@ const NoteEditor: React.FC<NotesEditorProp> = ({
 
     return (
         <div
-            className={`flex-1 flex flex-col overflow-y-auto ${isSidebarOpen ? "lg:ml-0" : "ml-0"}`}
+            className={`flex-1 flex flex-col overflow-y-auto ml-0`}
         >
             <div className="flex-1 overflow-y-auto">
                 <div className="max-w-4xl mx-auto p-8">
@@ -176,7 +175,6 @@ const NoteEditor: React.FC<NotesEditorProp> = ({
                         <textarea
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            // onBlur={handleUpdate}
                             placeholder="Start writing your thoughts..."
                             className="w-full min-h-[300px] text-white placeholder-slate-500 focus:outline-none resize-none leading-relaxed bg-transparent"
                             style={{ fontSize: "16px", lineHeight: "1.75" }}
@@ -190,7 +188,7 @@ const NoteEditor: React.FC<NotesEditorProp> = ({
                     size="large"
                     disabled={false}
                     color="danger"
-                    onClick={() => setAddForm(false)}
+                    onClick={() => nevigate(-1)}
                 />
                 <Button
                     text="Upload"
