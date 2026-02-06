@@ -23,7 +23,6 @@ const ErrorOverlay = () => {
     animate-slideIn
   `;
 
-    // 👉 CASE 1 — your validation / Zod style errors
     if (
         typeof error === "object" &&
         error !== null &&
@@ -43,7 +42,6 @@ const ErrorOverlay = () => {
         );
     }
 
-    // 👉 CASE 2 — normal string error
     if (typeof error === "string") {
         return (
             <div className={containerClass}>
@@ -52,7 +50,6 @@ const ErrorOverlay = () => {
         );
     }
 
-    // 👉 CASE 3 — SAFETY FALLBACK (prevents your crash)
     return (
         <div className={containerClass}>
             <ErrorCard error="Something went wrong" />
