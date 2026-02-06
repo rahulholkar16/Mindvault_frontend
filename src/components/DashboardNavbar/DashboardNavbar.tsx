@@ -2,11 +2,13 @@ import { Share, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import Button from "../Button";
 import { useFeature } from "../../store/feature/useFeature";
+import { useNavigate } from "react-router";
 
-const DashboardNavbar = ({ setAddForm }: { setAddForm: () => void }) => {
+const DashboardNavbar = () => {
     const onShare = useFeature((s) => s.onShare);
     const [isOpen, setIsOpen] = useState(false);
     const [shareLink, setShareLink] = useState("");
+    const nevigate = useNavigate();
 
     useEffect(() => {
         async function share() {
@@ -34,7 +36,7 @@ const DashboardNavbar = ({ setAddForm }: { setAddForm: () => void }) => {
                     text="Add Content"
                     color="primary"
                     size="large"
-                    onClick={setAddForm}
+                    onClick={() => nevigate("create")}
                     disabled={false}
                 >
                     <Plus size={20} />
