@@ -16,11 +16,14 @@ const Dashboard = () => {
     }, [fetchAll]);
 
     useEffect(() => {
-        if (window.twttr) return;
-        const s = document.createElement("script");
-        s.src = "https://platform.twitter.com/widgets.js";
-        s.async = true;
-        document.body.appendChild(s);
+        const timer = setTimeout(() => {
+            const s = document.createElement("script");
+            s.src = "https://platform.twitter.com/widgets.js";
+            s.async = true;
+            document.body.appendChild(s);
+        }, 2000);
+
+        return () => clearTimeout(timer);
     }, []);
 
     return (
