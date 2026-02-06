@@ -4,6 +4,8 @@ import { api } from "../../lib/api";
 
 export const useFeature = create<FeatureState>((set) => ({
     status: "idle",
+    brainContent: null,
+    brainUser: null,
     error: null,
     onShare: async () => {
         set({ status: "loading", error: null });
@@ -19,4 +21,21 @@ export const useFeature = create<FeatureState>((set) => ({
             return false;
         }
     },
+
+    getShare: async (token) => {
+        set({ status: "loading", error: null });
+        try {
+            const res = await api.get(`/auth/share-brain/${token}`);
+            set({
+                status: "success",
+                brainContent: res.data.data.content,
+                brainUser: res.data.data.user,
+            })
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message,
+                status: "error"
+            });
+        }
+    }
 }))
