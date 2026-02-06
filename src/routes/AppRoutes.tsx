@@ -3,7 +3,7 @@ import { lazy } from "react";
 import ProtectedRoute from "./ProtectedRoute";
 const Profile = lazy(() => import("../components/Profile"));
 const NoteEditor = lazy(() => import("../components/NoteEditor"));
-// import ShareProfileCom from "../components/ShareProfileCom/ShareProfile";
+const ShareProfileCom = lazy(() => import("../components/ShareProfileCom/ShareProfile"));
 const DashboardContent = lazy(() => import("../components/DashboardContent/DashboardContent"));
 const ProfileSelector = lazy(() => import("../components/ProfileSelector/ProfileSelector"));
 const RegistrationForm = lazy(() => import("../components/RegistrationForm/RegistrationForm"));
@@ -24,10 +24,11 @@ const AppRoutes = () => {
 
             <Route element={<ProtectedRoute />}>
                 <Route path="/dashboard" element={<Dashboard />}>
-                    <Route index element={<DashboardContent />}/>
-                    <Route path=":type" element={<DashboardContent />}/>
+                    <Route index element={<DashboardContent />} />
+                    <Route path=":type" element={<DashboardContent />} />
                     <Route path="profile" element={<Profile />} />
                     <Route path="create" element={<NoteEditor />} />
+                    <Route path="user/:token" element={<ShareProfileCom />} />
                 </Route>
             </Route>
         </Routes>
