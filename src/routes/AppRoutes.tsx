@@ -1,14 +1,16 @@
 import { Route, Routes } from "react-router";
 import { lazy } from "react";
 import ProtectedRoute from "./ProtectedRoute";
-import ShareProfile from "../pages/ShareProfile";
+import Profile from "../components/Profile";
+import NoteEditor from "../components/NoteEditor";
+// import ShareProfileCom from "../components/ShareProfileCom/ShareProfile";
+import DashboardContent from "../components/DashboardContent/DashboardContent";
 const ProfileSelector = lazy(
     () => import("../components/ProfileSelector/ProfileSelector"),
 );
 const RegistrationForm = lazy(
     () => import("../components/RegistrationForm/RegistrationForm"),
 );
-
 const Welcome = lazy(() => import("../pages/Welcome"));
 const Login = lazy(() => import("../pages/Login"));
 const Signup = lazy(() => import("../pages/Singup"));
@@ -25,8 +27,12 @@ const AppRoutes = () => {
             </Route>
 
             <Route element={<ProtectedRoute />}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/user/:token" element={<ShareProfile />} />
+                <Route path="/dashboard" element={<Dashboard />}>
+                    <Route index element={<DashboardContent />}/>
+                    <Route path=":type" element={<DashboardContent />}/>
+                    <Route path="profile" element={<Profile />} />
+                    <Route path="create" element={<NoteEditor />} />
+                </Route>
             </Route>
         </Routes>
     );
