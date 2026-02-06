@@ -4,6 +4,7 @@ import { useContent } from "../store/content/useContent";
 import { useAuth } from "../store/auth/useAuth";
 import NoProfile from "../images/noProfile.png";
 import ContentOverlay from "./ContentOverlay/ContentOverlay";
+import { useCallback } from "react";
 
 const Profile = () => {
     const active = useContent((s) => s.activeProfileTab);
@@ -12,12 +13,17 @@ const Profile = () => {
     const fetchByType = useContent((s) => s.fetchMySpecificContent);
     const myContent = useContent((s) => s.myContent);
     const deleteCon = useContent((s) => s.delete);
+    const avatar = useAuth((s) => s.user?.avatar);
+    const name = useAuth((s) => s.user?.name);
 
-    async function onHandel(type: string) {
-        setActive(type);
-        if (type === "All") fetchAll();
-        else fetchByType(type);
-    }
+    const onHandel = useCallback(
+        async (type: string) => {
+            setActive(type);
+            if (type === "All") fetchAll();
+            else fetchByType(type);
+        },
+        [fetchAll, fetchByType, setActive],
+    );
 
     return (
         <div className="mt-6 flex flex-col items-center">
@@ -25,17 +31,16 @@ const Profile = () => {
                 <div className="flex items-center gap-20 h-full mb-15">
                     <div className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1">
                         <img
-                            src={useAuth.getState().user?.avatar || NoProfile}
+                            src={avatar || NoProfile}
                             className="rounded-full h-full w-full"
-                            loading="lazy"
-                            decoding="async"
+                            fetchPriority="high"
                         />
                     </div>
 
                     <div className="flex flex-col items-start gap-5">
                         <div className="flex gap-5">
                             <p className="text-2xl">
-                                {useAuth.getState().user?.name}
+                                {name}
                             </p>
                             <div className="flex gap-2">
                                 <Button
@@ -98,7 +103,7 @@ const Profile = () => {
                         </div>
                     ))}
                 </div>
-                <ContentOverlay content={myContent} onDelete={deleteCon}/>
+                <ContentOverlay content={myContent} onDelete={deleteCon} />
             </div>
         </div>
     );
