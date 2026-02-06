@@ -73,9 +73,7 @@ const DashboardNavbar = () => {
                                 <button
                                     className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
                                     onClick={() =>
-                                        navigator.clipboard.writeText(
-                                            "https://yourapp.com/share/abcd1234",
-                                        )
+                                        navigator.clipboard.writeText(shareLink)
                                     }
                                 >
                                     Copy
