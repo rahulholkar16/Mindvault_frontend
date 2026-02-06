@@ -1,6 +1,10 @@
 import { Route, Routes } from "react-router";
 import { lazy } from "react";
 import ProtectedRoute from "./ProtectedRoute";
+import EditProfile from "../pages/EditProfile";
+import ProfileEdit from "../components/EditProfileComponents/ProfileEdit";
+import EditPhoto from "../components/EditProfileComponents/EditPhoto";
+import EditPrivacyAndSetting from "../components/EditProfileComponents/EditPrivacyAndSetting";
 const Profile = lazy(() => import("../components/Profile"));
 const NoteEditor = lazy(() => import("../components/NoteEditor"));
 const ShareProfileCom = lazy(() => import("../components/ShareProfileCom/ShareProfile"));
@@ -29,6 +33,15 @@ const AppRoutes = () => {
                     <Route path="profile" element={<Profile />} />
                     <Route path="create" element={<NoteEditor />} />
                     <Route path="user/:token" element={<ShareProfileCom />} />
+                </Route>
+
+                <Route path="/edit-profile" element={<EditProfile />}>
+                    <Route index element={<ProfileEdit />} />
+                    <Route path="edit-photo" element={<EditPhoto />} />
+                    <Route
+                        path="edit-privacy-security"
+                        element={<EditPrivacyAndSetting />}
+                    />
                 </Route>
             </Route>
         </Routes>
