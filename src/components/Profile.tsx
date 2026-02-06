@@ -5,6 +5,7 @@ import { useAuth } from "../store/auth/useAuth";
 import NoProfile from "../images/noProfile.png";
 import ContentOverlay from "./ContentOverlay/ContentOverlay";
 import { useCallback } from "react";
+import { useNavigate } from "react-router";
 
 const Profile = () => {
     const active = useContent((s) => s.activeProfileTab);
@@ -15,6 +16,7 @@ const Profile = () => {
     const deleteCon = useContent((s) => s.delete);
     const avatar = useAuth((s) => s.user?.avatar);
     const name = useAuth((s) => s.user?.name);
+    const nevigate = useNavigate();
 
     const onHandel = useCallback(
         async (type: string) => {
@@ -48,12 +50,7 @@ const Profile = () => {
                                     color="secondary"
                                     disabled={false}
                                     size="small"
-                                />
-                                <Button
-                                    text="View Archive"
-                                    color="secondary"
-                                    disabled={false}
-                                    size="small"
+                                    onClick={() => nevigate("/edit-profile")}
                                 />
                             </div>
                         </div>
