@@ -72,19 +72,18 @@ export const useContent = create<ContentState>((set, get) => ({
         }
     },
 
-    create: async (title, url, description, type) => {
+    create: async (title, url, description, type, isPublic) => {
         set({
             status: "loading"
         })
         try {
-            const res = await api.post("/auth/content", {title, url, description, type});
+            await api.post("/auth/content", {title, url, description, type, isPublic});
             set({
                 status: "success",
                 error: null
             })
             return true;
         } catch (err: any) {
-            // rollback
             set({
                 error: err.response?.data?.message,
                 status: "error"
@@ -95,7 +94,7 @@ export const useContent = create<ContentState>((set, get) => ({
 
     delete: async (contentId) => {
         try {
-            const res = await api.delete(`/auth/content/${contentId}`);
+            await api.delete(`/auth/content/${contentId}`);
             set({ status: "success", activeProfileTab: "All" })
         } catch (error: any) {
             set({
