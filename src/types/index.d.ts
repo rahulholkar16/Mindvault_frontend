@@ -64,6 +64,8 @@ interface FeatureState {
     resendEmailVerification: () => Promise<void>;
     verifyEmail: (verificationToken: string) => Promise<void>;
     changePassword: (oldPassword: string, password: string) => Promise<void>;
+    forgotPasswordEmail: () => Promise<void>;
+    forgotPassword: (resetToken: string, password: string) => Promise<void>;
 }
 
 interface SignupData {
