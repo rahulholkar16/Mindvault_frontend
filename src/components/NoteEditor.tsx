@@ -4,6 +4,7 @@ import type { NoteType } from "../types/index";
 import Button from "./Button";
 import { useContent } from "../store/content/useContent";
 import { useNavigate } from "react-router";
+import ErrorOverlay from "./ErrorCard/ErrorOverlay/ErrorOverlay";
 
 const NoteEditor = () => {
     const [type, setType] = useState<NoteType>("document");
@@ -67,6 +68,7 @@ const NoteEditor = () => {
 
     return (
         <div className={`flex-1 flex flex-col overflow-y-auto ml-0`}>
+            <ErrorOverlay />
             <div className="flex-1 overflow-y-auto">
                 <div className="max-w-4xl mx-auto p-8">
                     <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-2 mb-6 flex item-center gap-4">
