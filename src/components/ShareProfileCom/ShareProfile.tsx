@@ -30,16 +30,16 @@ const ShareProfileCom = () => {
                     <div className="flex flex-col items-start gap-5">
                         <div className="flex gap-5">
                             <p className="text-2xl">{user?.name}</p>
-                            {/* <div className="flex gap-2">
+                            <div className="flex gap-2">
                                 <Button
                                     text="Follow"
                                     color="primary"
                                     disabled={false}
                                     size="small"
                                 />
-                            </div> */}
+                            </div>
                         </div>
-
+                        
                         <div className="flex items-center gap-10">
                             <div className="flex gap-1">
                                 <span className="text-lg">0</span>
