@@ -110,5 +110,20 @@ export const useFeature = create<FeatureState>((set) => ({
                 status: "error"
             });
         }
-    }
+    },
+
+    resendEmailVerification: async () => {
+        set({ status: "loading", error: null});
+        try {
+            await api.get("/auth/resend-email-verification");
+            set({
+                status: "success"
+            });
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message,
+                status: "error"
+            });
+        }
+    },
 }));
