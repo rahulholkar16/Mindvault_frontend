@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../store/auth/useAuth";
 import { useFeature } from "../../store/feature/useFeature";
+import ErrorOverlay from "../ErrorCard/ErrorOverlay/ErrorOverlay";
 
 const ProfileEdit = () => {
     const UserEmail = useAuth((s) => s.user?.email);
@@ -29,6 +30,7 @@ const ProfileEdit = () => {
 
     return (
         <div className="p-4 text-white">
+            <ErrorOverlay />
             <h2 className="text-lg font-semibold mb-4">Edit Profile</h2>
 
             <div className="flex flex-col gap-4 max-w-md">

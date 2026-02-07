@@ -3,6 +3,7 @@ import { useCallback, useRef, useState } from "react";
 import { useAuth } from "../../store/auth/useAuth";
 import { useFeature } from "../../store/feature/useFeature";
 import Button from "../Button";
+import ErrorOverlay from "../ErrorCard/ErrorOverlay/ErrorOverlay";
 
 const EditPhoto = () => {
     const avatar = useAuth((s) => s.user?.avatar);
@@ -38,6 +39,7 @@ const EditPhoto = () => {
 
     return (
         <div className="flex flex-col gap-6 p-4 min-w-90 justify-center items-center text-white">
+            <ErrorOverlay />
             <h1 className="text-2xl font-bold">Set Profile Picture</h1>
 
             <div className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1">
