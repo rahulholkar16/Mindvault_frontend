@@ -20,6 +20,8 @@ interface User {
     name: string;
     email: string;
     avatar: string;
+    isPublic: boolean;
+    isVerified: boolean;
 }
 
 
@@ -57,6 +59,11 @@ interface FeatureState {
     getShare: (token: string) => Promise<void>;
     changeName: (name: string) => Promise<void>;
     changeEmail: (email: string) => Promise<void>;
+    changeAvatar: (avatar: FormData) => Promise<void>;
+    toggleProfileVisibilty: () => Promise<void>;
+    resendEmailVerification: () => Promise<void>;
+    verifyEmail: (verificationToken: string) => Promise<void>;
+    changePassword: (oldPassword: string, password: string) => Promise<void>;
 }
 
 interface SignupData {
