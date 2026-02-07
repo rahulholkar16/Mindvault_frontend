@@ -17,7 +17,6 @@ const ProfileSelector = () => {
     const { setData, resetData } = useSingupStore();
     const { name, email, password, isPublic } = useSingupStore();
 
-    // ✅ NEW: match optimized useAuth store
     const register = useAuth((s) => s.register);
     const isLoading = useAuth((s) => s.isLoading);
 

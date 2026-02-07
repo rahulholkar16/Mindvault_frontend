@@ -9,7 +9,7 @@ const ForgetPassword = () => {
     const status = useFeature(s => s.status);
     const { resetToken } = useParams();
     const [newPassword, setNewPassword] = useState("");
-    const [confirmPassword, setConfirmPassword] = useState(""); // ✅ NEW
+    const [confirmPassword, setConfirmPassword] = useState("");
     const nevigate = useNavigate();
 
     async function onClick() {
