@@ -93,4 +93,22 @@ export const useFeature = create<FeatureState>((set) => ({
             });
         }
     },
+
+    toggleProfileVisibilty: async () => {
+        set({ status: "loading", error: null });
+        try {
+            const res = await api.get("/auth/toggle-public");
+            useAuth.setState({
+                user: res.data.data
+            });
+            set({
+                status: "success"
+            })
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message,
+                status: "error"
+            });
+        }
+    }
 }));
