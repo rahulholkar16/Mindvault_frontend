@@ -73,4 +73,24 @@ export const useFeature = create<FeatureState>((set) => ({
             });
         }
     },
-}))
+
+    changeAvatar: async (avatar) => {
+        set({ status: "loading", error: null });
+        try {
+            const res = await api.post("/auth/change-avatar", avatar, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            useAuth.setState({
+                user: res.data.data
+            });
+            set({ status: "success" });
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message,
+                status: "error"
+            });
+        }
+    },
+}));
