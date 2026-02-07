@@ -151,9 +151,36 @@ export const useFeature = create<FeatureState>((set) => ({
             set({ status: "success" });
         } catch (error: any) {
             set({
+                error: error.response?.data?.message || error.response?.data || error.response?.data.errors,
+                status: "error"
+            });
+        }
+    },
+
+    forgotPasswordEmail: async () => {
+        set({ status: "loading" });
+        try {
+            const email = useAuth.getState().user?.email;
+            await api.post("/auth/forgot-password", { email });
+            set({ status: "success" });
+        } catch (error: any) {
+            set({
                 error: error.response?.data?.message,
                 status: "error"
             });
         }
-    }
+    },
+
+    forgotPassword: async (resetToken, password) => {
+        set({ status: "loading", error: null });
+        try {
+            await api.post(`/auth/reset-password/${resetToken}`, { password });
+            set({ status: "success" });
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message || error.response?.data || error.response?.data.errors,
+                status: "error"
+            });
+        }
+    },
 }));
