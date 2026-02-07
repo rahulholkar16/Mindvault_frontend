@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router";
 import { lazy } from "react";
 import ProtectedRoute from "./ProtectedRoute";
-
+const ForgetPassword = lazy(() => import("../pages/ForgetPassword"));
 const EditProfile = lazy(() => import("../pages/EditProfile"));
 const ProfileEdit = lazy(
     () => import("../components/EditProfileComponents/ProfileEdit"),
@@ -29,7 +29,11 @@ const AppRoutes = () => {
         <Routes>
             <Route path="/" element={<Welcome />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/verify-user/:verificationToken" element={<VerifyEmail />}/>
+            <Route path="/forgot-password/:resetToken" element={<ForgetPassword />} />
+            <Route
+                path="/verify-user/:verificationToken"
+                element={<VerifyEmail />}
+            />
             <Route path="/register" element={<Signup />}>
                 <Route index element={<RegistrationForm />} />
                 <Route path="change-pic" element={<ProfileSelector />} />
