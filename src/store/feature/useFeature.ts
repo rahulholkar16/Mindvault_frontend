@@ -141,4 +141,19 @@ export const useFeature = create<FeatureState>((set) => ({
             });
         }
     },
+
+    changePassword: async (oldPassword, password) => {
+        set({ status: "loading", error: null });
+        try {
+            await api.post("/auth/changed-password", {
+                oldPassword, password
+            });
+            set({ status: "success" });
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message,
+                status: "error"
+            });
+        }
+    }
 }));
