@@ -1,10 +1,18 @@
 import { Route, Routes } from "react-router";
 import { lazy } from "react";
 import ProtectedRoute from "./ProtectedRoute";
-import EditProfile from "../pages/EditProfile";
-import ProfileEdit from "../components/EditProfileComponents/ProfileEdit";
-import EditPhoto from "../components/EditProfileComponents/EditPhoto";
-import EditPrivacyAndSetting from "../components/EditProfileComponents/EditPrivacyAndSetting";
+
+const EditProfile = lazy(() => import("../pages/EditProfile"));
+const ProfileEdit = lazy(
+    () => import("../components/EditProfileComponents/ProfileEdit"),
+);
+const EditPhoto = lazy(
+    () => import("../components/EditProfileComponents/EditPhoto"),
+);
+const EditPrivacyAndSetting = lazy(
+    () => import("../components/EditProfileComponents/EditPrivacyAndSetting"),
+);
+const VerifyEmail = lazy(() => import("../pages/VerifyEmail"));
 const Profile = lazy(() => import("../components/Profile"));
 const NoteEditor = lazy(() => import("../components/NoteEditor"));
 const ShareProfileCom = lazy(() => import("../components/ShareProfileCom/ShareProfile"));
@@ -21,6 +29,7 @@ const AppRoutes = () => {
         <Routes>
             <Route path="/" element={<Welcome />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/verify-user/:verificationToken" element={<VerifyEmail />}/>
             <Route path="/register" element={<Signup />}>
                 <Route index element={<RegistrationForm />} />
                 <Route path="change-pic" element={<ProfileSelector />} />
