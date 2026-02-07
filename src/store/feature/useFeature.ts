@@ -126,4 +126,19 @@ export const useFeature = create<FeatureState>((set) => ({
             });
         }
     },
+
+    verifyEmail: async (verificationToken) => {
+        set({ status: "loading", error: null });
+        try {
+            await api.get(`/auth/verify-email/${verificationToken}`);
+            set({
+                status: "success"
+            })
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message,
+                status: "error"
+            });
+        }
+    },
 }));
