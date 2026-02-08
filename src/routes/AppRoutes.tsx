@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router";
 import { lazy } from "react";
 import ProtectedRoute from "./ProtectedRoute";
+import ContentCard from "../components/ContentCard";
 const ForgetPassword = lazy(() => import("../pages/ForgetPassword"));
 const EditProfile = lazy(() => import("../pages/EditProfile"));
 const ProfileEdit = lazy(
@@ -29,7 +30,10 @@ const AppRoutes = () => {
         <Routes>
             <Route path="/" element={<Welcome />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password/:resetToken" element={<ForgetPassword />} />
+            <Route
+                path="/forgot-password/:resetToken"
+                element={<ForgetPassword />}
+            />
             <Route
                 path="/verify-user/:verificationToken"
                 element={<VerifyEmail />}
@@ -46,6 +50,7 @@ const AppRoutes = () => {
                     <Route path="profile" element={<Profile />} />
                     <Route path="create" element={<NoteEditor />} />
                     <Route path="user/:token" element={<ShareProfileCom />} />
+                    <Route path="content/:contentId" element={<ContentCard />} />
                 </Route>
 
                 <Route path="/edit-profile" element={<EditProfile />}>
