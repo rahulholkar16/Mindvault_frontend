@@ -28,7 +28,7 @@ export const useContent = create<ContentState>((set, get) => ({
     fetchByType: async (type) => {
         set({ status: "loading", error: null });
         try {
-            const res = await api.get(`/auth/content/${type}`);
+            const res = await api.get(`/auth/content/type/${type}`);
             set({ content: res.data.data, status: "success" });
         } catch (err: any) {
             set({
@@ -76,8 +76,10 @@ export const useContent = create<ContentState>((set, get) => ({
         set({ status: "loading", error: null });
         try {
             const res = await api.get(`/auth/content/${contentId}`);
-            console.log(res.data);
-            
+            set({
+                status: "success",
+                content: res.data.data
+            });
         } catch (error: any) {
             set({
                 error: error.response?.data?.message || "Failed to load",
