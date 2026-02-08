@@ -22,6 +22,11 @@ interface User {
     avatar: string;
     isPublic: boolean;
     isVerified: boolean;
+    follower: number;
+    following: number;
+    followers: Array<string>;
+    followingUsers: Array<string>;
+    content: Array<string>;
 }
 
 
@@ -66,6 +71,8 @@ interface FeatureState {
     changePassword: (oldPassword: string, password: string) => Promise<void>;
     forgotPasswordEmail: (email: string) => Promise<void>;
     forgotPassword: (resetToken: string, password: string) => Promise<void>;
+    followUser: (targetUserId: string) => Promise<void>;
+    unfollowUser: (targetUserId: string) => Promise<void>;
 }
 
 interface SignupData {

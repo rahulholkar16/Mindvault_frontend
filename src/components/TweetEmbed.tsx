@@ -22,7 +22,7 @@ export function TweetEmbed({
             conversation: "none",
             align: "center",
         });
-    }, [data?.tweetId, data]);
+    }, [data]);
 
     if (!data) return <InvalidTweet />;
 
