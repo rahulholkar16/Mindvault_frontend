@@ -21,6 +21,7 @@ const ContentOverlay: React.FC<ContentOverlayProp> = ({
             {content?.map((item) => (
                 <Suspense key={item._id} fallback={<CardSkeleton />}>
                     <Card
+                        id={item._id}
                         title={item.title}
                         type={item.type}
                         description={item.description}
@@ -30,6 +31,7 @@ const ContentOverlay: React.FC<ContentOverlayProp> = ({
                             if(!onDelete) return;
                             onDelete(item._id);
                         }}
+                        contentUser={item.userId}
                     />
                 </Suspense>
             ))}
