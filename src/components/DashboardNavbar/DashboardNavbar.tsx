@@ -13,7 +13,7 @@ const DashboardNavbar = () => {
     useEffect(() => {
         async function share() {
             const resLink = await onShare();
-            setShareLink(`http://localhost:5173/brain/${resLink}`)
+            setShareLink(`http://localhost:5173/dashboard/user/${resLink}`);
         }
         share();
     }, [onShare]);
@@ -63,7 +63,8 @@ const DashboardNavbar = () => {
                             </label>
 
                             <div className="flex items-center gap-3">
-                                { shareLink === "false" ?  <><input
+                                { shareLink === "false" ? "Your Profile is Private." : <>
+                                <input
                                     type="text"
                                     readOnly
                                     value={shareLink}
@@ -77,7 +78,7 @@ const DashboardNavbar = () => {
                                     }
                                 >
                                     Copy
-                                </button></> : "Your Profile is Private."}   
+                                </button></>}   
                             </div>
                         </div>
                     </div>
