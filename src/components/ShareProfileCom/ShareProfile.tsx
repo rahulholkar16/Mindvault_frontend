@@ -3,17 +3,24 @@ import NoProfile from "../../images/noProfile.png";
 import { useFeature } from "../../store/feature/useFeature";
 import Button from "../Button";
 import ContentOverlay from "../ContentOverlay/ContentOverlay";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
+import { useAuth } from "../../store/auth/useAuth";
 
 const ShareProfileCom = () => {
     const { token } = useParams<{ token: string }>();
     const getShare = useFeature(s => s.getShare);
     const content = useFeature(s => s.brainContent);
     const user = useFeature(s => s.brainUser);
+    const nevigate = useNavigate();
 
     useEffect(() => {
         if (token) getShare(token);
     }, [getShare, token]);
+
+    if (user?._id === useAuth.getState().user?._id) {
+        nevigate("/dashboard/profile");
+        return;
+    }
 
     return (
         <div className="mt-6 flex flex-col items-center">
