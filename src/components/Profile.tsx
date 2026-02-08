@@ -4,7 +4,7 @@ import { useContent } from "../store/content/useContent";
 import { useAuth } from "../store/auth/useAuth";
 import NoProfile from "../images/noProfile.png";
 import ContentOverlay from "./ContentOverlay/ContentOverlay";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { useNavigate } from "react-router";
 
 const Profile = () => {
@@ -16,6 +16,9 @@ const Profile = () => {
     const deleteCon = useContent((s) => s.delete);
     const avatar = useAuth((s) => s.user?.avatar);
     const name = useAuth((s) => s.user?.name);
+    const totalPost = useAuth(s => s.user?.content);
+    const follower = useAuth(s => s.user?.follower);
+    const following = useAuth(s => s.user?.following);
     const nevigate = useNavigate();
 
     const onHandel = useCallback(
@@ -26,6 +29,11 @@ const Profile = () => {
         },
         [fetchAll, fetchByType, setActive],
     );
+
+    useEffect(() => {
+        setActive("All");
+        onHandel(active);
+    }, [onHandel, active, setActive]);
 
     return (
         <div className="mt-6 flex flex-col items-center">
@@ -41,9 +49,7 @@ const Profile = () => {
 
                     <div className="flex flex-col items-start gap-5">
                         <div className="flex gap-5">
-                            <p className="text-2xl">
-                                {name}
-                            </p>
+                            <p className="text-2xl">{name}</p>
                             <div className="flex gap-2">
                                 <Button
                                     text="Edit Profile"
@@ -57,21 +63,23 @@ const Profile = () => {
 
                         <div className="flex items-center gap-10">
                             <div className="flex gap-1">
-                                <span className="text-lg">0</span>
+                                <span className="text-lg">
+                                    {totalPost?.length}
+                                </span>
                                 <p className="text-slate-700 font-medium text-lg">
                                     post
                                 </p>
                             </div>
 
                             <div className="flex gap-1">
-                                <span className="text-lg">255</span>
+                                <span className="text-lg">{follower}</span>
                                 <p className="text-slate-700 font-medium text-lg">
                                     follower
                                 </p>
                             </div>
 
                             <div className="flex gap-1">
-                                <span className="text-lg">120</span>
+                                <span className="text-lg">{following}</span>
                                 <p className="text-slate-700 font-medium text-lg">
                                     following
                                 </p>
