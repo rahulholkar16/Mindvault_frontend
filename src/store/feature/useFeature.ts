@@ -182,4 +182,40 @@ export const useFeature = create<FeatureState>((set) => ({
             });
         }
     },
+
+    followUser: async (targetUserId) => {
+        set({ status: "loading", error: null });
+        try {
+            const res = await api.post(`/auth/follow/${targetUserId}`);
+            useAuth.setState({
+                user: res.data?.data
+            });
+            set({
+                status: "success"
+            })
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message,
+                status: "error"
+            });
+        }
+    },
+
+    unfollowUser: async (targetUserId) => {
+        set({ status: "loading", error: null });
+        try {
+            const res = await api.post(`/auth/unfollow/${targetUserId}`);
+            useAuth.setState({
+                user: res.data?.data
+            });
+            set({
+                status: "success"
+            })
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message,
+                status: "error"
+            });
+        }
+    },
 }));
