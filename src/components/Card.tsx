@@ -1,24 +1,41 @@
+import { useState } from "react";
 import { Bird, BookText, Share, Trash, Youtube, Link } from "lucide-react";
 import type { CardProp } from "../types";
 import { TweetEmbed } from "./TweetEmbed";
+import { useAuth } from "../store/auth/useAuth";
 
 const Card: React.FC<CardProp> = ({
+    id,
     type,
     description,
     title,
     url,
     date,
     onDel,
+    contentUser,
 }) => {
-    function formatDate(){
+    const userId = useAuth.getState().user?._id;
+    const [copied, setCopied] = useState(false);
+
+    function formatDate() {
         const newDate = new Date(date);
-        const formatted = newDate.toLocaleDateString("en-GB").replaceAll("/", "-");
-        console.log(formatted);
-        return formatted;
+        return newDate.toLocaleDateString("en-GB").replaceAll("/", "-");
     }
 
+    const handleCopyLink = async () => {
+        const link = `http://localhost:5173/dashboard/content/${id}`;
+
+        try {
+            await navigator.clipboard.writeText(link);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 1500);
+        } catch (err) {
+            console.error("Failed to copy:", err);
+        }
+    };
+
     return (
-        <div className="bg-gray-800 text-white rounded-lg shadow-lg outline-gray-200 p-4 max-w-75 min-h-[330px] min-w-[270px]">
+        <div className="relative bg-gray-800 text-white rounded-lg shadow-lg outline-gray-200 p-4 max-w-75 min-h-[330px] min-w-[270px]">
             <div className="w-full h-full flex flex-col justify-between">
                 <div className="flex justify-between items-center w-full">
                     <div className="flex items-center gap-4">
@@ -28,11 +45,16 @@ const Card: React.FC<CardProp> = ({
                         {type === "url" && <Link size={20} />}
                         <p className="font-medium text-lg">{title}</p>
                     </div>
+
                     <div className="flex items-center gap-4">
-                        <button className="cursor-pointer hover:text-blue-600 active:scale-110">
+                        <button
+                            onClick={handleCopyLink}
+                            className="cursor-pointer hover:text-blue-600 active:scale-110"
+                        >
                             <Share />
                         </button>
-                        {onDel && (
+
+                        {userId === contentUser && (
                             <button
                                 onClick={onDel}
                                 className="cursor-pointer hover:text-red-400 active:scale-110"
@@ -42,7 +64,8 @@ const Card: React.FC<CardProp> = ({
                         )}
                     </div>
                 </div>
-                {/* For Document */}
+
+                {/* DOCUMENT */}
                 {type === "document" && (
                     <div className="mt-4">
                         <h2 className="font-bold text-2xl m-2">{title}</h2>
@@ -52,7 +75,7 @@ const Card: React.FC<CardProp> = ({
                     </div>
                 )}
 
-                {/* For Videos */}
+                {/* VIDEO */}
                 {type === "video" && (
                     <div className="my-4 rounded-lg">
                         <iframe
@@ -67,21 +90,23 @@ const Card: React.FC<CardProp> = ({
                     </div>
                 )}
 
-                {/* For tweet */}
+                {/* TWEET */}
                 {type === "tweet" && (
                     <TweetEmbed url={url} description={description} />
                 )}
 
-                {/* tags */}
-                {/* <span className="rounded-full mt-4 shadow-lg bg-slate-400 px-2 py-1 font-semibold text-center text-blue-600 text-sm">
-                #Product
-            </span> */}
-
-                {/* time */}
+                {/* DATE */}
                 <div className="mt-6 px-2 font-semibold text-gray-400 text-sm">
                     Added on {formatDate()}
                 </div>
             </div>
+
+            {/* COPIED FEEDBACK */}
+            {copied && (
+                <span className="absolute bottom-2 right-2 text-xs text-green-400">
+                    Copied!
+                </span>
+            )}
         </div>
     );
 };
