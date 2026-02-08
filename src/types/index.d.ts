@@ -64,7 +64,7 @@ interface FeatureState {
     resendEmailVerification: () => Promise<void>;
     verifyEmail: (verificationToken: string) => Promise<void>;
     changePassword: (oldPassword: string, password: string) => Promise<void>;
-    forgotPasswordEmail: () => Promise<void>;
+    forgotPasswordEmail: (email: string) => Promise<void>;
     forgotPassword: (resetToken: string, password: string) => Promise<void>;
 }
 
@@ -91,12 +91,14 @@ interface NotesListProp {
 }
 
 interface CardProp {
+    id: string;
     type: NoteType | undefined;
     title: string;
     url?: string;
     description: string;
     date: string;
     onDel?: () => void;
+    contentUser: string;
 }
 
 interface Content {
@@ -124,6 +126,7 @@ interface ContentState {
     fetchByType: (type: string) => Promise<void>;
     create: (title: string, url?: string, description?: string, type: NoteType, isPublic: boolean) => Promise<boolean>;
     delete: (contentId: string) => Promise<void>;
+    getContentById: (contentId: string) => Promise<void>;
 }
 
 interface ContentOverlayProp { 
