@@ -157,10 +157,9 @@ export const useFeature = create<FeatureState>((set) => ({
         }
     },
 
-    forgotPasswordEmail: async () => {
+    forgotPasswordEmail: async (email) => {
         set({ status: "loading" });
         try {
-            const email = useAuth.getState().user?.email;
             await api.post("/auth/forgot-password", { email });
             set({ status: "success" });
         } catch (error: any) {
