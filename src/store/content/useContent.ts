@@ -72,6 +72,20 @@ export const useContent = create<ContentState>((set, get) => ({
         }
     },
 
+    getContentById: async (contentId) => {
+        set({ status: "loading", error: null });
+        try {
+            const res = await api.get(`/auth/content/${contentId}`);
+            console.log(res.data);
+            
+        } catch (error: any) {
+            set({
+                error: error.response?.data?.message || "Failed to load",
+                status: "error",
+            });
+        }
+    },
+
     create: async (title, url, description, type, isPublic) => {
         set({
             status: "loading"
