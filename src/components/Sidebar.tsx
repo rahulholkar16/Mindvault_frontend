@@ -35,15 +35,20 @@ const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle }) => {
                 {isOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
 
-            {/* SIDEBAR */}
+            {/* SIDEBAR CONTAINER */}
             <div
-                className={`fixed lg:relative inset-y-0 left-0 z-40 bg-slate-800 border-r border-slate-700 
-                flex flex-col py-6 transition-all duration-300 
+                className={`
+                fixed lg:relative inset-y-0 left-0 z-40 
+                bg-slate-800 border-r border-slate-700 
+                flex flex-col py-6 
+                transition-all duration-300
+
                 ${
                     isOpen
                         ? "w-[70%] sm:w-64 translate-x-0"
-                        : "-translate-x-full w-[70%] sm:w-64 lg:w-16"
-                }`}
+                        : "-translate-x-full lg:translate-x-0 lg:w-16"
+                }
+                `}
             >
                 <div className="flex flex-col gap-2 flex-1 w-full px-4">
                     <div className="p-3 w-12 bg-linear-to-br from-blue-500 to-purple-600 rounded-xl shadow-lg">
@@ -54,15 +59,15 @@ const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle }) => {
                         <button
                             key={item.type}
                             onClick={() => dataFetch(item.type)}
-                            className={`p-3 mt-2 transition-all hover:bg-slate-700 rounded-lg text-white
-                                ${isOpen ? "" : "lg:justify-center"}
+                            className={`
+                                p-3 mt-2 transition-all hover:bg-slate-700 
+                                rounded-lg text-white flex items-center gap-3
+                                ${!isOpen && "lg:justify-center"}
                             `}
                             title={item.title}
                         >
-                            <div className="flex items-center gap-3">
-                                {item.icon}
-                                {item.title}
-                            </div>
+                            {item.icon}
+                            {isOpen && <span>{item.title}</span>}
                         </button>
                     ))}
                 </div>

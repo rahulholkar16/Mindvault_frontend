@@ -9,7 +9,7 @@ const Sidebar = lazy(() => import("../components/Sidebar"));
 
 const Dashboard = () => {
     const fetchAll = useContent((s) => s.fetchAll);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     const toggleSidebar = useCallback(
         () => setIsSidebarOpen((prev) => !prev),
@@ -42,12 +42,13 @@ const Dashboard = () => {
             {/* MAIN CONTENT AREA */}
             <div
                 className={`
-                    flex-1 text-white px-4 sm:px-6 py-4 sm:py-5 
-                    overflow-y-auto relative transition-all duration-300
+                flex-1 text-white 
+                px-4 sm:px-6 py-4 sm:py-5 
+                overflow-y-auto relative 
+                transition-all duration-300
                 `}
             >
                 <DashboardNavbar />
-
                 <div className="mt-4">
                     <Outlet />
                 </div>
