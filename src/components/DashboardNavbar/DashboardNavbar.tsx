@@ -69,16 +69,13 @@ const DashboardNavbar = () => {
                         >
                             ✕
                         </button>
-
                         <h2 className="text-2xl sm:text-3xl font-bold mb-6">
                             Share Brain
                         </h2>
-
                         <div className="bg-white/10 border border-white/20 rounded-lg p-4">
                             <label className="text-sm text-gray-300 mb-2 block">
                                 Shareable link
                             </label>
-
                             <div className="flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
                                 {shareLink ? (
                                     <>
@@ -88,7 +85,6 @@ const DashboardNavbar = () => {
                                             value={fullLink}
                                             className="flex-1 bg-black/20 border border-white/20 text-white px-3 py-2 rounded-lg outline-none"
                                         />
-
                                         <button
                                             onClick={handleCopy}
                                             className={`
