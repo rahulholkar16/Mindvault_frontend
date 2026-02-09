@@ -29,19 +29,21 @@ const Dashboard = () => {
     return (
         <div className="flex h-screen bg-gray-900 w-full overflow-hidden">
             <ErrorOverlay />
+
             <Suspense fallback={<SidebarSkeleton />}>
-                <Sidebar
-                    isOpen={isSidebarOpen}
-                    onToggle={toggleSidebar}
-                />
+                <Sidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
             </Suspense>
 
-            <div className="text-white p-6 py-5 w-full overflow-y-auto relative">
+            {/* Main Content Area */}
+            <div className="flex-1 text-white px-4 sm:px-6 py-4 sm:py-5 overflow-y-auto relative">
                 <DashboardNavbar />
-                <Outlet />
+                <div className="mt-4">
+                    <Outlet />
+                </div>
             </div>
         </div>
     );
+
 };
 
 export default Dashboard;
