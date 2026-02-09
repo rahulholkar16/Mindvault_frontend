@@ -21,6 +21,7 @@ const EditProfile = () => {
                     size="small"
                     color="secondary"
                     onClick={() => navigate(-1)}
+                    disabled={false}
                 >
                     <ArrowLeft size={18} />
                 </Button>
@@ -30,6 +31,7 @@ const EditProfile = () => {
                     size="small"
                     color="primary"
                     onClick={() => navigate("/dashboard")}
+                    disabled={false}
                 >
                     <LayoutDashboard size={18} />
                 </Button>
