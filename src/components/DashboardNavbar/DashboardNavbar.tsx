@@ -66,11 +66,7 @@ const DashboardNavbar = () => {
                             </label>
 
                             <div className="flex flex-col sm:flex-row gap-3">
-                                {shareLink === false ? (
-                                    <p className="text-red-300">
-                                        Your Profile is Private.
-                                    </p>
-                                ) : (
+                                {shareLink ? (
                                     <>
                                         <input
                                             type="text"
@@ -82,12 +78,18 @@ const DashboardNavbar = () => {
                                         <button
                                             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
                                             onClick={() =>
-                                                navigator.clipboard.writeText(`https://mindvault-kappa.vercel.app/dashboard/user/${shareLink}`)
+                                                navigator.clipboard.writeText(
+                                                    `https://mindvault-kappa.vercel.app/dashboard/user/${shareLink}`,
+                                                )
                                             }
                                         >
                                             Copy
                                         </button>
                                     </>
+                                ) : (
+                                    <p className="text-red-300">
+                                        Your Profile is Private.
+                                    </p>
                                 )}
                             </div>
                         </div>
