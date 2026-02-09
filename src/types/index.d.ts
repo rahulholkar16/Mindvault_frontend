@@ -105,7 +105,10 @@ interface CardProp {
     description: string;
     date: string;
     onDel?: () => void;
-    contentUser: string;
+    contentUser: {
+        _id: string,
+        name: string
+    };
 }
 
 interface Content {

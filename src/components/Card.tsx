@@ -16,7 +16,6 @@ const Card: React.FC<CardProp> = ({
 }) => {
     const userId = useAuth.getState().user?._id;
     const [copied, setCopied] = useState(false);
-    console.log(userId , "   ", contentUser);
     
     function formatDate() {
         const newDate = new Date(date);
@@ -55,7 +54,7 @@ const Card: React.FC<CardProp> = ({
                             <Share />
                         </button>
 
-                        {userId === contentUser && (
+                        {userId === contentUser._id && (
                             <button
                                 onClick={onDel}
                                 className="cursor-pointer hover:text-red-400 active:scale-110"
