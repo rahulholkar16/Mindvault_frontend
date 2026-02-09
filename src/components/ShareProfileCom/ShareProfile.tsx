@@ -41,68 +41,73 @@ const ShareProfileCom = () => {
     };
 
     return (
-        <div className="mt-6 flex flex-col items-center">
-            <div className="flex flex-col gap-5 w-full max-w-4xl">
-                <div className="flex items-center gap-20 h-full mb-15">
-                    <div className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1">
-                        <img
-                            src={user?.avatar || NoProfile}
-                            className="rounded-full h-full w-full"
-                            fetchPriority="high"
-                        />
-                    </div>
-
-                    <div className="flex flex-col items-start gap-5">
-                        <div className="flex gap-5 items-center">
-                            <p className="text-2xl font-semibold">
-                                {user?.name}
-                            </p>
-                            <Button
-                                text={
-                                    isAlreadyFollowing ? "Unfollow" : "Follow"
-                                }
-                                color={
-                                    isAlreadyFollowing ? "secondary" : "primary"
-                                }
-                                disabled={false}
-                                size="small"
-                                onClick={onFollow}
+        <div className="flex-1 overflow-y-auto">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+                {/* PROFILE HEADER CARD */}
+                <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-6 mb-6">
+                    <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
+                        {/* Avatar */}
+                        <div className="rounded-full h-28 w-28 border-2 bg-slate-700 border-slate-600 p-1">
+                            <img
+                                src={user?.avatar || NoProfile}
+                                className="rounded-full h-full w-full object-cover"
+                                alt="Profile"
                             />
                         </div>
 
-                        <div className="flex items-center gap-10">
-                            <div className="flex gap-1">
-                                <span className="text-lg">
-                                    {content?.length || 0}
-                                </span>
-                                <p className="text-slate-700 font-medium text-lg">
-                                    post
+                        {/* Info Section */}
+                        <div className="flex-1 w-full flex flex-col gap-4 text-center md:text-left">
+                            {/* Name + Follow Button */}
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+                                <p className="text-2xl font-bold text-white">
+                                    {user?.name}
                                 </p>
+
+                                <Button
+                                    text={
+                                        isAlreadyFollowing
+                                            ? "Unfollow"
+                                            : "Follow"
+                                    }
+                                    color={
+                                        isAlreadyFollowing
+                                            ? "secondary"
+                                            : "primary"
+                                    }
+                                    size="small"
+                                    disabled={false}
+                                    onClick={onFollow}
+                                />
                             </div>
 
-                            <div className="flex gap-1">
-                                <span className="text-lg">
-                                    {user?.follower || 0}
-                                </span>
-                                <p className="text-slate-700 font-medium text-lg">
-                                    follower
-                                </p>
-                            </div>
+                            {/* Stats */}
+                            <div className="flex justify-center md:justify-start gap-6 sm:gap-10 text-white">
+                                <div className="flex gap-1 items-center">
+                                    <span className="text-lg font-semibold">
+                                        {content?.length || 0}
+                                    </span>
+                                    <p className="text-slate-400">posts</p>
+                                </div>
 
-                            <div className="flex gap-1">
-                                <span className="text-lg">
-                                    {user?.following || 0}
-                                </span>
-                                <p className="text-slate-700 font-medium text-lg">
-                                    following
-                                </p>
+                                <div className="flex gap-1 items-center">
+                                    <span className="text-lg font-semibold">
+                                        {user?.follower || 0}
+                                    </span>
+                                    <p className="text-slate-400">followers</p>
+                                </div>
+
+                                <div className="flex gap-1 items-center">
+                                    <span className="text-lg font-semibold">
+                                        {user?.following || 0}
+                                    </span>
+                                    <p className="text-slate-400">following</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div className="border border-gray-500 w-full"></div>
-
+                {/* CONTENT SECTION */}
                 <ContentOverlay content={content} />
             </div>
         </div>
