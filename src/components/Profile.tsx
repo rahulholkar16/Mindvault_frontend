@@ -14,100 +14,112 @@ const Profile = () => {
     const fetchByType = useContent((s) => s.fetchMySpecificContent);
     const myContent = useContent((s) => s.myContent);
     const deleteCon = useContent((s) => s.delete);
+
     const avatar = useAuth((s) => s.user?.avatar);
     const name = useAuth((s) => s.user?.name);
-    const totalPost = useAuth(s => s.user?.content);
-    const follower = useAuth(s => s.user?.follower);
-    const following = useAuth(s => s.user?.following);
-    const nevigate = useNavigate();
+    const totalPost = useAuth((s) => s.user?.content);
+    const follower = useAuth((s) => s.user?.follower);
+    const following = useAuth((s) => s.user?.following);
+
+    const navigate = useNavigate();
 
     const onHandel = useCallback(
         async (type: string) => {
             setActive(type);
-            if (type === "All") fetchAll();
-            else fetchByType(type);
+            if (type === "All") await fetchAll();
+            else await fetchByType(type);
         },
         [fetchAll, fetchByType, setActive],
     );
 
     useEffect(() => {
         setActive("All");
-        onHandel(active);
-    }, [onHandel, active, setActive]);
+        fetchAll();
+    }, [fetchAll, setActive]);
 
     return (
-        <div className="mt-6 flex flex-col items-center">
-            <div className="flex flex-col gap-5">
-                <div className="flex items-center gap-20 h-full mb-15">
-                    <div className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1">
-                        <img
-                            src={avatar || NoProfile}
-                            className="rounded-full h-full w-full"
-                            fetchPriority="high"
-                        />
-                    </div>
+        <div className="flex-1 overflow-y-auto">
+            <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+                {/* PROFILE HEADER */}
+                <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-6 mb-6">
+                    <div className="flex flex-col md:flex-row items-center md:items-start gap-6 md:gap-10">
+                        {/* Avatar */}
+                        <div className="rounded-full h-28 w-28 border-2 bg-slate-700 border-slate-600 p-1">
+                            <img
+                                src={avatar || NoProfile}
+                                className="rounded-full h-full w-full object-cover"
+                                alt="Profile"
+                            />
+                        </div>
 
-                    <div className="flex flex-col items-start gap-5">
-                        <div className="flex gap-5">
-                            <p className="text-2xl">{name}</p>
-                            <div className="flex gap-2">
+                        {/* Info Section */}
+                        <div className="flex-1 w-full flex flex-col gap-4 text-center md:text-left">
+                            {/* Name + Edit Button */}
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+                                <p className="text-2xl font-bold text-white">
+                                    {name}
+                                </p>
+
                                 <Button
                                     text="Edit Profile"
                                     color="secondary"
-                                    disabled={false}
                                     size="small"
-                                    onClick={() => nevigate("/edit-profile")}
+                                    disabled={false}
+                                    onClick={() => navigate("/edit-profile")}
                                 />
                             </div>
-                        </div>
 
-                        <div className="flex items-center gap-10">
-                            <div className="flex gap-1">
-                                <span className="text-lg">
-                                    {totalPost?.length}
-                                </span>
-                                <p className="text-slate-700 font-medium text-lg">
-                                    post
-                                </p>
-                            </div>
+                            {/* Stats */}
+                            <div className="flex justify-center md:justify-start gap-6 sm:gap-10 text-white">
+                                <div className="flex gap-1 items-center">
+                                    <span className="text-lg font-semibold">
+                                        {totalPost?.length || 0}
+                                    </span>
+                                    <p className="text-slate-400">posts</p>
+                                </div>
 
-                            <div className="flex gap-1">
-                                <span className="text-lg">{follower}</span>
-                                <p className="text-slate-700 font-medium text-lg">
-                                    follower
-                                </p>
-                            </div>
+                                <div className="flex gap-1 items-center">
+                                    <span className="text-lg font-semibold">
+                                        {follower || 0}
+                                    </span>
+                                    <p className="text-slate-400">followers</p>
+                                </div>
 
-                            <div className="flex gap-1">
-                                <span className="text-lg">{following}</span>
-                                <p className="text-slate-700 font-medium text-lg">
-                                    following
-                                </p>
+                                <div className="flex gap-1 items-center">
+                                    <span className="text-lg font-semibold">
+                                        {following || 0}
+                                    </span>
+                                    <p className="text-slate-400">following</p>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                {/* profile bar */}
-                <div className="flex items-center justify-between mt-10 border-b border-gray-600">
-                    {profileBar.map((item) => (
-                        <div key={item.type} className="mx-5 cursor-pointer">
+                {/* PROFILE TABS */}
+                <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-4 mb-6">
+                    <div className="flex justify-between items-center gap-2 overflow-x-auto">
+                        {profileBar.map((item) => (
                             <button
-                                onClick={() => onHandel(item?.type)}
+                                key={item.type}
+                                onClick={() => onHandel(item.type)}
                                 className={`
-                                    p-2 rounded
+                                    flex items-center justify-center p-2 rounded-lg transition-all
                                     ${
                                         active === item.type
-                                            ? "bg-gray-600 border border-white"
-                                            : ""
+                                            ? "bg-blue-500 text-white"
+                                            : "bg-slate-700/50 text-slate-300 hover:bg-slate-700"
                                     }
                                 `}
+                                title={item.type}
                             >
                                 {item.icon}
                             </button>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
+
+                {/* CONTENT LIST */}
                 <ContentOverlay content={myContent} onDelete={deleteCon} />
             </div>
         </div>
