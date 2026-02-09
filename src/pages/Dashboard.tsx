@@ -1,4 +1,4 @@
-import { useEffect, useState, lazy, Suspense, useCallback } from "react";
+import { useEffect, useState, lazy, Suspense } from "react";
 import { useContent } from "../store/content/useContent";
 import SidebarSkeleton from "../components/skeleton/SidebarSkeleton";
 import ErrorOverlay from "../components/ErrorCard/ErrorOverlay/ErrorOverlay";
@@ -9,12 +9,7 @@ const Sidebar = lazy(() => import("../components/Sidebar"));
 
 const Dashboard = () => {
     const fetchAll = useContent((s) => s.fetchAll);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-    const toggleSidebar = useCallback(
-        () => setIsSidebarOpen((prev) => !prev),
-        [],
-    );
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     useEffect(() => {
         fetchAll();
@@ -36,7 +31,7 @@ const Dashboard = () => {
             <ErrorOverlay />
 
             <Suspense fallback={<SidebarSkeleton />}>
-                <Sidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
+                <Sidebar isOpen={isSidebarOpen} onToggle={(value: boolean) => setIsSidebarOpen(value)} />
             </Suspense>
 
             {/* MAIN CONTENT AREA */}

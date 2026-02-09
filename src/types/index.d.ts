@@ -90,7 +90,7 @@ interface SignupDataStore extends SignupData {
 
 interface SidebarProp {
     isOpen: boolean;
-    onToggle: () => void
+    onToggle: (value: boolean) => void
 }
 
 interface NotesListProp {

@@ -12,6 +12,7 @@ const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle }) => {
     const fetchByType = useContent((s) => s.fetchByType);
 
     const dataFetch = async (type: string) => {
+        onToggle(false);
         if (type === "profile") {
             navigate("profile");
             return;
@@ -29,7 +30,7 @@ const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle }) => {
         <>
             {/* MOBILE TOGGLE BUTTON */}
             <button
-                onClick={onToggle}
+                onClick={() => onToggle(!isOpen)}
                 className="fixed top-4 left-4 z-50 p-2 bg-slate-800 rounded-lg shadow-lg hover:bg-slate-700 transition-colors lg:hidden text-slate-400"
             >
                 {isOpen ? <X size={20} /> : <Menu size={20} />}
