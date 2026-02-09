@@ -22,6 +22,7 @@ const RegistrationForm = () => {
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
+        useAuth.setState({isLoading: false});
         useAuth.setState({ error: null });
         if (!email || !password || !name) {
             setLocalError("Please fill in all fields");
