@@ -104,11 +104,6 @@ interface CardProp {
     url?: string;
     description: string;
     date: string;
-    onDel?: () => void;
-    contentUser: {
-        _id: string,
-        name: string
-    };
 }
 
 interface Content {
@@ -118,10 +113,6 @@ interface Content {
     "tags"?: [],
     "type"?: NoteType | undefined,
     "description": string,
-    "userId": {
-        _id: string,
-        name: string
-    },
     "isPublic"?: boolean,
     "createdAt": string
 }

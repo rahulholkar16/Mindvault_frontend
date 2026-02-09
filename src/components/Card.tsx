@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Bird, BookText, Share, Trash, Youtube, Link } from "lucide-react";
+import { Bird, BookText, Share, Youtube, Link } from "lucide-react";
 import type { CardProp } from "../types";
 import { TweetEmbed } from "./TweetEmbed";
-import { useAuth } from "../store/auth/useAuth";
 
 const Card: React.FC<CardProp> = ({
     id,
@@ -11,10 +10,7 @@ const Card: React.FC<CardProp> = ({
     title,
     url,
     date,
-    onDel,
-    contentUser,
 }) => {
-    const userId = useAuth.getState().user?._id;
     const [copied, setCopied] = useState(false);
     
     function formatDate() {
@@ -53,15 +49,6 @@ const Card: React.FC<CardProp> = ({
                         >
                             <Share />
                         </button>
-
-                        {userId === contentUser._id && (
-                            <button
-                                onClick={onDel}
-                                className="cursor-pointer hover:text-red-400 active:scale-110"
-                            >
-                                <Trash />
-                            </button>
-                        )}
                     </div>
                 </div>
 

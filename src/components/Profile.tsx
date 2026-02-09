@@ -13,8 +13,6 @@ const Profile = () => {
     const fetchAll = useContent((s) => s.fetchMyContent);
     const fetchByType = useContent((s) => s.fetchMySpecificContent);
     const myContent = useContent((s) => s.myContent);
-    const deleteCon = useContent((s) => s.delete);
-
     const avatar = useAuth((s) => s.user?.avatar);
     const name = useAuth((s) => s.user?.name);
     const totalPost = useAuth((s) => s.user?.content);
@@ -120,7 +118,7 @@ const Profile = () => {
                 </div>
 
                 {/* CONTENT LIST */}
-                <ContentOverlay content={myContent} onDelete={deleteCon} />
+                <ContentOverlay content={myContent} />
             </div>
         </div>
     );

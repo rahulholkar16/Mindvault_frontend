@@ -5,7 +5,6 @@ import type { ContentOverlayProp } from "../../types";
 
 const ContentOverlay: React.FC<ContentOverlayProp> = ({
     content,
-    onDelete,
 }) => {
 
     if (content?.length == 0) {
@@ -27,11 +26,6 @@ const ContentOverlay: React.FC<ContentOverlayProp> = ({
                         description={item.description}
                         url={item.url}
                         date={item.createdAt}
-                        onDel={() => {
-                            if(!onDelete) return;
-                            onDelete(item._id);
-                        }}
-                        contentUser={item.userId}
                     />
                 </Suspense>
             ))}
