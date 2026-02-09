@@ -15,7 +15,7 @@ const EditProfile = () => {
     return (
         <div className="min-h-screen bg-gray-900 flex flex-col">
             {/* TOP BAR */}
-            <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-4 flex items-center justify-between">
+            <div className="max-w-6xl mx-auto w-full px-4 py-4 flex items-center justify-between">
                 <Button
                     text="Back"
                     size="small"
@@ -37,51 +37,88 @@ const EditProfile = () => {
                 </Button>
             </div>
 
-            {/* MAIN CONTAINER */}
-            <div className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 pb-6">
-                <div className="border border-slate-700/50 rounded-2xl flex overflow-hidden bg-slate-800/20 backdrop-blur min-h-[80vh]">
-                    {/* LEFT VERTICAL TABS (YOUR DESIGN) */}
-                    <div className="w-1/4 border-r border-slate-700/50 p-4 flex flex-col gap-4">
-                        {/* Profile Info */}
-                        <div className="flex flex-col items-center mb-4">
-                            <div className="rounded-full h-20 w-20 border-2 bg-slate-700 border-slate-600 p-1">
-                                <img
-                                    src={avatar || NoProfile}
-                                    className="rounded-full h-full w-full object-cover"
-                                    alt="Profile"
-                                />
+            {/* MAIN CARD */}
+            <div className="flex-1 max-w-6xl mx-auto w-full px-4 pb-6">
+                <div className="border border-slate-700/50 rounded-2xl bg-slate-800/20 backdrop-blur overflow-hidden">
+                    {/* MOBILE PROFILE HEADER */}
+                    <div className="md:hidden flex flex-col items-center gap-3 p-4 border-b border-slate-700/50">
+                        <div className="rounded-full h-24 w-24 border-2 bg-slate-700 border-slate-600 p-1">
+                            <img
+                                src={avatar || NoProfile}
+                                className="rounded-full h-full w-full object-cover"
+                                alt="Profile"
+                            />
+                        </div>
+                        <p className="text-xl font-semibold text-white">
+                            {name}
+                        </p>
+                    </div>
+
+                    {/* MOBILE TABS (HORIZONTAL SCROLL) */}
+                    <div className="md:hidden flex gap-2 p-3 overflow-x-auto border-b border-slate-700/50">
+                        {EditProfileTab.map((tab) => (
+                            <button
+                                key={tab.title}
+                                onClick={() => setActiveTab(tab.title)}
+                                className={`px-4 py-2 rounded-lg text-sm whitespace-nowrap ${
+                                    activeTab === tab.title
+                                        ? "bg-blue-500 text-white"
+                                        : "bg-slate-700/50 text-slate-300"
+                                }`}
+                            >
+                                <Link to={tab.onClick}>{tab.title}</Link>
+                            </button>
+                        ))}
+                    </div>
+
+                    {/* DESKTOP LAYOUT */}
+                    <div className="hidden md:flex min-h-[70vh]">
+                        {/* LEFT VERTICAL TABS */}
+                        <div className="w-1/4 border-r border-slate-700/50 p-4 flex flex-col gap-4">
+                            <div className="flex flex-col items-center mb-4">
+                                <div className="rounded-full h-20 w-20 border-2 bg-slate-700 border-slate-600 p-1">
+                                    <img
+                                        src={avatar || NoProfile}
+                                        className="rounded-full h-full w-full object-cover"
+                                        alt="Profile"
+                                    />
+                                </div>
+                                <p className="text-lg font-semibold text-white mt-2">
+                                    {name}
+                                </p>
                             </div>
-                            <p className="text-lg font-semibold text-white mt-2">
-                                {name}
-                            </p>
+
+                            <div className="flex-1 flex flex-col gap-3">
+                                {EditProfileTab.map((tab) => (
+                                    <Link
+                                        key={tab.title}
+                                        to={tab.onClick}
+                                        onClick={() => setActiveTab(tab.title)}
+                                        className={`
+                                            flex-1 flex items-end p-4 rounded-xl transition-all
+                                            ${
+                                                activeTab === tab.title
+                                                    ? "bg-blue-500 text-white"
+                                                    : "bg-slate-700/60 text-slate-300 hover:bg-slate-700"
+                                            }
+                                        `}
+                                    >
+                                        <span className="text-sm font-medium">
+                                            {tab.title}
+                                        </span>
+                                    </Link>
+                                ))}
+                            </div>
                         </div>
 
-                        {/* Tall Vertical Tabs */}
-                        <div className="flex-1 flex flex-col gap-3">
-                            {EditProfileTab.map((tab) => (
-                                <Link
-                                    key={tab.title}
-                                    to={tab.onClick}
-                                    onClick={() => setActiveTab(tab.title)}
-                                    className={`
-                                        flex-1 flex items-end p-4 rounded-xl transition-all
-                                        ${
-                                            activeTab === tab.title
-                                                ? "bg-blue-500 text-white"
-                                                : "bg-slate-700/60 text-slate-300 hover:bg-slate-700"
-                                        }
-                                    `}
-                                >
-                                    <span className="text-sm font-medium">
-                                        {tab.title}
-                                    </span>
-                                </Link>
-                            ))}
+                        {/* RIGHT CONTENT */}
+                        <div className="flex-1 p-6 overflow-y-auto">
+                            <Outlet />
                         </div>
                     </div>
 
-                    {/* RIGHT SIDE CONTENT (OUTLET) */}
-                    <div className="flex-1 p-6 overflow-y-auto">
+                    {/* MOBILE CONTENT */}
+                    <div className="md:hidden p-4">
                         <Outlet />
                     </div>
                 </div>
