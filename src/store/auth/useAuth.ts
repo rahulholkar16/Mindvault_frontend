@@ -104,14 +104,10 @@ export const useAuth = create<AuthState>()(
                     });
 
                     return true;
-                } catch (err: any) {
-                    const apiError = err.response?.data;
+                } catch (error: any) {
                     set({
                         isLoading: false,
-                        error:
-                            typeof apiError === "string"
-                                ? apiError
-                                : apiError?.errors || apiError?.message || "Register failed",
+                        error: error.response?.data?.message || error.response?.data || error.response?.data.errors || "Register failed",
                     });
 
                     return false;
