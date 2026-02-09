@@ -7,15 +7,13 @@ import { useNavigate } from "react-router";
 const DashboardNavbar = () => {
     const onShare = useFeature((s) => s.onShare);
     const [isOpen, setIsOpen] = useState(false);
-    const [shareLink, setShareLink] = useState("");
+    const [shareLink, setShareLink] = useState<string | boolean>("");
     const navigate = useNavigate();
 
     useEffect(() => {
         async function share() {
             const resLink = await onShare();
-            setShareLink(
-                `https://mindvault-kappa.vercel.app/dashboard/user/${resLink}`,
-            );
+            setShareLink(resLink);
         }
         share();
     }, [onShare]);
@@ -76,7 +74,7 @@ const DashboardNavbar = () => {
                                         <input
                                             type="text"
                                             readOnly
-                                            value={shareLink}
+                                            value={`https://mindvault-kappa.vercel.app/dashboard/user/${resLink}`}
                                             className="flex-1 bg-black/20 border border-white/20 text-white px-3 py-2 rounded-lg outline-none"
                                         />
 
