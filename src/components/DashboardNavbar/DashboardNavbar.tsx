@@ -84,7 +84,7 @@ const DashboardNavbar = () => {
                                                 navigator.clipboard.writeText(`https://mindvault-kappa.vercel.app/dashboard/user/${shareLink}`)
                                             }
                                         >
-                                            Copy
+                                            Copyi
                                         </button>
                                     </>
                                 )}
