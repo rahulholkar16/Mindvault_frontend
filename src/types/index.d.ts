@@ -118,7 +118,10 @@ interface Content {
     "tags"?: [],
     "type"?: NoteType | undefined,
     "description": string,
-    "userId": string,
+    "userId": {
+        _id: string,
+        name: string
+    },
     "isPublic"?: boolean,
     "createdAt": string
 }
