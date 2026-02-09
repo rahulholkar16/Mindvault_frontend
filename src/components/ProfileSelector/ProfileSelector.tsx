@@ -79,44 +79,49 @@ const ProfileSelector = () => {
     }, []);
 
     return (
-        <div className="relative min-h-screen">
+        <div className="relative min-h-screen bg-gray-900 px-4 py-8">
             <ErrorOverlay />
 
             {isLoading && (
-                <div className="bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-6 flex gap-3">
-                    <p className="text-blue-300 text-sm">Creating account...</p>
+                <div className="max-w-lg mx-auto bg-blue-500/10 border border-blue-500/20 rounded-lg p-4 mb-6">
+                    <p className="text-blue-300 text-sm text-center">
+                        Creating account...
+                    </p>
                 </div>
             )}
 
-            <div className="min-h-screen mx-auto flex flex-col items-center justify-center w-fit">
+            <div className="max-w-5xl mx-auto flex flex-col items-center">
                 {/* Back button */}
-                <div className="flex w-full">
+                <div className="w-full mb-6">
                     <button
                         onClick={() => navigate(-1)}
-                        className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8"
+                        className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors"
                     >
                         <ArrowLeft size={20} />
                         Back
                     </button>
                 </div>
 
-                <div className="w-160 h-100 shadow-lg flex bg-slate-600/50 rounded-xl backdrop-blur">
-                    <div className="flex flex-col gap-6 p-4 min-w-90 justify-center items-center">
-                        <h1 className="text-2xl font-bold">
+                {/* Main Card */}
+                <div
+                    className="w-full bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl shadow-xl 
+                grid grid-cols-1 md:grid-cols-[1fr_auto_1fr] overflow-hidden"
+                >
+                    {/* LEFT: Upload Section */}
+                    <div className="flex flex-col gap-6 p-6 items-center justify-center text-center">
+                        <h1 className="text-2xl font-bold text-white">
                             Set Profile Picture
                         </h1>
 
-                        <div className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1">
+                        <div className="rounded-full h-28 w-28 border-2 bg-slate-700 border-slate-600 p-1">
                             <img
                                 src={imageUrl}
                                 alt="Selected avatar"
                                 className="rounded-full h-full w-full object-cover"
-                                loading="lazy"
-                                decoding="async"
                             />
                         </div>
 
-                        <div className="px-4 py-3 rounded-lg shadow-lg overflow-hidden bg-gray-600 active:bg-gray-500 active:scale-80 transition-all duration-300">
+                        <div className="px-4 py-3 rounded-lg shadow-lg bg-slate-700 hover:bg-slate-600 transition-all">
                             <input
                                 className="hidden"
                                 type="file"
@@ -124,11 +129,12 @@ const ProfileSelector = () => {
                                 accept="image/*"
                                 onChange={handleImageChange}
                             />
-                            <button onClick={handleButtonClick}>
-                                <div className="flex items-center gap-2 justify-center">
-                                    <Plus />
-                                    Upload Image
-                                </div>
+                            <button
+                                onClick={handleButtonClick}
+                                className="flex items-center gap-2 text-white"
+                            >
+                                <Plus size={18} />
+                                Upload Image
                             </button>
                         </div>
 
@@ -141,12 +147,16 @@ const ProfileSelector = () => {
                         />
                     </div>
 
-                    <div className="h-full border-r border-gray-400 w-0"></div>
+                    {/* Divider (only on desktop) */}
+                    <div className="hidden md:block w-[1px] bg-slate-700 my-6" />
 
-                    <div className="flex flex-col p-4">
-                        <h1 className="text-2xl font-bold">Default Avatar</h1>
+                    {/* RIGHT: Default Avatars */}
+                    <div className="flex flex-col p-6 border-t md:border-t-0 border-slate-700">
+                        <h1 className="text-2xl font-bold text-white text-center md:text-left">
+                            Default Avatar
+                        </h1>
 
-                        <div className="flex flex-wrap gap-8 mt-6 overflow-auto no-scrollbar items-center justify-center">
+                        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-3 gap-4 mt-6 max-h-[350px] overflow-auto">
                             {profilePicture.map((pic) => (
                                 <div
                                     key={pic.id}
@@ -155,14 +165,13 @@ const ProfileSelector = () => {
                                         setImage(file);
                                         setImageUrl(pic.dp);
                                     }}
-                                    className="rounded-full h-24 w-24 border-2 object-cover bg-slate-600 border-gray-300 p-1 active:scale-90 transition-transform duration-300 cursor-pointer"
+                                    className="rounded-full h-20 w-20 border-2 bg-slate-700 border-slate-600 p-1 
+                                hover:scale-105 active:scale-95 transition-transform cursor-pointer mx-auto"
                                 >
                                     <img
                                         src={pic.dp}
                                         alt="Default avatar option"
                                         className="rounded-full h-full w-full object-cover"
-                                        loading="lazy"
-                                        decoding="async"
                                     />
                                 </div>
                             ))}
@@ -172,6 +181,7 @@ const ProfileSelector = () => {
             </div>
         </div>
     );
+
 };
 
 export default memo(ProfileSelector);

@@ -8,7 +8,7 @@ const Navbar = () => {
     const logout = useAuth((state) => state.logout);
     return (
         <div className="bg-gray-900 text-white sticky top-0">
-            <nav className="flex items-center justify-between px-6 py-4 max-w-7xl mx-auto">
+            <nav className="flex items-center justify-between px-4 md:px-6 py-4 max-w-7xl mx-auto">
                 <div className="flex items-center gap-2">
                     <div className="p-2 bg-linear-to-br from-blue-500 to-purple-600 rounded-lg">
                         <Brain size={24} />

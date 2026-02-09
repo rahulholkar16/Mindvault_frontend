@@ -37,28 +37,30 @@ const RegistrationForm = () => {
     }
 
     return (
-        <>
-            <div className="min-w-md p-4">
+        <div className="min-h-screen bg-gray-900 flex items-center justify-center px-4 py-8">
+            <div className="w-full max-w-md md:max-w-lg">
                 <button
                     onClick={() => nevigate(-1)}
-                    className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-8"
+                    className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mb-6"
                 >
                     <ArrowLeft size={20} />
                     Back
                 </button>
 
-                <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-8">
-                    <div className="flex items-center justify-center gap-3 mb-8">
+                <div className="bg-slate-800/50 backdrop-blur border border-slate-700 rounded-2xl p-6 sm:p-8">
+                    <div className="flex items-center justify-center gap-3 mb-6">
                         <div className="p-2 bg-linear-to-br from-blue-500 to-purple-600 rounded-lg">
                             <Brain size={24} />
                         </div>
-                        <h1 className="text-2xl font-bold">Second Brain</h1>
+                        <h1 className="text-2xl font-bold text-white">
+                            Second Brain
+                        </h1>
                     </div>
 
-                    <h2 className="text-2xl font-bold mb-2 text-center">
+                    <h2 className="text-2xl font-bold mb-2 text-center text-white">
                         Create account
                     </h2>
-                    <p className="text-slate-400 text-center mb-8">
+                    <p className="text-slate-400 text-center mb-6">
                         Join us to start building your second brain
                     </p>
 
@@ -73,6 +75,7 @@ const RegistrationForm = () => {
                     )}
 
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        {/* Email */}
                         <div>
                             <label className="block text-sm font-medium text-slate-300 mb-2">
                                 Email
@@ -92,6 +95,7 @@ const RegistrationForm = () => {
                             </div>
                         </div>
 
+                        {/* Password */}
                         <div>
                             <label className="block text-sm font-medium text-slate-300 mb-2">
                                 Password
@@ -113,12 +117,13 @@ const RegistrationForm = () => {
                             </div>
                         </div>
 
+                        {/* Name (FIXED ICON HERE) */}
                         <div>
                             <label className="block text-sm font-medium text-slate-300 mb-2">
                                 Name
                             </label>
                             <div className="relative">
-                                <Lock
+                                <UserLock
                                     size={18}
                                     className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500"
                                 />
@@ -132,45 +137,38 @@ const RegistrationForm = () => {
                             </div>
                         </div>
 
+                        {/* Public Account (RESPONSIVE FIX) */}
                         <div>
                             <label className="block text-sm font-medium text-slate-300 mb-2">
                                 Public Account
                             </label>
 
-                            <div className="relative">
-                                <UserLock
-                                    size={18}
-                                    className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-500"
-                                />
+                            <div className="flex items-center gap-4 sm:gap-6 ml-2 sm:ml-10">
+                                <label className="flex items-center gap-2 cursor-pointer text-white">
+                                    <input
+                                        type="radio"
+                                        name="publicAccount"
+                                        checked={accType === true}
+                                        onChange={() => setAccType(true)}
+                                    />
+                                    Yes
+                                </label>
 
-                                <div className="flex gap-6 ml-10">
-                                    {" "}
-                                    {/* little spacing fix */}
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="publicAccount"
-                                            checked={accType === true}
-                                            onChange={() => setAccType(true)}
-                                        />
-                                        Yes
-                                    </label>
-                                    <label className="flex items-center gap-2 cursor-pointer">
-                                        <input
-                                            type="radio"
-                                            name="publicAccount"
-                                            checked={accType === false}
-                                            onChange={() => setAccType(false)}
-                                        />
-                                        No
-                                    </label>
-                                </div>
+                                <label className="flex items-center gap-2 cursor-pointer text-white">
+                                    <input
+                                        type="radio"
+                                        name="publicAccount"
+                                        checked={accType === false}
+                                        onChange={() => setAccType(false)}
+                                    />
+                                    No
+                                </label>
                             </div>
                         </div>
 
                         <button
                             type="submit"
-                            className="w-full px-4 py-2.5 bg-linear-to-r from-blue-500 to-purple-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-6"
+                            className="w-full px-4 py-2.5 bg-linear-to-r from-blue-500 to-purple-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-blue-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-4"
                         >
                             Next
                         </button>
@@ -189,8 +187,9 @@ const RegistrationForm = () => {
                     </div>
                 </div>
             </div>
-        </>
+        </div>
     );
+
 };
 
 export default RegistrationForm;

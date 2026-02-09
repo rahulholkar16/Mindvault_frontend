@@ -3,7 +3,7 @@ import FeatureCard from './FeatureCard.tsx';
 const FeaturesSection = () => {
     
   return (
-      <div className="flex gap-10 mx-auto px-3 py-10 justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto px-4 py-10 justify-items-center">
           {features.map((feature, index) => (
               <FeatureCard
                   key={index}

@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar';
 
 const Welcome = () => {
   return (
-      <div className="bg-gray-900 min-h-screen text-center mx-auto">
+      <div className="bg-gray-900 min-h-screen text-center">
           <Navbar />
           <HeroSection />
           <FeaturesSection />
