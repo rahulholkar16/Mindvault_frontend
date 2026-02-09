@@ -23,7 +23,7 @@ const Card: React.FC<CardProp> = ({
     }
 
     const handleCopyLink = async () => {
-        const link = `http://localhost:5173/dashboard/content/${id}`;
+        const link = `https://mindvault-kappa.vercel.app/dashboard/content/${id}`;
 
         try {
             await navigator.clipboard.writeText(link);
