@@ -106,7 +106,6 @@ export const useAuth = create<AuthState>()(
                     return true;
                 } catch (err: any) {
                     const apiError = err.response?.data;
-
                     set({
                         isLoading: false,
                         error:
