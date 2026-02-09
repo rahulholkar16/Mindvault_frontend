@@ -9,7 +9,7 @@ const Sidebar = lazy(() => import("../components/Sidebar"));
 
 const Dashboard = () => {
     const fetchAll = useContent((s) => s.fetchAll);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const toggleSidebar = useCallback(
         () => setIsSidebarOpen((prev) => !prev),
