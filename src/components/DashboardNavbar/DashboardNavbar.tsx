@@ -74,16 +74,14 @@ const DashboardNavbar = () => {
                                         <input
                                             type="text"
                                             readOnly
-                                            value={`https://mindvault-kappa.vercel.app/dashboard/user/${resLink}`}
+                                            value={`https://mindvault-kappa.vercel.app/dashboard/user/${shareLink}`}
                                             className="flex-1 bg-black/20 border border-white/20 text-white px-3 py-2 rounded-lg outline-none"
                                         />
 
                                         <button
                                             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition"
                                             onClick={() =>
-                                                navigator.clipboard.writeText(
-                                                    shareLink,
-                                                )
+                                                navigator.clipboard.writeText(`https://mindvault-kappa.vercel.app/dashboard/user/${shareLink}`)
                                             }
                                         >
                                             Copy
