@@ -13,7 +13,9 @@ const DashboardNavbar = () => {
     useEffect(() => {
         async function share() {
             const resLink = await onShare();
-            setShareLink(`http://localhost:5173/dashboard/user/${resLink}`);
+            setShareLink(
+                `https://mindvault-kappa.vercel.app/dashboard/user/${resLink}`,
+            );
         }
         share();
     }, [onShare]);
