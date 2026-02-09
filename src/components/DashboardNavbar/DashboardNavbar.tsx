@@ -66,7 +66,7 @@ const DashboardNavbar = () => {
                             </label>
 
                             <div className="flex flex-col sm:flex-row gap-3">
-                                {shareLink === "false" ? (
+                                {shareLink === false ? (
                                     <p className="text-red-300">
                                         Your Profile is Private.
                                     </p>
