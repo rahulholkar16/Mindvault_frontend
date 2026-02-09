@@ -14,6 +14,7 @@ const DashboardNavbar = () => {
         async function share() {
             const resLink = await onShare();
             setShareLink(resLink);
+            console.log(resLink);
         }
         share();
     }, [onShare]);
@@ -84,7 +85,7 @@ const DashboardNavbar = () => {
                                                 navigator.clipboard.writeText(`https://mindvault-kappa.vercel.app/dashboard/user/${shareLink}`)
                                             }
                                         >
-                                            Copyi
+                                            Copy
                                         </button>
                                     </>
                                 )}
