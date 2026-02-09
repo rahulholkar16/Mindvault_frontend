@@ -13,32 +13,32 @@ const EditProfile = () => {
     const navigate = useNavigate();
 
     return (
-        <div className="flex h-screen bg-gray-900 w-full overflow-hidden">
-            <div className="mx-auto p-4 sm:p-6 w-full max-w-6xl flex flex-col">
-                {/* TOP BAR WITH BUTTONS */}
-                <div className="flex flex-wrap items-center justify-between gap-4 mb-4">
-                    <Button
-                        text="Back"
-                        size="small"
-                        color="secondary"
-                        onClick={() => navigate(-1)}
-                    >
-                        <ArrowLeft size={18} />
-                    </Button>
+        <div className="min-h-screen bg-gray-900 flex flex-col">
+            {/* TOP ACTION BAR (Back + Dashboard) */}
+            <div className="max-w-6xl mx-auto w-full px-4 sm:px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+                <Button
+                    text="Back"
+                    size="small"
+                    color="secondary"
+                    onClick={() => navigate(-1)}
+                >
+                    <ArrowLeft size={18} />
+                </Button>
 
-                    <Button
-                        text="Dashboard"
-                        size="small"
-                        color="primary"
-                        onClick={() => navigate("/dashboard")}
-                    >
-                        <LayoutDashboard size={18} />
-                    </Button>
-                </div>
+                <Button
+                    text="Dashboard"
+                    size="small"
+                    color="primary"
+                    onClick={() => navigate("/dashboard")}
+                >
+                    <LayoutDashboard size={18} />
+                </Button>
+            </div>
 
-                {/* MAIN CARD */}
-                <div className="border border-slate-700/50 rounded-2xl flex flex-1 overflow-hidden bg-slate-800/20 backdrop-blur">
-                    {/* LEFT SIDEBAR */}
+            {/* MAIN CONTAINER */}
+            <div className="flex-1 max-w-6xl mx-auto w-full px-4 sm:px-6 pb-6">
+                <div className="border border-slate-700/50 rounded-2xl flex flex-1 overflow-hidden bg-slate-800/20 backdrop-blur min-h-[80vh]">
+                    {/* LEFT SIDEBAR (DESKTOP) */}
                     <div className="hidden md:flex md:w-1/4 border-r border-slate-700/50 p-4 flex-col items-center gap-6">
                         <div className="text-center">
                             <div className="rounded-full h-28 w-28 border-2 bg-slate-700 border-slate-600 p-1 mx-auto">
@@ -92,7 +92,7 @@ const EditProfile = () => {
                         ))}
                     </div>
 
-                    {/* RIGHT CONTENT (OUTLET) */}
+                    {/* RIGHT CONTENT (NESTED ROUTES) */}
                     <div className="flex-1 overflow-y-auto p-4 sm:p-6">
                         <Outlet />
                     </div>
