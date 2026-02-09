@@ -16,7 +16,8 @@ const Card: React.FC<CardProp> = ({
 }) => {
     const userId = useAuth.getState().user?._id;
     const [copied, setCopied] = useState(false);
-
+    console.log(userId , "   ", contentUser);
+    
     function formatDate() {
         const newDate = new Date(date);
         return newDate.toLocaleDateString("en-GB").replaceAll("/", "-");
