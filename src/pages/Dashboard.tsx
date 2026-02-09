@@ -9,7 +9,7 @@ const Sidebar = lazy(() => import("../components/Sidebar"));
 
 const Dashboard = () => {
     const fetchAll = useContent((s) => s.fetchAll);
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
     useEffect(() => {
         fetchAll();
@@ -31,7 +31,10 @@ const Dashboard = () => {
             <ErrorOverlay />
 
             <Suspense fallback={<SidebarSkeleton />}>
-                <Sidebar isOpen={isSidebarOpen} onToggle={(value: boolean) => setIsSidebarOpen(value)} />
+                <Sidebar
+                    isOpen={isSidebarOpen}
+                    onToggle={(value: boolean) => setIsSidebarOpen(value)}
+                />
             </Suspense>
 
             {/* MAIN CONTENT AREA */}

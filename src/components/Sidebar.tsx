@@ -12,7 +12,11 @@ const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle }) => {
     const fetchByType = useContent((s) => s.fetchByType);
 
     const dataFetch = async (type: string) => {
-        onToggle(false);
+        // Close sidebar ONLY on mobile
+        if (window.innerWidth < 1024) {
+            onToggle(false);
+        }
+
         if (type === "profile") {
             navigate("profile");
             return;
