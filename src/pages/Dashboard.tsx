@@ -4,12 +4,17 @@ import SidebarSkeleton from "../components/skeleton/SidebarSkeleton";
 import ErrorOverlay from "../components/ErrorCard/ErrorOverlay/ErrorOverlay";
 import DashboardNavbar from "../components/DashboardNavbar/DashboardNavbar";
 import { Outlet } from "react-router";
+
 const Sidebar = lazy(() => import("../components/Sidebar"));
 
 const Dashboard = () => {
     const fetchAll = useContent((s) => s.fetchAll);
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-    const toggleSidebar = useCallback(() => setIsSidebarOpen((s) => !s), []);
+
+    const toggleSidebar = useCallback(
+        () => setIsSidebarOpen((prev) => !prev),
+        [],
+    );
 
     useEffect(() => {
         fetchAll();
@@ -34,16 +39,21 @@ const Dashboard = () => {
                 <Sidebar isOpen={isSidebarOpen} onToggle={toggleSidebar} />
             </Suspense>
 
-            {/* Main Content Area */}
-            <div className="flex-1 text-white px-4 sm:px-6 py-4 sm:py-5 overflow-y-auto relative">
+            {/* MAIN CONTENT AREA */}
+            <div
+                className={`
+                    flex-1 text-white px-4 sm:px-6 py-4 sm:py-5 
+                    overflow-y-auto relative transition-all duration-300
+                `}
+            >
                 <DashboardNavbar />
+
                 <div className="mt-4">
                     <Outlet />
                 </div>
             </div>
         </div>
     );
-
 };
 
 export default Dashboard;

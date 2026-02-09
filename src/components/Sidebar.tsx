@@ -27,7 +27,7 @@ const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle }) => {
 
     return (
         <>
-            {/* Mobile Toggle Button */}
+            {/* MOBILE TOGGLE BUTTON */}
             <button
                 onClick={onToggle}
                 className="fixed top-4 left-4 z-50 p-2 bg-slate-800 rounded-lg shadow-lg hover:bg-slate-700 transition-colors lg:hidden text-slate-400"
@@ -35,13 +35,14 @@ const Sidebar: React.FC<SidebarProp> = ({ isOpen, onToggle }) => {
                 {isOpen ? <X size={20} /> : <Menu size={20} />}
             </button>
 
+            {/* SIDEBAR */}
             <div
                 className={`fixed lg:relative inset-y-0 left-0 z-40 bg-slate-800 border-r border-slate-700 
                 flex flex-col py-6 transition-all duration-300 
                 ${
                     isOpen
                         ? "w-[70%] sm:w-64 translate-x-0"
-                        : "w-0 lg:w-16 -translate-x-full lg:translate-x-0"
+                        : "-translate-x-full w-[70%] sm:w-64 lg:w-16"
                 }`}
             >
                 <div className="flex flex-col gap-2 flex-1 w-full px-4">
