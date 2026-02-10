@@ -38,7 +38,7 @@ const Navbar = () => {
                         onClick={() => nevigate("/login")}
                         className="px-6 py-2 text-slate-300 hover:text-white transition-colors"
                     >
-                        Sign In
+                        Sign Up
                     </button>
                 )}
             </nav>

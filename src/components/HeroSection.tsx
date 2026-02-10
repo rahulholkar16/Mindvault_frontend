@@ -37,7 +37,7 @@ const HeroSection = () => {
             {/* Buttons */}
             <div className="flex flex-col sm:flex-row gap-4 sm:gap-5 px-2 items-center justify-center md:justify-start mt-6">
                 <Button
-                    text={isAuthenticated ? "Get Started Free" : "Sign In"}
+                    text={isAuthenticated ? "Get Started Free" : "Sign Up"}
                     color="primary"
                     size="large"
                     disabled={false}
