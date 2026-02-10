@@ -13,7 +13,7 @@ const Navbar = () => {
                     <div className="p-2 bg-linear-to-br from-blue-500 to-purple-600 rounded-lg">
                         <Brain size={24} />
                     </div>
-                    <span className="text-xl font-bold">Second Brain</span>
+                    <span className="text-xl font-bold">Mind Vault</span>
                 </div>
                 {isAuthenticated ? (
                     <button
