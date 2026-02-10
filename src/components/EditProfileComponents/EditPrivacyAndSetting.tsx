@@ -49,7 +49,7 @@ const EditPrivacyAndSetting = () => {
 
         debounceRef.current = setTimeout(() => {
             toggleProfileVisibilty();
-        }, 500);
+        }, 200);
     };
 
     const handleResendVerification = () => {
